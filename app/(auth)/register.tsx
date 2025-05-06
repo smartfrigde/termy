@@ -2,6 +2,7 @@ import ThemedButton from '@/components/ThemedButton';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { register } from '@/core/loginManager';
+import { Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
@@ -13,6 +14,7 @@ const RegisterScreen = () => {
 
     return (
         <ThemedView style={styles.container}>
+            <Stack.Screen options={{ title: 'Register' }} />
             <ThemedText type="defaultSemiBold">First name</ThemedText>
             <TextInput
                 style={styles.textInput}

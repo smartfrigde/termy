@@ -12,9 +12,6 @@ import { Dimensions } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 const numColumns = Math.floor(screenWidth / 200);
-const handlePress = () => {
-  alert("Floating Button Pressed!");
-};
 
 const ServerItem = ({ item }: { item: ServerType }) => {
   const [editVisible, setVisible] = useState(false);
@@ -24,7 +21,9 @@ const ServerItem = ({ item }: { item: ServerType }) => {
   const onHoverOut = () => {
     setVisible(false);
   };
-
+  const handlePress = () => {
+    alert(JSON.stringify(item));
+  };
   return (
     <Pressable onHoverIn={onHoverIn} onHoverOut={onHoverOut}>
       <ThemedView style={styles.serverItem}>

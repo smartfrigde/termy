@@ -2,8 +2,9 @@ import ThemedButton from '@/components/ThemedButton';
 import { ThemedView } from '@/components/ThemedView';
 import { router, Stack } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 const AuthScreen = () => {
+    
     function login() {
         router.navigate('/(auth)/login');
     }
@@ -20,9 +21,6 @@ const AuthScreen = () => {
                 },
             ]}>
             <Stack.Screen options={{ title: 'Welcome to Termy' }} />
-            <ThemedView style={{ flex: 4 }}>
-                <Image style={styles.img} source={require("../../assets/images/background.jpg")} />
-            </ThemedView>
             <ThemedView style={styles.authContainer}>
                 {/* <Image style={styles.logo} source={require("../../assets/images/logo.png")} /> */}
                 <ThemedButton
@@ -68,6 +66,7 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 25,
         width: '80%',
+        height: 50,
     }
 });
 
