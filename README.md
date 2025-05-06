@@ -1,4 +1,5 @@
 # Termy
+![WIP](https://github.com/user-attachments/assets/3d8000e9-b580-4387-a785-2b79ee6432b2)
 
 Termy is a cross-platform app available primarily in browsers, and natively on mobile devices. The main goals of the application are:
 
