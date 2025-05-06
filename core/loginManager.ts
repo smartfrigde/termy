@@ -3,8 +3,15 @@ import { read, store } from "./settings";
 
 export var isLoggedIn = read("user") !== null;
 
-export function getCurrentUser() {
-
+export async function getCurrentUser(): Promise<User | null> {
+  const user = await read("user");
+  if (user) {
+    console.log("User is logged in", user);
+    return user;
+  } else {
+    console.log("User is not logged in");
+    return null;
+  }
 }
 
 export async function register(name: string, surname: string, email: string, password: string) {
@@ -49,9 +56,9 @@ export async function login(email: string, password: string) {
 }
 
 export function logout() {
-  isLoggedIn = false;
   store("user", null);
   store("apiToken", null);
   store("refreshToken", null);
+  isLoggedIn = false;
   console.log("Logged out");
 }

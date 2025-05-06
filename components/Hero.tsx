@@ -1,13 +1,15 @@
 import { ThemedText } from '@/components/ThemedText';
+import { getCurrentUser } from '@/core/loginManager';
 import { StyleSheet } from 'react-native';
 import { HelloWave } from './HelloWave';
 import { ThemedView } from './ThemedView';
 
-export function Hero() {
+export async function Hero() {
+    const user = await getCurrentUser();
   return (
     <>
     <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Welcome user</ThemedText>
+          <ThemedText type="title">Welcome {user?.name ?? 'user'}</ThemedText>
           <HelloWave />
       </ThemedView>
       
