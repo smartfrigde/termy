@@ -1,41 +1,6 @@
 import { ServerType } from "@/types/Server";
 import { read, store } from "./settings";
 
-const itemData = [
-    {
-      name: "Technikum",
-      ip: "192.168.1.100",
-      port: 8080,
-      password: "password123",
-      username: "admin",
-      id: "s"
-    },
-    {
-      name: "Blumilk",
-      ip: "192.168.1.321",
-      port: 8080,
-      password: "password123",
-      username: "admin",
-      id: "a"
-    },
-    {
-      name: "Szkola 1",
-      ip: "192.168.1.421",
-      port: 8080,
-      password: "password123",
-      username: "admin",
-      id: "b"
-    },
-    {
-      name: "Test",
-      ip: "192.168.1.321",
-      port: 8080,
-      password: "password123",
-      username: "admin",
-      id: "c"
-    }
-  ];
-
 export async function saveServers(servers: ServerType[]) {
     await store("servers", servers);
 }

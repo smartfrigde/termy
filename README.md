@@ -1,38 +1,60 @@
 # Termy
-Termy jest wieloplatformowym narzędziem, dostępnym głównie w przeglądarkach, a także jako aplikacja na systemy Windows, macOS, Linux oraz urządzenia mobilne. Główne cele aplikacji to:
 
-## Główna funkcjonalność
+Termy is a cross-platform app available primarily in browsers, and natively on mobile devices. The main goals of the application are:
 
-### 1. Zarządzanie połączeniami SSH:
-* Dodawanie, edycja i usuwanie serwerów SSH.
-* Szybkie łączenie się z serwerami.
-* Obsługa wielu profili/tożsamości dla różnych konfiguracji SSH.
-* Udostępnianie innym zasobów za pomocą drużyn 
-### 2. Synchronizacja danych:
-* Przechowywanie listy serwerów w chmurze (szyfrowanie end-to-end).
-* Synchronizacja kluczy GPG pomiędzy urządzeniami.
-* Obsługa lokalnych kopii zapasowych dla użytkowników preferujących pracę offline.
-### 3. Zarządzanie kluczami:
-* Generowanie kluczy SSH i GPG bezpośrednio w aplikacji.
-* Importowanie i eksportowanie kluczy.
-* Automatyczne dodawanie kluczy do agentów SSH i GPG.
-### 4. Bezpieczeństwo:
-* Szyfrowanie danych użytkownika.
-### 5. Interfejs użytkownika:
-* Intuicyjny dashboard z listą serwerów.
-* Tryb ciemny/jasny.
-### 6. Dodatki (jak starczy czasu)
-* Możliwość tunelowania poprzez SSH
-* Wsparcie SFTP
-* Uwierzytelnianie wieloskładnikowe (MFA).
-* Obsługa kluczy U2F/FIDO2 dla bezpiecznych połączeń.
+## Main Functionality
+
+### 1. SSH Connection Management:
+
+* Adding, editing, and deleting SSH servers.
+* Quick connection to servers.
+* Support for multiple profiles/identities for different SSH configurations.
+* Sharing resources with others using teams.
+
+### 2. Data Synchronization:
+
+* Storing the server list in the cloud (end-to-end encryption).
+* Synchronizing GPG keys between devices.
+* Support for local backups for users who prefer offline work.
+
+### 3. Key Management:
+
+* Generating SSH and GPG keys directly within the app.
+* Importing and exporting keys.
+* Automatically adding keys to SSH connections.
+
+### 4. Security:
+
+* Any reliable modern encryption.
+
+### 5. User Interface:
+
+* Intuitive dashboard with a server list.
+* Dark/light mode.
+
+### 6. Extras (if time permits):
+
+* SSH tunneling capability.
+* SFTP support.
+* Multi-factor authentication (MFA).
+* Support for U2F/FIDO2 keys for secure connections.
 
 
-## Techstack
+## How to run:
+
+## Frontend:
+```sh
+npm install
+npm run web
+```
+
+## Tech Stack
 
 ### Frontend:
-- Typescript
-- React Native (Web/Android/iOS)
+
+* TypeScript
+* React Native (Web/Android/iOS/macOS??/Windows??)
 
 ### Backend:
-- Laravel
+
+* Laravel
