@@ -1,16 +1,16 @@
 import ThemedButton from '@/components/ThemedButton';
 import { ThemedView } from '@/components/ThemedView';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 const AuthScreen = () => {
-    const router = useRouter();
     function login() {
         router.navigate('/(auth)/login');
     }
     function register() {
         router.navigate('/(auth)/register');
     }
+    
     return (
         <ThemedView
             style={[

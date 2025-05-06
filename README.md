@@ -43,6 +43,13 @@ Termy is a cross-platform app available primarily in browsers, and natively on m
 ## How to run:
 
 ## Frontend:
+
+**⚠ ONLY CHROMIUM BASED BROWSERS WORK**
+
+Follow [this guide](https://docs.expo.dev/get-started/set-up-your-environment/) for mobile development setup.
+
+For web:
+
 ```sh
 npm install
 npm run web
