@@ -4,9 +4,10 @@ import { Hero } from '@/components/Hero';
 import { ServerModal } from '@/components/ServerModal';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { getServers } from '@/core/serverManager';
 import { ServerType } from '@/types/Server';
 import { Octicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
@@ -43,13 +44,23 @@ const ServerItem = ({ item }: { item: ServerType }) => {
 };
 
 export default function DashboardScreen() {
+  const [servers, setServers] = useState<ServerType[]>([]);
   const [serverModalVisible, setServerModalVisible] = useState(false);
+  const refreshServers = async () => {
+    const servers = await getServers();
+    console.log(servers);
+    setServers(servers);
+  }
+  useEffect(() => {
+    refreshServers();
+  }, []);
+
   const createServer = () => {
     setServerModalVisible(true);
   };
   return (
     <ThemedView style={{ flex: 1 }}>
-      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible}></ServerModal>
+      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refreshServers}></ServerModal>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
         <Octicons name="plus" size={24} color="white" />
@@ -57,7 +68,7 @@ export default function DashboardScreen() {
       <View style={styles.serverListContainer}>
 
         <FlatList
-          data={itemData}
+          data={servers}
           numColumns={numColumns}
           keyExtractor={item => item.id}
           renderItem={({ item }) => <ServerItem item={item} />}
@@ -126,37 +137,3 @@ const styles = StyleSheet.create({
   }
 });
 
-const itemData = [
-  {
-    name: "Technikum",
-    ip: "192.168.1.100",
-    port: 8080,
-    password: "password123",
-    username: "admin",
-    id: "s"
-  },
-  {
-    name: "Blumilk",
-    ip: "192.168.1.321",
-    port: 8080,
-    password: "password123",
-    username: "admin",
-    id: "a"
-  },
-  {
-    name: "Szkola 1",
-    ip: "192.168.1.421",
-    port: 8080,
-    password: "password123",
-    username: "admin",
-    id: "b"
-  },
-  {
-    name: "Test",
-    ip: "192.168.1.321",
-    port: 8080,
-    password: "password123",
-    username: "admin",
-    id: "c"
-  }
-];

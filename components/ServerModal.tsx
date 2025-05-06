@@ -1,26 +1,46 @@
 import { ThemedText } from '@/components/ThemedText';
-import { Alert, Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import isMobile from '@/constants/isMobile';
+import { addServer } from '@/core/serverManager';
+import { useState } from 'react';
+import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { ThemedView } from './ThemedView';
 
 interface ServerModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
+    refresh: () => void;
 }
 
 export function ServerModal({
     modalVisible,
     setModalVisible,
+    refresh,
 }: ServerModalProps) {
+    const [serverName, setServerName] = useState('');
+    const [serverAddress, setServerAdress] = useState('');
+    const [serverPort, setServerPort] = useState(0);
+    const [serverPassword, setServerPassword] = useState('');
+    const [serverUsername, setServerUsername] = useState('');
+    const serverId = 'PLACEHOLDER' + Math.random().toString(36).substring(2, 15);
+    const save = () => {
+        addServer({
+            id: serverId,
+            name: serverName,
+            ip: serverAddress,
+            port: serverPort,
+            password: serverPassword,
+            username: serverUsername,
+        });
+        refresh();
+        setModalVisible(!modalVisible);
+    }
     return (
         <>
             <Modal
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
+                onRequestClose={() => {save()}}>
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
                         <ThemedText style={styles.modalText} type="subtitle">Add a server</ThemedText>
@@ -29,35 +49,51 @@ export function ServerModal({
                             style={styles.textInput}
                             placeholder="Server name"
                             placeholderTextColor="gray"
+                            value={serverName}
+                            onChangeText={setServerName}
                         />
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server address</ThemedText>
                         <TextInput
                             style={styles.textInput}
                             placeholder="Server address"
                             placeholderTextColor="gray"
+                            value={serverAddress}
+                            onChangeText={setServerAdress}
                         />
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server port</ThemedText>
                         <TextInput
                             style={styles.textInput}
                             placeholder="Server port"
                             placeholderTextColor="gray"
+                            value={serverPort.toString()}
+                            onChangeText={(text) => {
+                                const port = parseInt(text);
+                                if (!isNaN(port)) {
+                                    setServerPort(port);
+                                }
+                            }}
                         />
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server password</ThemedText>
                         <TextInput
                             style={styles.textInput}
                             placeholder="Server password"
                             placeholderTextColor="gray"
+                            secureTextEntry={true}
+                            value={serverPassword}
+                            onChangeText={setServerPassword}
                         />
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server username</ThemedText>
                         <TextInput
                             style={styles.textInput}
                             placeholder="Server username"
                             placeholderTextColor="gray"
+                            value={serverUsername}
+                            onChangeText={setServerUsername}
                         />
                         
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}>
+                            onPress={() => save()}>
                             <ThemedText style={styles.textStyle}>Create</ThemedText>
                         </Pressable>
                     </ThemedView>
@@ -76,7 +112,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingLeft: 10,
     },
-
     centeredView: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -87,7 +122,7 @@ const styles = StyleSheet.create({
         margin: 20,
         borderRadius: 20,
         padding: 35,
-        width: '60%',
+        width: isMobile() ? '90%' : '60%',
         backgroundColor: '#121212',
         alignItems: 'center',
         shadowColor: '#000',
