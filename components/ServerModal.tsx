@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ThemedText';
 import isMobile from '@/constants/isMobile';
-import { addServer } from '@/core/slices/sshSlice';
+import { createServer } from '@/core/sshManager';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -21,17 +21,22 @@ export function ServerModal({
     const [serverPort, setServerPort] = useState(0);
     const [serverPassword, setServerPassword] = useState('');
     const [serverUsername, setServerUsername] = useState('');
-    const serverId = 'PLACEHOLDER' + Math.random().toString(36).substring(2, 15);
     const save = () => {
-        
-        dispatch(addServer({
-            id: serverId,
+        createServer({
             name: serverName,
             hostname: serverAddress,
             port: serverPort,
             password: serverPassword,
-            username: serverUsername,
-        }));
+            login: serverUsername,
+        }).then((server) => {
+            if (server.id) {
+                console.log('Server created', server);
+            }
+        }). catch((err) => {
+            console.log('Error creating server');
+            console.error(err);
+        })
+        
         setModalVisible(!modalVisible);
     }
     return (

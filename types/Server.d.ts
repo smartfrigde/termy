@@ -3,6 +3,8 @@ export type ServerType = {
   hostname: string;
   port: Number;
   password: string;
-  username: string;
-  id: string;
+  login: string;
+  public_key?: string;
+  private_key?: string;
+  id?: string;
 };

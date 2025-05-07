@@ -4,12 +4,13 @@ import { Hero } from '@/components/Hero';
 import { ServerModal } from '@/components/ServerModal';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { selectServers } from '@/core/slices/sshSlice';
+import { selectServers, setServers } from '@/core/slices/sshSlice';
+import { getServers } from '@/core/sshManager';
 import { ServerType } from '@/types/Server';
 import { Octicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 const numColumns = Math.floor(screenWidth / 200);
@@ -45,8 +46,14 @@ const ServerItem = ({ item }: { item: ServerType }) => {
 
 export default function DashboardScreen() {
   const servers = useSelector(selectServers);
+  const dispatch = useDispatch();
   const [serverModalVisible, setServerModalVisible] = useState(false);
-
+  useEffect(() => {
+    getServers().then((servers) => {
+      console.log(servers);
+      dispatch(setServers(servers));
+    });
+  }, []);
   const createServer = () => {
     setServerModalVisible(true);
   };
@@ -63,7 +70,7 @@ export default function DashboardScreen() {
         <FlatList
           data={servers}
           numColumns={numColumns}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id!}
           renderItem={({ item }) => <ServerItem item={item} />}
         />
       </View>
