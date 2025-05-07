@@ -6,14 +6,14 @@ import { sshSlice } from './slices/sshSlice';
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
     ssh: sshSlice.reducer
-  })
+})
 
-  const persistConfig = {
+const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-  };
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
-  export const store = configureStore({
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const store = configureStore({
     reducer: persistedReducer,
-  });
-  export const persistor = persistStore(store);
+});
+export const persistor = persistStore(store);
