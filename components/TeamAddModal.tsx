@@ -7,6 +7,7 @@ import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { ThemedView } from './ThemedView';
 import { useDispatch } from 'react-redux';
 import { TeamType } from '@/types/Team';
+import { Background } from '@react-navigation/elements';
 
 
 
@@ -37,23 +38,30 @@ export function TeamAddModal({
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => { save() }}>
+            >
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
-                        <ThemedText style={styles.modalText} type="subtitle">Add a server</ThemedText>
-                        <ThemedText style={styles.modalText} type="defaultSemiBold">Server name</ThemedText>
+                        <ThemedText style={styles.modalText} type="subtitle">Add a team</ThemedText>
+                        <ThemedText style={styles.modalText} type="defaultSemiBold">team name</ThemedText>
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Server name"
+                            placeholder="Team name"
                             placeholderTextColor="gray"
                             value={teamName}
                             onChangeText={setServerName}
                         />
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => save()}>
-                            <ThemedText style={styles.textStyle}>Create</ThemedText>
-                        </Pressable>
+                        <View style={styles.buttonPanel}>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => save()}>
+                                <ThemedText style={styles.textStyle}>Create</ThemedText>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose, styles.bg_gray]}
+                                onPress={() => setModalVisible(!modalVisible)}>
+                                <ThemedText style={styles.textStyle}>Exit</ThemedText>
+                            </Pressable>
+                        </View>
                     </ThemedView>
                 </View>
             </Modal>
@@ -112,6 +120,14 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: "left"
     },
+    buttonPanel: {
+        "gap": 8,
+        "display": "flex",
+        "flexDirection": "row"
+    },
+    bg_gray: {
+        backgroundColor: 'gray'
+    }
 });
 function dispatch(arg0: { payload: TeamType; type: "team/addTeam"; }) {
     throw new Error('Function not implemented.');
