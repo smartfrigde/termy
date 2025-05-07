@@ -12,7 +12,7 @@ async function AuthButtons() {
     function register() {
         router.navigate('/(auth)/register');
     }
-    if (isLoggedIn) {
+    if (await isLoggedIn()) {
         const user = await getCurrentUser();
         return (
             <ThemedView style={styles.authContainer}>

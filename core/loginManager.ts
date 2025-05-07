@@ -1,7 +1,12 @@
 import { endpoint } from "@/constants/api";
 import { read, store } from "./settings";
 
-export var isLoggedIn = read("user") !== null;
+export async function isLoggedIn() {
+  if (await read("user")) {
+    return true;
+  }
+  return false;
+}
 
 export async function getCurrentUser(): Promise<User | null> {
   const user = await read("user");
@@ -35,6 +40,7 @@ export async function register(name: string, surname: string, email: string, pas
 }
 
 export async function login(email: string, password: string) {
+  console.log(endpoint)
   console.log("Logging in with ", email);
   const loginDetails = new FormData();
   loginDetails.append("email", email);
@@ -46,7 +52,6 @@ export async function login(email: string, password: string) {
   console.log(response)
   const data = await response.json();
   if (data.user) {
-    isLoggedIn = true;
     await store("user", data.user);
     await store("apiToken", data.api_token);
     await store("refreshToken", data.refresh_token);
@@ -59,6 +64,5 @@ export function logout() {
   store("user", null);
   store("apiToken", null);
   store("refreshToken", null);
-  isLoggedIn = false;
   console.log("Logged out");
 }

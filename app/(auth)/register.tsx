@@ -2,7 +2,7 @@ import ThemedButton from '@/components/ThemedButton';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { register } from '@/core/loginManager';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
@@ -60,6 +60,7 @@ const RegisterScreen = () => {
                         if (res) {
                             console.log('Registration successful');
                             console.log(res);
+                            router.navigate("/(auth)/login")
                         } else {
                             // Handle registration error
                         }

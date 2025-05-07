@@ -1,1 +1,1 @@
-export const endpoint = "http://192.168.68.135";
+export const endpoint = process.env.EXPO_PUBLIC_API_URL;
