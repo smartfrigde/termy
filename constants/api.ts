@@ -1,1 +1,1 @@
-export const endpoint = "https://termy.test";
+export const endpoint = "http://192.168.68.135";

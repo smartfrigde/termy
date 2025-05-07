@@ -1,29 +1,45 @@
 import ThemedButton from '@/components/ThemedButton';
 import { ThemedView } from '@/components/ThemedView';
+import { getCurrentUser, isLoggedIn, logout } from '@/core/loginManager';
 import { router, Stack } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
-const AuthScreen = () => {
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+
+async function AuthButtons() {
     function login() {
         router.navigate('/(auth)/login');
     }
     function register() {
         router.navigate('/(auth)/register');
     }
-    
-    return (
-        <ThemedView
-            style={[
-                styles.container,
-                {
-                    flexDirection: 'row',
-                },
-            ]}>
-            <Stack.Screen options={{ title: 'Welcome to Termy' }} />
-            <ThemedView style={{ flex: 4 }}>
-                <Image style={styles.img} source={require("../../assets/images/background.jpg")} />
-            </ThemedView>
+    if (isLoggedIn) {
+        const user = await getCurrentUser();
+        return (
             <ThemedView style={styles.authContainer}>
+                <ThemedButton
+                    onPress={() => {
+                        router.navigate("/(main)")
+                    }}
+                    style={styles.button}
+                    title={"Welcome back " + user?.name}
+                />
+                <TouchableOpacity
+                    onPress={() => {
+                        logout();
+                        router.navigate("/(auth)");
+                    }}
+                    style={styles.logoutButton}
+                >
+                    <Text style={styles.logoutText}>
+                        Logout
+                    </Text>
+                </TouchableOpacity>
+            </ThemedView>
+        )
+    }
+    else {
+    return (
+        <ThemedView style={styles.authContainer}>
                 {/* <Image style={styles.logo} source={require("../../assets/images/logo.png")} /> */}
                 <ThemedButton
                     onPress={login}
@@ -36,6 +52,24 @@ const AuthScreen = () => {
                     title="Register"
                 />
             </ThemedView>
+    );
+    }
+}
+
+const AuthScreen = () => {
+    return (
+        <ThemedView
+            style={[
+                styles.container,
+                {
+                    flexDirection: 'row',
+                },
+            ]}>
+            <Stack.Screen options={{ title: 'Welcome to Termy' }} />
+            <ThemedView style={{ flex: 4 }}>
+                <Image style={styles.img} source={require("../../assets/images/background.jpg")} />
+            </ThemedView>
+            <AuthButtons />
         </ThemedView>
     );
 };
@@ -68,6 +102,17 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 25,
         width: '80%',
+    },
+    logoutButton: {
+        position: 'absolute',
+        bottom: 0,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    logoutText: {
+        color: 'white',
+        fontSize: 16,
     }
 });
 

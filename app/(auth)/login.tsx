@@ -1,7 +1,7 @@
 import ThemedButton from '@/components/ThemedButton';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { isLoggedIn, login } from '@/core/loginManager';
+import { login } from '@/core/loginManager';
 import { router, Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
@@ -9,7 +9,6 @@ import { StyleSheet, TextInput } from 'react-native';
 const LoginScreen = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    if (isLoggedIn) router.navigate("/(main)")
     return (
         <ThemedView style={styles.container}>
             <Stack.Screen options={{ title: 'Login' }} />
