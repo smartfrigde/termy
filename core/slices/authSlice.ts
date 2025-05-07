@@ -28,6 +28,6 @@ export const authSlice = createSlice({
     },
   },
 });
-export const selectUser = (state: { auth: { user: any; }; }) => state.auth.user;
+export const selectUser = (state: { auth: { user: User; }; }) => state.auth.user;
 export const selectIsLoggedIn = (state: { auth: { isLoggedIn: boolean; }; }) => state.auth.isLoggedIn;
 export const { setUser, setApiToken, setRefreshToken, setIsLoggedIn, logout } = authSlice.actions;

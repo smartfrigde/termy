@@ -52,6 +52,7 @@ export default function DashboardScreen() {
   };
   return (
     <ThemedView style={{ flex: 1 }}>
+      
       <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible}></ServerModal>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
