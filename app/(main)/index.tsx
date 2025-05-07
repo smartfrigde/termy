@@ -4,11 +4,12 @@ import { Hero } from '@/components/Hero';
 import { ServerModal } from '@/components/ServerModal';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { getServers } from '@/core/serverManager';
+import { selectServers } from '@/core/slices/sshSlice';
 import { ServerType } from '@/types/Server';
 import { Octicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 const numColumns = Math.floor(screenWidth / 200);
@@ -43,23 +44,15 @@ const ServerItem = ({ item }: { item: ServerType }) => {
 };
 
 export default function DashboardScreen() {
-  const [servers, setServers] = useState<ServerType[]>([]);
+  const servers = useSelector(selectServers);
   const [serverModalVisible, setServerModalVisible] = useState(false);
-  const refreshServers = async () => {
-    const servers = await getServers();
-    console.log(servers);
-    setServers(servers);
-  }
-  useEffect(() => {
-    refreshServers();
-  }, []);
 
   const createServer = () => {
     setServerModalVisible(true);
   };
   return (
     <ThemedView style={{ flex: 1 }}>
-      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refreshServers}></ServerModal>
+      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible}></ServerModal>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
         <Octicons name="plus" size={24} color="white" />

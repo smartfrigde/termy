@@ -1,21 +1,21 @@
 import { ThemedText } from '@/components/ThemedText';
 import isMobile from '@/constants/isMobile';
-import { addServer } from '@/core/serverManager';
+import { addServer } from '@/core/slices/sshSlice';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { ThemedView } from './ThemedView';
 
 interface ServerModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
-    refresh: () => void;
 }
 
 export function ServerModal({
     modalVisible,
-    setModalVisible,
-    refresh,
+    setModalVisible
 }: ServerModalProps) {
+    const dispatch = useDispatch();
     const [serverName, setServerName] = useState('');
     const [serverAddress, setServerAdress] = useState('');
     const [serverPort, setServerPort] = useState(0);
@@ -23,15 +23,15 @@ export function ServerModal({
     const [serverUsername, setServerUsername] = useState('');
     const serverId = 'PLACEHOLDER' + Math.random().toString(36).substring(2, 15);
     const save = () => {
-        addServer({
+        
+        dispatch(addServer({
             id: serverId,
             name: serverName,
-            ip: serverAddress,
+            hostname: serverAddress,
             port: serverPort,
             password: serverPassword,
             username: serverUsername,
-        });
-        refresh();
+        }));
         setModalVisible(!modalVisible);
     }
     return (

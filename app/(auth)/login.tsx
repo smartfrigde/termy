@@ -45,7 +45,7 @@ const LoginScreen = () => {
                             dispatch(setUser(data.user))
                             dispatch(setIsLoggedIn(true))
                             console.log('Login successful');
-                            router.replace("/(main)")
+                            router.navigate("/(main)")
                         } else {
                             console.log('Login failed');
                         }

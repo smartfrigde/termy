@@ -1,6 +1,6 @@
 export type ServerType = {
   name: string;
-  ip: string;
+  hostname: string;
   port: Number;
   password: string;
   username: string;
