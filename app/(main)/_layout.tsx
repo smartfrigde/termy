@@ -22,6 +22,13 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
+          name="teams"
+          options={{
+            drawerLabel: 'Teams',
+            title: 'Teams',
+          }}
+        />
+        <Drawer.Screen
           name="settings"
           options={{
             drawerLabel: 'Settings',

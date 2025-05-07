@@ -3,9 +3,11 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import { authSlice } from './slices/authSlice';
 import { sshSlice } from './slices/sshSlice';
+import { teamSlice } from './slices/teamSlice';
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
-    ssh: sshSlice.reducer
+    ssh: sshSlice.reducer,
+    team: teamSlice.reducer
 })
 
 const persistConfig = {
