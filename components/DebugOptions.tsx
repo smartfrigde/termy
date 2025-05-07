@@ -1,22 +1,24 @@
 import { ThemedText } from '@/components/ThemedText';
-import { getCurrentUser } from '@/core/loginManager';
+import { logout, selectUser } from '@/core/slices/authSlice';
 import { router } from 'expo-router';
 import { Alert, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import GradientButton from './GradientButton';
 import { ThemedView } from './ThemedView';
 
 export async function DebugOptions() {
-    function logout() {
+    const dispatch = useDispatch();
+    const user = useSelector(selectUser);
+    function backToAuth() {
         Alert.alert("You have been logged out")
-        router.navigate("/(auth)")
-        logout();
+        dispatch(logout())
+        router.replace("/(auth)")
     }
-    const user = await getCurrentUser();
     return (
         <ThemedView style={styles.debugContainer}>
             <ThemedText type="subtitle">Ultra scary debug menu!</ThemedText>
             <ThemedText style={styles.text}>{JSON.stringify(user)}</ThemedText>
-            <GradientButton style={styles.button} onPress={logout} title="Logout" />
+            <GradientButton style={styles.button} onPress={backToAuth} title="Logout" />
         </ThemedView>
     );
 }

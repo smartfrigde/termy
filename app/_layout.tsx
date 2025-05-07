@@ -1,22 +1,12 @@
-import { isLoggedIn } from '@/core/loginManager';
+import { store } from '@/core/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { Provider } from 'react-redux';
 import "../core/init";
-
-export function Stacks() {
-  console.log('isLoggedIn', isLoggedIn);
-  if (isLoggedIn) {
-    return (
-      <Stack>
-        <Stack.Screen name="(main)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    );
-  } else {
+export function Stacks() {{
     return (
       <Stack>
         <Stack.Screen name="(auth)/index" options={{ headerShown: false }} />
@@ -29,19 +19,13 @@ export function Stacks() {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
 
   return (
+    <Provider store={store}>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stacks />
       <StatusBar style="auto" />
     </ThemeProvider>
+    </Provider>
   );
 }

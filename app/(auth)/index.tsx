@@ -1,19 +1,23 @@
 import ThemedButton from '@/components/ThemedButton';
 import { ThemedView } from '@/components/ThemedView';
-import { getCurrentUser, isLoggedIn, logout } from '@/core/loginManager';
+import { logout, selectIsLoggedIn, selectUser } from '@/core/slices/authSlice';
 import { router, Stack } from 'expo-router';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-async function AuthButtons() {
+function AuthButtons() {
+    //loadLocalData();
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(selectIsLoggedIn);
+    const user = useSelector(selectUser);
     function login() {
         router.navigate('/(auth)/login');
     }
     function register() {
         router.navigate('/(auth)/register');
     }
-    if (await isLoggedIn()) {
-        const user = await getCurrentUser();
+    if (isLoggedIn) {
         return (
             <ThemedView style={styles.authContainer}>
                 <ThemedButton
@@ -25,7 +29,7 @@ async function AuthButtons() {
                 />
                 <TouchableOpacity
                     onPress={() => {
-                        logout();
+                        dispatch(logout());
                         router.navigate("/(auth)");
                     }}
                     style={styles.logoutButton}

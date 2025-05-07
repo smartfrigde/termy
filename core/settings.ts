@@ -1,4 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { setApiToken, setRefreshToken, setUser } from './slices/authSlice';
 
 export async function store(key: string, value: any) {
     try {
@@ -16,3 +18,11 @@ export async function read(key: string) {
       // error reading value
     }
   };
+
+export async function loadLocalData() {
+   const dispatch = useDispatch();
+  dispatch(setUser(await read("user")))
+  dispatch(setApiToken(await read("apiToken")))
+  dispatch(setRefreshToken(await read("refreshToken")))
+  
+};

@@ -1,12 +1,7 @@
 import { endpoint } from "@/constants/api";
+
 import { read, store } from "./settings";
 
-export async function isLoggedIn() {
-  if (await read("user")) {
-    return true;
-  }
-  return false;
-}
 
 export async function getCurrentUser(): Promise<User | null> {
   const user = await read("user");
@@ -32,9 +27,6 @@ export async function register(name: string, surname: string, email: string, pas
   });
   console.log(response)
   const data = await response.json();
-  if (data.user) {
-    login(email, password);
-  }
   console.log(data);
   return data;
 }
@@ -60,9 +52,10 @@ export async function login(email: string, password: string) {
   return data;
 }
 
-export function logout() {
-  store("user", null);
-  store("apiToken", null);
-  store("refreshToken", null);
-  console.log("Logged out");
-}
+// export function logout() {
+//   store("user", null);
+//   store("apiToken", null);
+//   store("refreshToken", null);
+//   console.log("Logged out");
+// }
+

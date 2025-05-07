@@ -2,11 +2,14 @@ import ThemedButton from '@/components/ThemedButton';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { login } from '@/core/loginManager';
+import { setApiToken, setIsLoggedIn, setRefreshToken, setUser } from '@/core/slices/authSlice';
 import { router, Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 const LoginScreen = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     return (
@@ -35,10 +38,14 @@ const LoginScreen = () => {
                     login(
                         email,
                         password,
-                    ).then((res) => {
-                        if (res.user) {
+                    ).then((data) => {
+                        if (data.user) {
+                            dispatch(setApiToken(data.api_token))
+                            dispatch(setRefreshToken(data.refresh_token))
+                            dispatch(setUser(data.user))
+                            dispatch(setIsLoggedIn(true))
                             console.log('Login successful');
-                            router.navigate("/(main)")
+                            router.replace("/(main)")
                         } else {
                             console.log('Login failed');
                         }
