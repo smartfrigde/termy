@@ -1,57 +1,16 @@
-import { FlatList, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import { Hero } from '@/components/Hero';
+import { ServerItem } from '@/components/ServerItem';
 import { ServerModal } from '@/components/ServerModal';
-import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { removeServer, selectServers, setServers } from '@/core/slices/sshSlice';
-import { deleteServer, getServers } from '@/core/sshManager';
-import { ServerType } from '@/types/Server';
+import { selectServers, setServers } from '@/core/slices/sshSlice';
+import { getServers } from '@/core/sshManager';
 import { Octicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-
 const screenWidth = Dimensions.get('window').width;
 const numColumns = Math.floor(screenWidth / 200);
 
-const ServerItem = ({ item }: { item: ServerType }) => {
-  const dispatch = useDispatch();
-  const [editVisible, setVisible] = useState(false);
-  const onHoverIn = () => {
-    setVisible(true);
-  };
-  const onHoverOut = () => {
-    setVisible(false);
-  };
-  const handlePress = () => {
-    alert(JSON.stringify(item));
-  };
-  const handleDelete = () => {
-    deleteServer(item.id!).then((response) => {
-      if (response.status === 200) {
-        console.log('Server deleted', item);
-        dispatch(removeServer(item.id!));
-      }
-    })
-  };
-  return (
-    <Pressable onHoverIn={onHoverIn} onHoverOut={onHoverOut}>
-      <ThemedView style={styles.serverItem}>
-        <TouchableOpacity style={styles.connectButton} onPress={handlePress}>
-          <Octicons name="link" size={24} color="white" />
-        </TouchableOpacity>
-        <ThemedText type="title">{item.name}</ThemedText>
-        {editVisible && (
-          <TouchableOpacity style={styles.editButton} onPress={handleDelete}>
-            <Octicons name="trash" size={24} color="white" />
-          </TouchableOpacity>
-        )}
-      </ThemedView>
-
-    </Pressable>
-  );
-};
 
 export default function DashboardScreen() {
   const servers = useSelector(selectServers);
@@ -72,7 +31,6 @@ export default function DashboardScreen() {
   
   return (
     <ThemedView style={{ flex: 1 }}>
-      
       <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh}></ServerModal>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>

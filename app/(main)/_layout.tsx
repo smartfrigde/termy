@@ -15,13 +15,6 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
-          name="ssh"
-          options={{
-            drawerLabel: 'Terminal',
-            title: 'Terminal',
-          }}
-        />
-        <Drawer.Screen
           name="teams"
           options={{
             drawerLabel: 'Teams',

@@ -38,6 +38,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-context-menu-view": "^1.19.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-redux-persist2": "^0.0.3",
@@ -48,7 +49,8 @@
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "v86react": "^1.0.14",
-    "xterm": "^5.3.0"
+    "xterm": "^5.3.0",
+    "expo-dev-client": "~5.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
