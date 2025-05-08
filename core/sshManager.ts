@@ -31,3 +31,14 @@ export async function createServer(server: ServerType) : Promise<Response> {
     });
     return response;
 }
+
+export async function deleteServer(id: string) : Promise<Response> {
+    const response = await fetch(`${endpoint}/ssh/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${await read("apiToken")}`
+        }
+    });
+    return response;
+}
+
