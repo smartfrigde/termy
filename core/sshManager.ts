@@ -15,29 +15,19 @@ export async function getServers() {
     return data;
 }
 
-<<<<<<< HEAD
 export async function createServer(server: ServerType) {
-=======
-export async function createServer(server: ServerType) : Promise<Response> {
     const serverDetails = new FormData();
     serverDetails.append("name", server.name);
     serverDetails.append("hostname", server.hostname);
     serverDetails.append("port", server.port.toString());
     serverDetails.append("password", server.password);
     serverDetails.append("login", server.login);
->>>>>>> 69543597df174ec4dd1e7e9cf4526da08d6a33d7
     const response = await fetch(`${endpoint}/ssh`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${await read("apiToken")}`
         },
-        body: JSON.stringify({
-            port: server.port,
-            name: server.name, 
-            hostname: server.hostname, 
-            password: server.password, 
-            login: server.login
-        })
+        body: serverDetails
     });
     return response;
 }
