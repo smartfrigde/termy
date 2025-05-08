@@ -1,9 +1,8 @@
-import React from 'react';
-import { Modal, Pressable, StyleSheet, View, Text, TouchableOpacity, } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { TeamType } from '@/types/Team';
+import React from 'react';
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
 import { ThemedView } from './ThemedView';
-import { Stack } from 'expo-router';
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;

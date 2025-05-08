@@ -1,8 +1,15 @@
 'use dom';
 import { Terminal } from '@xterm/xterm';
 import { useEffect } from 'react';
-
-export default function TerminalView() {
+interface TerminalModalProps {
+  name: string;
+  hostname: string;
+  port: number;
+  password: string;
+  login: string;
+  visible: boolean;
+}
+export default function TerminalModal({ name, hostname, port, password, login, visible}: TerminalModalProps) {
   useEffect(() => {
     const term = new Terminal();
     const terminalElement = document.getElementById('terminal');

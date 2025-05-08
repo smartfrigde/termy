@@ -3,7 +3,6 @@ import isMobile from '@/constants/isMobile';
 import { createServer } from '@/core/sshManager';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { ThemedView } from './ThemedView';
 
 interface ServerModalProps {
@@ -17,7 +16,6 @@ export function ServerModal({
     setModalVisible,
     refresh
 }: ServerModalProps) {
-    const dispatch = useDispatch();
     const [serverName, setServerName] = useState('');
     const [serverAddress, setServerAdress] = useState('');
     const [serverPort, setServerPort] = useState(0);
