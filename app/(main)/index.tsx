@@ -4,8 +4,8 @@ import { Hero } from '@/components/Hero';
 import { ServerModal } from '@/components/ServerModal';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { selectServers, setServers } from '@/core/slices/sshSlice';
-import { getServers } from '@/core/sshManager';
+import { removeServer, selectServers, setServers } from '@/core/slices/sshSlice';
+import { deleteServer, getServers } from '@/core/sshManager';
 import { ServerType } from '@/types/Server';
 import { Octicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ const screenWidth = Dimensions.get('window').width;
 const numColumns = Math.floor(screenWidth / 200);
 
 const ServerItem = ({ item }: { item: ServerType }) => {
+  const dispatch = useDispatch();
   const [editVisible, setVisible] = useState(false);
   const onHoverIn = () => {
     setVisible(true);
@@ -26,6 +27,14 @@ const ServerItem = ({ item }: { item: ServerType }) => {
   const handlePress = () => {
     alert(JSON.stringify(item));
   };
+  const handleDelete = () => {
+    deleteServer(item.id!).then((response) => {
+      if (response.status === 200) {
+        console.log('Server deleted', item);
+        dispatch(removeServer(item.id!));
+      }
+    })
+  };
   return (
     <Pressable onHoverIn={onHoverIn} onHoverOut={onHoverOut}>
       <ThemedView style={styles.serverItem}>
@@ -34,8 +43,8 @@ const ServerItem = ({ item }: { item: ServerType }) => {
         </TouchableOpacity>
         <ThemedText type="title">{item.name}</ThemedText>
         {editVisible && (
-          <TouchableOpacity style={styles.editButton} onPress={handlePress}>
-            <Octicons name="pencil" size={24} color="white" />
+          <TouchableOpacity style={styles.editButton} onPress={handleDelete}>
+            <Octicons name="trash" size={24} color="white" />
           </TouchableOpacity>
         )}
       </ThemedView>
@@ -48,19 +57,23 @@ export default function DashboardScreen() {
   const servers = useSelector(selectServers);
   const dispatch = useDispatch();
   const [serverModalVisible, setServerModalVisible] = useState(false);
-  useEffect(() => {
-    getServers().then((servers) => {
-      console.log(servers);
-      dispatch(setServers(servers));
-    });
-  }, []);
   const createServer = () => {
     setServerModalVisible(true);
   };
+  const refresh = () => { 
+    getServers().then((servers) => {
+      console.log(servers);
+      dispatch(setServers(servers.ssh_connections));
+    });
+  }
+  useEffect(() => {
+    refresh();
+  }, []);
+  
   return (
     <ThemedView style={{ flex: 1 }}>
       
-      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible}></ServerModal>
+      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh}></ServerModal>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
         <Octicons name="plus" size={24} color="white" />

@@ -9,11 +9,13 @@ import { ThemedView } from './ThemedView';
 interface ServerModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
+    refresh: () => void;
 }
 
 export function ServerModal({
     modalVisible,
-    setModalVisible
+    setModalVisible,
+    refresh
 }: ServerModalProps) {
     const dispatch = useDispatch();
     const [serverName, setServerName] = useState('');
@@ -22,15 +24,17 @@ export function ServerModal({
     const [serverPassword, setServerPassword] = useState('');
     const [serverUsername, setServerUsername] = useState('');
     const save = () => {
-        createServer({
+        const server = {
             name: serverName,
             hostname: serverAddress,
             port: serverPort,
             password: serverPassword,
             login: serverUsername,
-        }).then((server) => {
-            if (server.id) {
+        }
+        createServer(server).then((response) => {
+            if (response.status === 201) {
                 console.log('Server created', server);
+                refresh();
             }
         }). catch((err) => {
             console.log('Error creating server');
