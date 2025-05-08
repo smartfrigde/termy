@@ -6,18 +6,39 @@ export const teamSlice = createSlice({
     name: "team",
     initialState: {
         teams: [] as TeamType[],
-        servers: [] as ServerType[],
-        totalPages: 1,
+        totalPages: 2,
+        currentPage: 0,
+        totalTeamsCount: 1
     },
     reducers: {
         setTeams: (state, action: { payload: TeamType[] }) => {
             state.teams = action.payload;
         },
-        addTeam: (state, action: { payload: TeamType }) => {
-            const array = state.teams;
-            array.push(action.payload);
-            state.teams = array;
+
+        addTeam: (
+            state: {
+                totalPages: number;
+                currentPage: number;
+                teams: TeamType[];
+                totalTeamsCount: number;
+            },
+            action: {
+                payload: {
+                    team: TeamType;
+                    totalPages: number;
+                    currentPage: number;
+                    totalTeamsCount?: number;
+                };
+            }
+        ) => {
+            state.teams.push(action.payload.team);
+            state.totalPages = action.payload.totalPages;
+            state.currentPage = action.payload.currentPage;
+
+            state.totalTeamsCount = action.payload.totalTeamsCount ?? state.totalTeamsCount + 1;
         },
+
+
         removeTeam: (state, action: { payload: number }) => {
             const array = state.teams;
             const index = array.findIndex((team) => team.id === action.payload);
@@ -30,4 +51,12 @@ export const teamSlice = createSlice({
 });
 
 export const selectedTeams = (state: { team: { teams: TeamType[]; }; }) => state.team.teams;
+export const hasMoreTeams = (state: { team: { currentPage: number; totalPages: number } }) => {
+    return state.team.currentPage < state.team.totalPages;
+};
 export const { setTeams, addTeam, removeTeam } = teamSlice.actions;
+export const teamsCount = (state: { team: { teams: TeamType[] } }) => {
+    return state.team.teams.length;
+};
+export const totalUserTeamsCount = (state: { team: { totalTeamsCount: number; }; }) => state.team.totalTeamsCount;
+export const currentTeamsPage = (state: { team: { currentPage: number; }; }) => state.team.currentPage;

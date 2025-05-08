@@ -28,9 +28,15 @@ export function TeamAddModal({
         const data = await addTeam(teamName);
         if (data.team) {
             setModalVisible(!modalVisible);
-            dispatch(createTeam(data.team));
+            dispatch(createTeam({
+                team: data.team,
+                totalPages: data.total_pages,
+                currentPage: data.current_page,
+            }));
         }
     };
+
+
 
     return (
         <>
