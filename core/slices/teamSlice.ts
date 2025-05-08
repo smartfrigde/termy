@@ -1,4 +1,3 @@
-import { ServerType } from '@/types/Server';
 import { TeamType } from './../../types/Team.d';
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -13,6 +12,14 @@ export const teamSlice = createSlice({
     reducers: {
         setTeams: (state, action: { payload: TeamType[] }) => {
             state.teams = action.payload;
+        },
+
+        setTeam: (state, action: { payload: TeamType }) => {
+            const index = state.teams.findIndex(team => team.id === action.payload.id);
+            if (index !== -1) {
+                state.teams[index] = action.payload
+                state.totalTeamsCount =- 1
+            }
         },
 
         addTeam: (
@@ -40,23 +47,26 @@ export const teamSlice = createSlice({
 
 
         removeTeam: (state, action: { payload: number }) => {
-            const array = state.teams;
-            const index = array.findIndex((team) => team.id === action.payload);
+            const index = state.teams.findIndex(team => team.id === action.payload);
             if (index !== -1) {
-                array.splice(index, 1);
-                state.teams = array;
+                state.teams.splice(index, 1);
+                state.totalTeamsCount =- 1
             }
-        },
+        }
     },
 });
 
 export const selectedTeams = (state: { team: { teams: TeamType[]; }; }) => state.team.teams;
+
 export const hasMoreTeams = (state: { team: { currentPage: number; totalPages: number } }) => {
     return state.team.currentPage < state.team.totalPages;
 };
-export const { setTeams, addTeam, removeTeam } = teamSlice.actions;
+
+export const { setTeams, addTeam, removeTeam, setTeam } = teamSlice.actions;
+
 export const teamsCount = (state: { team: { teams: TeamType[] } }) => {
     return state.team.teams.length;
 };
+
 export const totalUserTeamsCount = (state: { team: { totalTeamsCount: number; }; }) => state.team.totalTeamsCount;
 export const currentTeamsPage = (state: { team: { currentPage: number; }; }) => state.team.currentPage;

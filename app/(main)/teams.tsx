@@ -50,7 +50,6 @@ const TeamsScreen = () => {
 
     const getData = async () => {
         if (isFetching) return;
-        console.log("wykonuje")
         setIsFetching(true);
 
         const data = await getTeams(currentTeamsPageLocal + 1 || 1);

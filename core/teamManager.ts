@@ -97,3 +97,25 @@ export async function updateTeam(teamId: number, name: string) {
         return null;
     }
 }
+
+export async function getMembers(teamId: number, page = 1){
+    try {
+        const token = await read('apiToken');
+        const response = await fetch(`${API_URL}/${teamId}/members?page=${page}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`Błąd ${response.status}: ${response.statusText}`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Wystąpił błąd sieci:", error);
+        return null;
+    }
+}

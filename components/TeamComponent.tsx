@@ -1,8 +1,27 @@
 import { ThemedText } from '@/components/ThemedText';
 import { TeamType } from '@/types/Team';
-import React from 'react';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
+import React, { useState } from 'react';
+import {
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { ThemedView } from './ThemedView';
+import {
+    hasMoreMembers,
+    membersInTeam,
+    teamCurrentPage,
+    addTeamMember,
+    PageData,
+    Members 
+} from '@/core/slices/teamsMembersSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/core/store';
+import { getMembers } from '@/core/teamManager';
+import { MembersResponse, TeamPageData } from '@/types/TeamMember';
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -16,17 +35,60 @@ interface TeamItemProps {
 }
 
 const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility }) => {
+
+    const teamPageData = useSelector(PageData);
+    const teamMembers = useSelector(Members);
+    const dispatch = useDispatch<AppDispatch>();
+    const [isFetching, setIsFetching] = useState(false);
+
     const handlePress = () => {
         setVisibility.setModalVisible(item.id);
     };
 
+    const hasMore = hasMoreMembers(teamPageData, item.id);
+      
+    const membersInTeamLocal = membersInTeam(teamMembers, item.id);
+      
+    const currentTeamsPageLocal = teamCurrentPage(teamPageData, item.id);
+    
     const onExitPress = () => {
         setVisibility.setModalVisible(-1);
-    }
+    };
 
-    const onMembersPress = () =>{
+    const onMembersPress = () => {
+        getData();
+    };
 
-    }
+    const getData = async () => {
+        if (isFetching) return;
+        setIsFetching(true);
+
+        try {
+            const data = await getMembers(item.id, currentTeamsPageLocal + 1);
+            if (data?.members && Array.isArray(data.members)) {
+                data.members.forEach((member: MembersResponse) => {
+                    const pageData: TeamPageData = {
+                        team_id: data.team_id,
+                        current_page: data.current_page,
+                        total_pages: data.total_pages,
+                        total_members: data.total_members
+                    };
+                    
+                    dispatch(
+                        addTeamMember({
+                            members: member,
+                            pageData: pageData,
+                        }
+                        )
+                    );
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching members:', error);
+        } finally {
+            setIsFetching(false);
+        }
+    };
 
     return (
         <>
@@ -35,12 +97,14 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                     styles.teamContainer,
                     visibleTeamId === item.id && styles.activeTeam,
                 ]}
-                onPress={handlePress}>
+                onPress={handlePress}
+            >
                 <ThemedText style={styles.teamText} type="defaultSemiBold">
                     {item.name}
                 </ThemedText>
             </Pressable>
-            <Modal visible={visibleTeamId === item.id} >
+
+            <Modal visible={visibleTeamId === item.id} animationType="slide">
                 <ThemedView style={styles.content}>
                     <View style={styles.topNav}>
                         <TouchableOpacity style={styles.topButton} onPress={onExitPress}>
@@ -49,12 +113,23 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
 
                         <ThemedText>{`Team ${item.name}`}</ThemedText>
 
-                        <TouchableOpacity style={styles.topButton} onPress={onMembersPress}>
+                        <TouchableOpacity
+                            style={[styles.topButton, !hasMore && { opacity: 0.5 }]}
+                            onPress={onMembersPress}
+                            disabled={!hasMore}
+                        >
                             <Text style={styles.buttonText}>members</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
 
+                    <View>
+                        {membersInTeamLocal && membersInTeamLocal.length > 0 ? (
+                            membersInTeamLocal.map((member : MembersResponse) => (
+                                <Text key={`team_${item.id}_member_${member.id}`}>{member.name + " " + member.surname}{"team id: " + member.team_id}</Text> 
+                            ))
+                        ) : (
+                            <Text></Text>
+                        )}
                     </View>
                 </ThemedView>
             </Modal>
@@ -85,42 +160,26 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#ddd',
     },
-
     topButton: {
-        "paddingTop": 5,
-        "paddingRight": 5,
-        "paddingBottom": 5,
-        "paddingLeft": 5,
-        "borderTopLeftRadius": 10,
-        "borderTopRightRadius": 10,
-        "borderBottomRightRadius": 10,
-        "borderBottomLeftRadius": 10,
-        "borderWidth": 0,
-        "borderColor": "black",
-        "borderStyle": "solid",
-        "backgroundColor": "#94c9ff"
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: '#94c9ff',
     },
-
     topNav: {
-        "paddingTop": 10,
-        "paddingRight": 20,
-        "paddingBottom": 10,
-        "paddingLeft": 20,
-        "gap": 8,
-        "display": "flex",
-        "justifyContent": "space-between",
-        "flexDirection": "row",
-        "backgroundColor": "rgba(0, 0, 0, 0.2)"
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
     },
-
     buttonText: {
         fontSize: 16,
         color: '#000',
     },
-
     content: {
-        flex: 1
-    }
+        flex: 1,
+    },
 });
 
 export default TeamItem;

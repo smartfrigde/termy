@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="31a1f9f3-7bfa-4c03-9b31-9a4b536ddec8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/(main)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(main)/teams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/TeamComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/TeamComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/slices/teamSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/slices/teamSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/teamManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/teamManager.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2wpCj6YbIbOCJodYIS0sJ9g5BIu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "frontend",
+    "last_opened_file_path": "/run/media/piotr/projekty/programing/web/praktyka 2025.05.05 - 2025.05.30/code | praktyka 2025.05.05 - 2025.05.30/fronted",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/run/media/piotr/projekty/programing/web/praktyka 2025.05.05 - 2025.05.30/code | praktyka 2025.05.05 - 2025.05.30/fronted/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-WS-251.25410.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="31a1f9f3-7bfa-4c03-9b31-9a4b536ddec8" name="Changes" comment="" />
+      <created>1746729260266</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746729260266</updated>
+      <workItem from="1746729261811" duration="166000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
