@@ -15,7 +15,7 @@ export async function getServers() {
     return data;
 }
 
-export async function createServer(server: ServerType) {
+export async function createServer(server: ServerType) : Promise<Response> {
     const serverDetails = new FormData();
     serverDetails.append("name", server.name);
     serverDetails.append("hostname", server.hostname);
@@ -29,7 +29,5 @@ export async function createServer(server: ServerType) {
         },
         body: serverDetails
     });
-    console.log(response)
-    const data = await response.json();
-    return data;
+    return response;
 }

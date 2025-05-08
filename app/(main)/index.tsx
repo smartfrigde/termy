@@ -48,19 +48,23 @@ export default function DashboardScreen() {
   const servers = useSelector(selectServers);
   const dispatch = useDispatch();
   const [serverModalVisible, setServerModalVisible] = useState(false);
-  useEffect(() => {
-    getServers().then((servers) => {
-      console.log(servers);
-      dispatch(setServers(servers));
-    });
-  }, []);
   const createServer = () => {
     setServerModalVisible(true);
   };
+  const refresh = () => { 
+    getServers().then((servers) => {
+      console.log(servers);
+      dispatch(setServers(servers.ssh_connections));
+    });
+  }
+  useEffect(() => {
+    refresh();
+  }, []);
+  
   return (
     <ThemedView style={{ flex: 1 }}>
       
-      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible}></ServerModal>
+      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh}></ServerModal>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
         <Octicons name="plus" size={24} color="white" />
