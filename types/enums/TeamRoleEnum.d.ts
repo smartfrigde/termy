@@ -14,8 +14,14 @@ export function hasGrandestRole(userRole: RoleNumber, compareTo: RoleNumber): bo
     return userRole >= compareTo;
 }
 
-export function getRolesAtOrBelow(role: Role): Role[] {
-    return Object.values(Role)
-        .filter((r): r is Role => typeof r === 'number')
-        .filter((r) => r <= role);
+export function getRolesAtOrBelow(role: Role): string[] {
+    return Object.entries(Role)
+        .filter(([_, value]) => typeof value === 'number')
+        .filter(([_, value]) => (value as Role) <= role)
+        .map(([key]) => key);
+}
+
+
+export function findRole(key: string){
+    return Role[key];
 }
