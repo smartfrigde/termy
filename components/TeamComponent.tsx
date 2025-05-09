@@ -19,8 +19,8 @@ import {
     Members 
 } from '@/core/slices/teamsMembersSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/core/store';
-import { getMembers } from '@/core/teamManager';
+import { AppDispatch} from '@/core/store';
+import { getMembers, deleteMember } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
 
 interface TeamVisibilityProps {
@@ -40,6 +40,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     const teamMembers = useSelector(Members);
     const dispatch = useDispatch<AppDispatch>();
     const [isFetching, setIsFetching] = useState(false);
+    const [isMembersShow, setIsMembersShow] = useState(false);
 
     const handlePress = () => {
         setVisibility.setModalVisible(item.id);
@@ -56,8 +57,19 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     };
 
     const onMembersPress = () => {
-        getData();
+        setIsMembersShow(!isMembersShow);
+        if (hasMore){
+            getData();
+        }
     };
+
+    const closeMembers = () => {
+        setIsMembersShow(!isMembersShow)
+    }
+
+    const deleteUser = async (userId: number) => {
+        const response = await deleteMember(item.id, userId);
+    }
 
     const getData = async () => {
         if (isFetching) return;
@@ -90,6 +102,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
         }
     };
 
+    // @ts-ignore
     return (
         <>
             <Pressable
@@ -114,9 +127,8 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         <ThemedText>{`Team ${item.name}`}</ThemedText>
 
                         <TouchableOpacity
-                            style={[styles.topButton, !hasMore && { opacity: 0.5 }]}
+                            style={[styles.topButton]}
                             onPress={onMembersPress}
-                            disabled={!hasMore}
                         >
                             <Text style={styles.buttonText}>members</Text>
                         </TouchableOpacity>
@@ -125,7 +137,18 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                     <View>
                         {membersInTeamLocal && membersInTeamLocal.length > 0 ? (
                             membersInTeamLocal.map((member : MembersResponse) => (
-                                <Text key={`team_${item.id}_member_${member.id}`}>{member.name + " " + member.surname}{"team id: " + member.team_id}</Text> 
+                                <View  style={[
+                                    { display: isMembersShow ? 'flex' : 'none' },
+                                    styles.membersContent,
+                                ]} key={`team_${item.id}_member_${member.id}`}>
+                                    <Pressable onPress={closeMembers}>X</Pressable>
+                                    <View style={styles.member}>
+                                        <ThemedText>{member.name + " " + member.surname}</ThemedText>
+                                        <Pressable onPress={() => deleteUser(member.id)}>
+                                            <Text style={styles.memberDeleteButton}>USUŃ</Text>
+                                        </Pressable>
+                                    </View>
+                                </View>
                             ))
                         ) : (
                             <Text></Text>
@@ -180,6 +203,37 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
     },
+    membersContent: {
+        "position": "fixed",
+        "backgroundColor": "#111213",
+        "top": 0,
+        "right": 0,
+        "paddingTop": 30,
+        "paddingRight": 20,
+        "paddingBottom": 30,
+        "paddingLeft": 20,
+        "height": "100%",
+        "minWidth": "60%"
+    },
+
+    memberDeleteButton: {
+        "backgroundColor": "#c31515",
+        "color": "white",
+        "paddingTop": 5,
+        "paddingRight": 5,
+        "paddingBottom": 5,
+        "paddingLeft": 5,
+        "borderTopLeftRadius": 20,
+        "borderTopRightRadius": 20,
+        "borderBottomRightRadius": 20,
+        "borderBottomLeftRadius": 20
+    },
+
+    member: {
+        "display": "flex",
+        "flexDirection": "row",
+        "justifyContent": "space-between"
+    }
 });
 
 export default TeamItem;

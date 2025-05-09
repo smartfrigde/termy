@@ -80,20 +80,3 @@ export const teamCurrentPage = (
 
     return teamPage.current_page;
 };
-
-// export const membersInTeam = (
-//     state: { members: MembersResponse[] },
-//     teamId: number
-// ): MembersResponse[] => {
-//     return state.members.filter((item) => item?.team_id || -1 === teamId);
-// };
-
-// export const teamCurrentPage = (
-//     state: { page_data: TeamPageData[] },
-//     teamId: number
-// ): number => {
-//     const index = state.page_data.findIndex((item) => item?.team_id || -1 === teamId);
-//     if (index === -1) return 1;
-
-//     return state.page_data[index].current_page || 1;
-// };
