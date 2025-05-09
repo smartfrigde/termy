@@ -64,10 +64,6 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
     } else {
       disconnectSSH();
     }
-
-    return () => {
-      disconnectSSH(); // Cleanup on unmount
-    };
   }, [visible]);
 
   const sendCommand = () => {
@@ -89,7 +85,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         <ThemedButton
             title="Close"
             onPress={() => {
-              //disconnectSSH();
+              disconnectSSH();
               setVisible(false);
             }}
           />
