@@ -20,8 +20,10 @@ import {
 } from '@/core/slices/teamsMembersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch} from '@/core/store';
-import { getMembers, deleteMember, addMember } from '@/core/teamManager';
+import { getMembers, deleteMember, getLoginMemberInTeam } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
+import {selectUser} from "@/core/slices/authSlice";
+import { Role } from '@/types/enums/TeamRoleEnum.d';
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -41,6 +43,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     const dispatch = useDispatch<AppDispatch>();
     const [isFetching, setIsFetching] = useState(false);
     const [isMembersShow, setIsMembersShow] = useState(false);
+    const user = useSelector(selectUser);
 
     const handlePress = () => {
         setVisibility.setModalVisible(item.id);
@@ -51,7 +54,8 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     const membersInTeamLocal = membersInTeam(teamMembers, item.id);
       
     const currentTeamsPageLocal = teamCurrentPage(teamPageData, item.id);
-    
+
+
     const onExitPress = () => {
         setVisibility.setModalVisible(-1);
     };
@@ -131,13 +135,14 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         </TouchableOpacity>
 
                         <ThemedText>{`Team ${item.name}`}</ThemedText>
-
-                        <TouchableOpacity
-                            style={[styles.topButton]}
-                            onPress={onMembersPress}
-                        >
-                            <Text style={styles.buttonText}>members</Text>
-                        </TouchableOpacity>
+                        {(item.permission_in_team === Role.ADMIN || item.permission_in_team === Role.OWNER) && (
+                            <TouchableOpacity
+                                style={[styles.topButton]}
+                                onPress={onMembersPress}
+                            >
+                                <Text style={styles.buttonText}>members</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
 
                     <View>

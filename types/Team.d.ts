@@ -6,4 +6,5 @@ export type TeamType = {
     join_code: string,
     created_at: Date,
     updated_at: Date
+    permission_in_team: number
 }

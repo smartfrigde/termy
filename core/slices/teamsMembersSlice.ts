@@ -22,7 +22,7 @@ export const teamMembersSlice = createSlice({
         ) {
             state.members.push(action.payload.members);
 
-            const index = state.page_data.findIndex((page) => page.team_id === action.payload.pageData.team_id);
+            const index = state.page_data.findIndex((page) => page?.team_id === action?.payload?.pageData?.team_id);
             if (index !== -1) {
                 state.page_data[index] = action.payload.pageData;
             } else {
@@ -56,7 +56,9 @@ export const hasMoreMembers = (
     pageData: TeamPageData[], 
     teamId: number          
 ): boolean => {
-    const teamPage = pageData.find((item) => item.team_id === teamId);
+
+
+    const teamPage = pageData.find((item) => item?.team_id === teamId);
 
     if (!teamPage) return true;
 
@@ -74,7 +76,8 @@ export const teamCurrentPage = (
     pageData: TeamPageData[], 
     teamId: number          
 ): number => {
-    const teamPage = pageData.find((item) => item.team_id === teamId);
+
+    const teamPage = pageData.find((item) => item?.team_id === teamId);
 
     if (!teamPage) return 0;
 

@@ -154,3 +154,21 @@ export async function addMember(join_code: string) {
         return null;
     }
 }
+
+export async function getLoginMemberInTeam(teamId: number) {
+    try {
+        const response = await fetchApi(`/teams/${teamId}/members/me`, {
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            console.error(`Błąd ${response.status}: ${response.statusText}`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Network error: :", error);
+        return null;
+    }
+}
