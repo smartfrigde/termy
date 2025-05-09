@@ -8,9 +8,11 @@ import { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import ContextMenu from "react-native-context-menu-view";
 import { useDispatch } from 'react-redux';
+import { EditServerModal } from './EditServerModal';
 import TerminalModal from './terminal/Terminal.native';
 export const ServerItem = ({ item }: { item: ServerType }) => {
     const [terminalModalVisible, setTerminalModalVisible] = useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
     const dispatch = useDispatch();
 
     const connect = () => {
@@ -25,6 +27,9 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
         }
       })
     };
+    const handleEdit = () => {
+      setEditModalVisible(true);
+    }
     return (
       <ContextMenu
         title={item.name}
@@ -35,6 +40,9 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
           );
           if (e.nativeEvent.index === 1) {
             handleDelete();
+          } else if (e.nativeEvent.index === 0) {
+            console.log('Edit server');
+            handleEdit();
           }
         }}
       >
@@ -44,7 +52,8 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
           </TouchableOpacity>
           <ThemedText type="title">{item.name}</ThemedText>
         </ThemedView>
-        <TerminalModal server={item} visible={terminalModalVisible} setVisible={setTerminalModalVisible}></TerminalModal>
+        <TerminalModal server={item} visible={terminalModalVisible} setVisible={setTerminalModalVisible}/>
+        <EditServerModal item={item} setModalVisible={setEditModalVisible} modalVisible={editModalVisible}/>
       </ContextMenu>
     );
   };

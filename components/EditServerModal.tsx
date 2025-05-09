@@ -1,41 +1,42 @@
 import { ThemedText } from '@/components/ThemedText';
 import isMobile from '@/constants/isMobile';
-import { createServer } from '@/core/sshManager';
+import { editServer } from '@/core/sshManager';
+import { ServerType } from '@/types/Server';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { ThemedView } from './ThemedView';
 
 interface ServerModalProps {
+    item: ServerType;
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
-    refresh: () => void;
 }
 
-export function ServerModal({
+export function EditServerModal({
+    item,
     modalVisible,
-    setModalVisible,
-    refresh
+    setModalVisible
 }: ServerModalProps) {
-    const [serverName, setServerName] = useState('');
-    const [serverAddress, setServerAdress] = useState('');
-    const [serverPort, setServerPort] = useState(0);
-    const [serverPassword, setServerPassword] = useState('');
-    const [serverUsername, setServerUsername] = useState('');
-    const save = () => {
+    const [serverName, setServerName] = useState(item.name);
+    const [serverAddress, setServerAdress] = useState(item.hostname);
+    const [serverPort, setServerPort] = useState(item.port);
+    const [serverPassword, setServerPassword] = useState(item.password);
+    const [serverUsername, setServerUsername] = useState(item.login);
+    const edit = () => {
         const server = {
             name: serverName,
             hostname: serverAddress,
             port: serverPort,
             password: serverPassword,
             login: serverUsername,
+            id: item.id,
         }
-        createServer(server).then((response) => {
+        editServer(server).then((response) => {
             if (response.status === 201) {
-                console.log('Server created', server);
-                refresh();
+                console.log('Server edited', server);
             }
         }). catch((err) => {
-            console.log('Error creating server');
+            console.log('Error editing server');
             console.error(err);
         })
         
@@ -47,10 +48,10 @@ export function ServerModal({
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {save()}}>
+                onRequestClose={() => {edit()}}>
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
-                        <ThemedText style={styles.modalText} type="subtitle">Add a server</ThemedText>
+                        <ThemedText style={styles.modalText} type="subtitle">Editing {item.name}</ThemedText>
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server name</ThemedText>
                         <TextInput
                             style={styles.textInput}
@@ -80,6 +81,14 @@ export function ServerModal({
                                 }
                             }}
                         />
+                        <ThemedText style={styles.modalText} type="defaultSemiBold">Server username</ThemedText>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Server username"
+                            placeholderTextColor="gray"
+                            value={serverUsername}
+                            onChangeText={setServerUsername}
+                        />
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server password</ThemedText>
                         <TextInput
                             style={styles.textInput}
@@ -89,19 +98,10 @@ export function ServerModal({
                             value={serverPassword}
                             onChangeText={setServerPassword}
                         />
-                        <ThemedText style={styles.modalText} type="defaultSemiBold">Server username</ThemedText>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Server username"
-                            placeholderTextColor="gray"
-                            value={serverUsername}
-                            onChangeText={setServerUsername}
-                        />
-                        
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => save()}>
-                            <ThemedText style={styles.textStyle}>Create</ThemedText>
+                            onPress={() => edit()}>
+                            <ThemedText style={styles.textStyle}>Save</ThemedText>
                         </Pressable>
                     </ThemedView>
                 </View>

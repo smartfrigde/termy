@@ -1,5 +1,5 @@
-import {ServerType} from "@/types/Server";
-import {fetchApi} from "./customFetch";
+import { ServerType } from "@/types/Server";
+import { fetchApi } from "./customFetch";
 
 export async function getServers() {
     const response = await fetchApi(`/ssh`, {
@@ -31,3 +31,15 @@ export async function deleteServer(id: string) : Promise<Response> {
     });
 }
 
+export async function editServer(server: ServerType) {
+    const serverDetails = new FormData();
+    serverDetails.append("name", server.name);
+    serverDetails.append("hostname", server.hostname);
+    serverDetails.append("port", server.port.toString());
+    serverDetails.append("password", server.password);
+    serverDetails.append("login", server.login);
+    return await fetchApi(`/ssh/${server.id}`, {
+        method: "PATCH",
+        body: serverDetails
+    });
+}

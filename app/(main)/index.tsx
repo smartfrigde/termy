@@ -1,6 +1,6 @@
+import { CreateServerModal } from '@/components/CreateServerModal';
 import { Hero } from '@/components/Hero';
 import { ServerItem } from '@/components/ServerItem';
-import { ServerModal } from '@/components/ServerModal';
 import { ThemedView } from '@/components/ThemedView';
 import { selectServers, setServers } from '@/core/slices/sshSlice';
 import { getServers } from '@/core/sshManager';
@@ -31,7 +31,7 @@ export default function DashboardScreen() {
   
   return (
     <ThemedView style={{ flex: 1 }}>
-      <ServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh}></ServerModal>
+      <CreateServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh}/>
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
         <Octicons name="plus" size={24} color="white" />
