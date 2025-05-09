@@ -84,6 +84,16 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
   return (
     <Modal animationType="slide" transparent={false} visible={visible}>
       <ThemedView style={{ flex: 1, padding: 20 }}>
+        <ThemedView style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <ThemedText type="title">Terminal</ThemedText>
+        <ThemedButton
+            title="Close"
+            onPress={() => {
+              //disconnectSSH();
+              setVisible(false);
+            }}
+          />
+        </ThemedView>
         <ScrollView style={{ flex: 1, marginBottom: 20 }}>
           <ThemedText>{output}</ThemedText>
         </ScrollView>
@@ -96,13 +106,6 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             onChangeText={setCommand}
           />
           <ThemedButton title="Send" onPress={sendCommand} />
-          <ThemedButton
-            title="Close"
-            onPress={() => {
-              disconnectSSH();
-              setVisible(false);
-            }}
-          />
         </ThemedView>
       </ThemedView>
     </Modal>
@@ -115,6 +118,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    width: '60%',
+    width: '80%',
   },
 });
