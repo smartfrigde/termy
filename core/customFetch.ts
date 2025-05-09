@@ -18,7 +18,8 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
                 headers: {
                     "Authorization": `Bearer ${await read("apiToken")}`
                 },
-                body: refreshDetails
+                body: refreshDetails,
+                redirect: "follow"
             })
             if (refreshRefresponse.status === 200) {
                 const data = await refreshRefresponse.json();
