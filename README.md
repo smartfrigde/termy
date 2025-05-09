@@ -1,68 +1,106 @@
 # Termy
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/smartfrigde/termy)
 ![WIP](https://github.com/user-attachments/assets/3d8000e9-b580-4387-a785-2b79ee6432b2)
 
-Termy is a cross-platform app available primarily in browsers, and natively on mobile devices. The main goals of the application are:
+**Termy** is a secure, cross-platform SSH and GPG key management application designed for developers, sysadmins, and teams. It runs in the browser and on mobile devices (iOS/Android), and will eventually support major desktop platforms, such as macOS and Windows.
 
-## Main Functionality
+Termy focuses on **fast, encrypted access to your SSH servers**, **cloud-synced or local key storage**, and **team collaboration** through secure resource sharing.
 
-### 1. SSH Connection Management:
+---
 
-* Adding, editing, and deleting SSH servers.
-* Quick connection to servers.
-* Support for multiple profiles/identities for different SSH configurations.
-* Sharing resources with others using teams.
+## ✨ Features
 
-### 2. Data Synchronization:
+- 🔐 Manage SSH and GPG keys with end-to-end encryption
+- 📋 Add, edit, delete SSH connections and profiles
+- 📱 Sync your data securely between mobile and web
+- 🧑‍🤝‍🧑 Collaborate using teams
+- 🌑 Light/Dark theme support
+- 🛠 Future: MFA, SFTP, U2F, SSH tunneling
 
-* Storing the server list in the cloud (end-to-end encryption).
-* Synchronizing GPG keys between devices.
-* Support for local backups for users who prefer offline work.
+---
 
-### 3. Key Management:
+## 🚀 Getting Started (Frontend Only)
 
-* Generating SSH and GPG keys directly within the app.
-* Importing and exporting keys.
-* Automatically adding keys to SSH connections.
+### 📦 Install Dependencies
 
-### 4. Security:
+Make sure you have [Node.js](https://nodejs.org/) and [Expo CLI](https://docs.expo.dev/get-started/installation/) installed globally:
 
-* Any reliable modern encryption.
+```sh
+npm install -g expo-cli
+````
 
-### 5. User Interface:
-
-* Intuitive dashboard with a server list.
-* Dark/light mode.
-
-### 6. Extras (if time permits):
-
-* SSH tunneling capability.
-* SFTP support.
-* Multi-factor authentication (MFA).
-* Support for U2F/FIDO2 keys for secure connections.
-
-
-## How to run:
-
-## Frontend:
-
-**[⚠ ONLY CHROMIUM BASED BROWSERS WORK](https://stackoverflow.com/a/74744206)**
-
-Follow [this guide](https://docs.expo.dev/get-started/set-up-your-environment/) for mobile development setup.
-
-For web:
+Then install project dependencies:
 
 ```sh
 npm install
-npm run web
 ```
 
-## Tech Stack
+---
 
-### Frontend:
+### ▶️ Run the App
 
-* TypeScript
-* React Native (Web/Android/iOS/macOS??/Windows??)
+#### 🌐 Web (Chromium only)
 
-### Backend:
+```sh
+npm run web
+# or
+expo start --web
+```
 
-* Laravel
+
+#### 📱 Android
+
+Make sure you have Android Studio installed:
+
+```sh
+expo start --android
+```
+
+#### 🍏 iOS (macOS only)
+
+Requires macOS with Xcode installed:
+
+```sh
+expo start --ios
+```
+
+#### 📷 Development build (QR Code, Android only)
+
+If you don't want to install all the SDKs for mobile, you can easily use our prebuilt devbuilds with features like hot-reload. Grab the latest devbuild [here](https://github.com/smartfrigde/termy/releases/tag/devbuilds) and install it on your mobile device. Then simply run:
+
+```sh
+expo start
+# or
+npm start
+```
+
+Scan the QR code with your camera app on your mobile device and it should link up your phone with the devbuild and allow you to make changes live.
+
+---
+
+## 🐳 Running with Docker (Web Only)
+
+You can run the web version inside a Docker container:
+
+### 🔧 Build and Run
+
+```sh
+# Build the image
+docker build -t termy-web .
+
+# Run the container and map port 8081
+docker run -p 8081:8081 termy-web
+```
+
+Then open [http://localhost:8081](http://localhost:8081) in your browser.
+
+## 📝 Documentation
+
+Documentation can be found [here](https://deepwiki.com/smartfrigde/termy).
+
+## 🛠 Tech Stack
+
+* **React Native** (Web, Android, iOS via Expo)
+* **Redux**
+* **Expo**
+* **TypeScript**
