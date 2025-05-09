@@ -23,7 +23,8 @@ import { AppDispatch} from '@/core/store';
 import { getMembers, deleteMember, getLoginMemberInTeam } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
 import {selectUser} from "@/core/slices/authSlice";
-import { Role } from '@/types/enums/TeamRoleEnum.d';
+import { Role, hasGrandestRole } from '@/types/enums/TeamRoleEnum.d';
+import {JoinCodeDisplay} from "@/components/TeamJoinCodeDisplay";
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -69,7 +70,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
 
     const closeMembers = () => {
         setIsMembersShow(!isMembersShow)
-    }
+    };
 
     const deleteUser = async (userId: number) => {
         const response = await deleteMember(item.id, userId);
@@ -78,7 +79,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                 removeTeamMember(userId)
             );
         }
-    }
+    };
 
 
     const getData = async () => {
@@ -135,7 +136,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         </TouchableOpacity>
 
                         <ThemedText>{`Team ${item.name}`}</ThemedText>
-                        {(item.permission_in_team === Role.ADMIN || item.permission_in_team === Role.OWNER) && (
+                        {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
                             <TouchableOpacity
                                 style={[styles.topButton]}
                                 onPress={onMembersPress}
@@ -145,12 +146,14 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         )}
                     </View>
 
-                    <View>
-                        {item.join_code}
+                    <View style={{ margin: 20 }}>
+                    {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
+                            <JoinCodeDisplay joinCode={item.join_code}/>
+                        )}
                     </View>
 
                     <View>
-                        {membersInTeamLocal && membersInTeamLocal.length > 0 ? (
+                        {membersInTeamLocal && membersInTeamLocal.length > 0 && (
                             membersInTeamLocal.map((member : MembersResponse) => (
                                 <View  style={[
                                     { display: isMembersShow ? 'flex' : 'none' },
@@ -159,14 +162,14 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                     <Pressable onPress={closeMembers}>X</Pressable>
                                     <View style={styles.member}>
                                         <ThemedText>{member.name + " " + member.surname}</ThemedText>
-                                        <Pressable onPress={() => deleteUser(member.id)}>
-                                            <Text style={styles.memberDeleteButton}>USUŃ</Text>
-                                        </Pressable>
+                                        {hasGrandestRole(item.permission_in_team, member.permission_level_id) && (
+                                            <Pressable onPress={() => deleteUser(member.id)}>
+                                                <Text style={styles.memberDeleteButton}>USUŃ</Text>
+                                            </Pressable>
+                                        )}
                                     </View>
                                 </View>
                             ))
-                        ) : (
-                            <Text></Text>
                         )}
                     </View>
                 </ThemedView>
