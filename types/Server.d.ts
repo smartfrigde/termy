@@ -7,4 +7,5 @@ export type ServerType = {
   public_key?: string;
   private_key?: string;
   id?: string;
+  team_id?: number;
 };

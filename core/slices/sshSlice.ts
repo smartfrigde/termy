@@ -27,3 +27,9 @@ export const sshSlice = createSlice({
 });
 export const selectServers = (state: { ssh: { servers: ServerType[]; }; }) => state.ssh.servers;
 export const { setServers, addServer, removeServer } = sshSlice.actions;
+
+export const filterTeamServers = (servers: ServerType[], teamId: number) => {
+  if (!servers) return [];
+  if (!teamId) return servers;
+    return servers.filter((server) => server.team_id === teamId);
+}

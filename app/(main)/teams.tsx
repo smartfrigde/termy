@@ -2,14 +2,14 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Stack } from 'expo-router';
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { TeamAddModal } from '@/components/TeamAddModal';
-import { hasMoreTeams, selectedTeams, totalUserTeamsCount, currentTeamsPage } from '@/core/slices/teamSlice';
+import { TeamJoinPanel } from '@/components/TeamJoinPanel';
+import { hasMoreTeams, selectedTeams, totalUserTeamsCount, currentTeamsPage, addTeam as addTeamToSlice } from '@/core/slices/teamSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import TeamItem from '@/components/TeamComponent';
-import { getTeams } from '@/core/teamManager';
-import { addTeam as addTeamToSlice } from '@/core/slices/teamSlice';
+import {getTeams} from '@/core/teamManager';
 import { TeamType } from '@/types/Team';
 
 const TeamsScreen = () => {
@@ -17,7 +17,7 @@ const TeamsScreen = () => {
     const [isShowTeamCreatingPanel, setShowTeamCreatingPanel] = useState(false);
     const [visibleTeamId, setVisibleTeamId] = useState(-1);
     const [isFetching, setIsFetching] = useState(false);
-
+    const [isShowTeamJoinPanel, setShowTeamJoinPanel] = useState(false);
     
     const hasMoreTeamsLocal = useSelector(hasMoreTeams);
     const currentTeamsPageLocal = useSelector(currentTeamsPage);
@@ -68,6 +68,10 @@ const TeamsScreen = () => {
         setIsFetching(false);
     };
 
+    const joinToTeam = () => {
+        setShowTeamJoinPanel(true);
+    }
+
     const pages = Array.from({ length: (Math.ceil(totalUserTeamsCountLocal / perPage)) }, (_, i) => i + 1);
 
     return (
@@ -106,12 +110,24 @@ const TeamsScreen = () => {
                         </TouchableOpacity>
                     ))}
                 </ThemedView>
-                <TouchableOpacity onPress={createTeam} style={styles.floatingButton}>
-                    <Octicons name="plus" size={24} color="white" />
-                </TouchableOpacity>
+                <View style={styles.floatingButtonContainer}>
+                    <TouchableOpacity onPress={createTeam} style={styles.floatingButton}>
+                        <Octicons name="plus" size={24} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={joinToTeam} style={styles.floatingButton}>
+                        <Octicons name="person-add" size={24} color="white" />
+                    </TouchableOpacity>
+                </View>
                 <TeamAddModal
                     modalVisible={isShowTeamCreatingPanel}
                     setModalVisible={setShowTeamCreatingPanel}
+                />
+                <TeamJoinPanel
+                    modalVisible={isShowTeamJoinPanel}
+                    setModalVisible={setShowTeamJoinPanel}
+                    teams={teams}
+                    totalUserTeamsCountLocal={totalUserTeamsCountLocal}
+                    currentTeamsPageLocal={currentTeamsPageLocal}
                 />
             </ThemedView>
         </>
@@ -173,15 +189,17 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         justifyContent: "center",
         alignItems: "center",
-        position: "absolute",
-        bottom: 40,
-        right: 30,
-        elevation: 5,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
     },
+    floatingButtonContainer: {
+        position: "absolute",
+        bottom: 40,
+        right: 30,
+        elevation: 5,
+    }
 });
 
 export default TeamsScreen;

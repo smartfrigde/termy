@@ -16,11 +16,11 @@ import {
     teamCurrentPage,
     addTeamMember,
     PageData,
-    Members 
+    Members, removeTeamMember
 } from '@/core/slices/teamsMembersSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch} from '@/core/store';
-import { getMembers, deleteMember } from '@/core/teamManager';
+import { getMembers, deleteMember, addMember } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
 
 interface TeamVisibilityProps {
@@ -69,7 +69,13 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
 
     const deleteUser = async (userId: number) => {
         const response = await deleteMember(item.id, userId);
+        if (!response === null) {
+            dispatch(
+                removeTeamMember(userId)
+            );
+        }
     }
+
 
     const getData = async () => {
         if (isFetching) return;
@@ -132,6 +138,10 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         >
                             <Text style={styles.buttonText}>members</Text>
                         </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        {item.join_code}
                     </View>
 
                     <View>

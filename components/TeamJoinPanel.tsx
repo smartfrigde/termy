@@ -1,40 +1,52 @@
 import { ThemedText } from '@/components/ThemedText';
 import isMobile from '@/constants/isMobile';
-import addTeam from '@/core/teamManager';
-import { addTeam as createTeam } from '@/core/slices/teamSlice';
+import {addTeam as addTeamToSlice} from '@/core/slices/teamSlice';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
-import { ThemedView } from './ThemedView';
+import { ThemedView } from '@/components/ThemedView';
 import { useDispatch } from 'react-redux';
 import { TeamType } from '@/types/Team';
-import { Background } from '@react-navigation/elements';
+import { addMember } from '@/core/teamManager';
+
 
 
 
 interface ServerModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
+    teams: TeamType[];
+    totalUserTeamsCountLocal: number;
+    currentTeamsPageLocal: number;
 }
 
-export function TeamAddModal({
-    modalVisible,
-    setModalVisible,
-}: ServerModalProps) {
-    const [teamName, setServerName] = useState('');
+export function TeamJoinPanel({
+                                 modalVisible,
+                                 setModalVisible,
+                                 teams,
+                                 totalUserTeamsCountLocal,
+                                 currentTeamsPageLocal
+                             }: ServerModalProps) {
+    const [joinCode, setJoinCode] = useState('');
     const dispatch = useDispatch();
 
 
-    const save = async () => {
-        const data = await addTeam(teamName);
-        if (data.team) {
-            setModalVisible(!modalVisible);
-            dispatch(createTeam({
-                team: data.team,
-                totalPages: data.total_pages,
-                currentPage: data.current_page,
-            }));
+    const joinToTeam = async () => {
+        const response = await addMember(joinCode);
+        if (response !== null) {
+            if (response.team){
+                if (teams.findIndex(team => team.id === response.team.id) === -1){
+                    dispatch(
+                        addTeamToSlice({
+                            team: response.team,
+                            totalPages: totalUserTeamsCountLocal,
+                            currentPage: currentTeamsPageLocal,
+                        })
+                    );
+                }
+            }
         }
-    };
+        setModalVisible(!modalVisible);
+    }
 
 
 
@@ -47,20 +59,20 @@ export function TeamAddModal({
             >
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
-                        <ThemedText style={styles.modalText} type="subtitle">Add a team</ThemedText>
-                        <ThemedText style={styles.modalText} type="defaultSemiBold">team name</ThemedText>
+                        <ThemedText style={styles.modalText} type="subtitle">Join to team</ThemedText>
+                        <ThemedText style={styles.modalText} type="defaultSemiBold">Join to team</ThemedText>
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Team name"
+                            placeholder="Join code"
                             placeholderTextColor="gray"
-                            value={teamName}
-                            onChangeText={setServerName}
+                            value={joinCode}
+                            onChangeText={setJoinCode}
                         />
                         <View style={styles.buttonPanel}>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
-                                onPress={() => save()}>
-                                <ThemedText style={styles.textStyle}>Create</ThemedText>
+                                onPress={() => joinToTeam()}>
+                                <ThemedText style={styles.textStyle}>Join</ThemedText>
                             </Pressable>
                             <Pressable
                                 style={[styles.button, styles.buttonClose, styles.bg_gray]}

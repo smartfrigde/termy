@@ -1,5 +1,5 @@
-import { ServerType } from "@/types/Server";
-import { fetchApi } from "./customFetch";
+import {ServerType} from "@/types/Server";
+import {fetchApi} from "./customFetch";
 
 export async function getServers() {
     const response = await fetchApi(`/ssh`, {
@@ -9,8 +9,7 @@ export async function getServers() {
         },
     });
     console.log(response)
-    const data = await response.json();
-    return data;
+    return await response.json();
 }
 
 export async function createServer(server: ServerType) {
@@ -20,17 +19,15 @@ export async function createServer(server: ServerType) {
     serverDetails.append("port", server.port.toString());
     serverDetails.append("password", server.password);
     serverDetails.append("login", server.login);
-    const response = await fetchApi("/ssh", {
+    return await fetchApi("/ssh", {
         method: "POST",
         body: serverDetails
     });
-    return response;
 }
 
 export async function deleteServer(id: string) : Promise<Response> {
-    const response = await fetchApi(`/ssh/${id}`, {
+    return await fetchApi(`/ssh/${id}`, {
         method: "DELETE"
     });
-    return response;
 }
 

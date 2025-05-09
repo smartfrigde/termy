@@ -21,7 +21,7 @@ export default async function addTeam(name: string) {
             return null;
         }
     } catch (error) {
-        console.error("Wystąpił błąd sieci:", error);
+        console.error("Network error: :", error);
         return null;
     }
 }
@@ -44,7 +44,7 @@ export async function getTeams(page = 1) {
 
         return await response.json();
     } catch (error) {
-        console.error("Wystąpił błąd sieci:", error);
+        console.error("Network error: :", error);
         return null;
     }
 }
@@ -67,7 +67,7 @@ export async function deleteTeam(teamId: number) {
             return null;
         }
     } catch (error) {
-        console.error("Wystąpił błąd sieci:", error);
+        console.error("Network error: :", error);
         return null;
     }
 }
@@ -92,7 +92,7 @@ export async function updateTeam(teamId: number, name: string) {
             return null;
         }
     } catch (error) {
-        console.error("Wystąpił błąd sieci:", error);
+        console.error("Network error: :", error);
         return null;
     }
 }
@@ -110,7 +110,7 @@ export async function getMembers(teamId: number, page = 1){
 
         return await response.json();
     } catch (error) {
-        console.error("Wystąpił błąd sieci:", error);
+        console.error("Network error: :", error);
         return null;
     }
 }
@@ -128,7 +128,29 @@ export async function deleteMember(teamId: number, userId: number) {
 
         return await response.json();
     } catch (error) {
-        console.error("Wystąpił błąd sieci:", error);
+        console.error("Network error: :", error);
+        return null;
+    }
+}
+
+export async function addMember(join_code: string) {
+    try {
+        const response = await fetchApi(`/teams/members`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({join_code: join_code}),
+        });
+
+        if (!response.ok) {
+            console.error(`Błąd ${response.status}: ${response.statusText}`);
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Network error: :", error);
         return null;
     }
 }

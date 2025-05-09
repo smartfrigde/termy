@@ -3,6 +3,7 @@ export type TeamType = {
     id: number,
     type: string,
     revoked: boolean,
+    join_code: string,
     created_at: Date,
     updated_at: Date
 }

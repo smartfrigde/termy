@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31a1f9f3-7bfa-4c03-9b31-9a4b536ddec8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/components/TeamJoinPanel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(main)/teams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(main)/teams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/TeamAddModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/TeamAddModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/TeamComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/TeamComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/slices/teamsMembersSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/slices/teamsMembersSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/slices/sshSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/slices/sshSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sshManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/sshManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/teamManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/teamManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/Server.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/Server.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/Team.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/Team.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +67,7 @@
       <workItem from="1746729261811" duration="166000" />
       <workItem from="1746770122218" duration="182000" />
       <workItem from="1746770317128" duration="2644000" />
-      <workItem from="1746772973001" duration="4092000" />
+      <workItem from="1746772973001" duration="10933000" />
     </task>
     <servers />
   </component>
