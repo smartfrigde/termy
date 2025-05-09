@@ -19,6 +19,7 @@
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
     "@reduxjs/toolkit": "^2.8.0",
+    "@timwheeler/monkey-fetch": "^1.5.0",
     "@xterm/xterm": "^5.5.0",
     "expo": "~53.0.7",
     "expo-blur": "~14.1.4",

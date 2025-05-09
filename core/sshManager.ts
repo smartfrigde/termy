@@ -1,13 +1,11 @@
-import { endpoint } from "@/constants/api";
 import { ServerType } from "@/types/Server";
-import { read } from "./settings";
+import { fetchApi } from "./customFetch";
 
 export async function getServers() {
-    const response = await fetch(`${endpoint}/ssh`, {
+    const response = await fetchApi(`/ssh`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${await read("apiToken")}`
+            "Content-Type": "application/json"
         },
     });
     console.log(response)
@@ -22,22 +20,16 @@ export async function createServer(server: ServerType) {
     serverDetails.append("port", server.port.toString());
     serverDetails.append("password", server.password);
     serverDetails.append("login", server.login);
-    const response = await fetch(`${endpoint}/ssh`, {
+    const response = await fetchApi("/ssh", {
         method: "POST",
-        headers: {
-            "Authorization": `Bearer ${await read("apiToken")}`
-        },
         body: serverDetails
     });
     return response;
 }
 
 export async function deleteServer(id: string) : Promise<Response> {
-    const response = await fetch(`${endpoint}/ssh/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Authorization": `Bearer ${await read("apiToken")}`
-        }
+    const response = await fetchApi(`/ssh/${id}`, {
+        method: "DELETE"
     });
     return response;
 }
