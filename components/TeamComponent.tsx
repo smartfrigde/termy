@@ -125,26 +125,22 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                 ]}
                 onPress={handlePress}
             >
-                <ThemedText style={styles.teamText} type="defaultSemiBold">
-                    {item.name}
-                </ThemedText>
+                <ThemedText style={styles.teamText}>{item.name}</ThemedText>
             </Pressable>
 
             <Modal visible={visibleTeamId === item.id} animationType="slide">
                 <ThemedView style={styles.content}>
                     <View style={styles.topNav}>
                         <TouchableOpacity style={styles.topButton} onPress={onExitPress}>
-                            <Text style={styles.buttonText}>exit</Text>
+                            <Text style={styles.buttonText}>Exit</Text>
                         </TouchableOpacity>
 
-                        <ThemedText>{`Team ${item.name}`}</ThemedText>
+                        <ThemedText>{`Team: ${item.name}`}</ThemedText>
+
                         {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
-                            <TouchableOpacity
-                                style={[styles.topButton]}
-                                onPress={onMembersPress}
-                            >
-                                <Text style={styles.buttonText}>members</Text>
-                            </TouchableOpacity>
+                            <Pressable onPress={closeMembers}>
+                                <Octicons name="people" size={14} color="white" />
+                            </Pressable>
                         )}
                     </View>
 
@@ -187,16 +183,27 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                         </View>
 
                                         {showRoleUI && (
-                                            <View style={styles.roleChangeContainer}>
-                                                {roles.map((role) => (
-                                                    <TouchableOpacity key={role}>
-                                                        <Pressable onPress={() =>
-                                                            setRoleToChange(Role[role as keyof typeof Role])
-                                                        }>
-                                                            <ThemedText>{role}</ThemedText>
-                                                        </Pressable>
-                                                    </TouchableOpacity>
-                                                ))}
+                                            <View>
+                                                {roles.map((role) => {
+                                                    const isSelected = roleToChange === Role[role as keyof typeof Role];
+                                                    return (
+                                                        <TouchableOpacity key={role}>
+                                                            <Pressable
+                                                                onPress={() =>
+                                                                    setRoleToChange(Role[role as keyof typeof Role])
+                                                                }
+                                                                style={[
+                                                                    styles.roleOption,
+                                                                    isSelected && styles.selectedRoleOption,
+                                                                ]}
+                                                            >
+                                                                <ThemedText style={isSelected && styles.selectedRoleText}>
+                                                                    {role}
+                                                                </ThemedText>
+                                                            </Pressable>
+                                                        </TouchableOpacity>
+                                                    );
+                                                })}
                                                 <View style={styles.roleButtons}>
                                                     <Pressable onPress={() => updateRole(roleToChange, member.id)}>
                                                         <Octicons name="check" size={14} color="white" />
@@ -226,26 +233,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 15,
         paddingHorizontal: 20,
-        borderRadius: 15,
-        backgroundColor: 'rgba(51, 51, 51, 0.13)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
+        borderRadius: 12,
+        backgroundColor: '#2a2a2a',
         marginBottom: 15,
+        borderWidth: 1,
+        borderColor: '#444',
     },
     activeTeam: {
-        backgroundColor: 'rgba(51, 51, 51, 0.3)',
+        borderColor: '#007aff',
+        backgroundColor: '#1e1e1e',
     },
     teamText: {
         fontSize: 18,
-        color: '#ddd',
-    },
-    topButton: {
-        padding: 5,
-        borderRadius: 10,
-        backgroundColor: "rgba(0,122,255,1.00)",
+        color: '#eaeaea',
+        fontWeight: '600',
     },
     topNav: {
         paddingVertical: 10,
@@ -253,82 +254,87 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundColor: '#1f1f1f',
+        borderBottomWidth: 1,
+        borderBottomColor: '#333',
+    },
+    topButton: {
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: '#007aff',
     },
     buttonText: {
         fontSize: 16,
-        color: '#000',
+        color: '#fff',
+        fontWeight: '600',
     },
     content: {
         flex: 1,
+        backgroundColor: '#1e1e1e',
     },
     membersContent: {
-        "position": "fixed",
-        "backgroundColor": "#111213",
-        "top": 0,
-        "right": 0,
-        "paddingTop": 30,
-        "paddingRight": 20,
-        "paddingBottom": 30,
-        "paddingLeft": 20,
-        "height": "100%",
-        "minWidth": "60%"
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        height: '100%',
+        width: '70%',
+        backgroundColor: '#151515',
+        padding: 20,
+        borderLeftWidth: 1,
+        borderLeftColor: '#333',
     },
-
-    memberDeleteButton: {
-        "backgroundColor": "#c31515",
-        "color": "white",
-        "paddingTop": 5,
-        "paddingRight": 5,
-        "paddingBottom": 5,
-        "paddingLeft": 5,
-        "borderTopLeftRadius": 20,
-        "borderTopRightRadius": 20,
-        "borderBottomRightRadius": 20,
-        "borderBottomLeftRadius": 20
-    },
-
-    memberEditButton: {
-        backgroundColor: "rgba(0, 122, 255, 1.00);",
-        "color": "white",
-        "paddingTop": 5,
-        "paddingRight": 5,
-        "paddingBottom": 5,
-        "paddingLeft": 5,
-        "borderTopLeftRadius": 20,
-        "borderTopRightRadius": 20,
-        "borderBottomRightRadius": 20,
-        "borderBottomLeftRadius": 20
-    },
-
-    member: {
-        "display": "flex",
-        "flexDirection": "row",
-        "justifyContent": "space-between"
-    },
-
-    membersButtonContainer: {
-        "flexDirection": "row",
-        "gap": 8
-    },
-
     memberCard: {
         backgroundColor: '#222',
         padding: 12,
-        marginVertical: 6,
-        borderRadius: 10,
+        marginVertical: 8,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#333',
+    },
+    member: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    membersButtonContainer: {
+        flexDirection: 'row',
+        gap: 10,
     },
     roleChangeContainer: {
         marginTop: 10,
         padding: 10,
-        backgroundColor: '#333',
+        backgroundColor: '#2e2e2e',
         borderRadius: 8,
     },
     roleButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 10,
-    }
+    },
+    roleButton: {
+        padding: 8,
+        borderRadius: 8,
+        backgroundColor: '#007aff',
+    },
+    roleButtonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    roleOption: {
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: '#333',
+    marginBottom: 5,
+    alignItems: 'center',
+},
+selectedRoleOption: {
+    backgroundColor: '#007aff',
+},
+selectedRoleText: {
+    color: '#fff',
+    fontWeight: 'bold',
+},
 });
 
 export default TeamItem;
