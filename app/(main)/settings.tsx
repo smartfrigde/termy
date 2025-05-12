@@ -80,7 +80,7 @@ export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Dane osobowe</Text>
+        <Text style={styles.sectionTitle}>Personal data</Text>
         <TextInput
           style={styles.input}
           placeholder="Name"
@@ -106,7 +106,7 @@ export default function SettingsScreen() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Bezpieczeństwo</Text>
+        <Text style={styles.sectionTitle}>Security</Text>
         <TextInput
           style={styles.input}
           placeholder="New password"
