@@ -1,12 +1,11 @@
-import { View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import * as ContextMenu from 'zeego/context-menu'
-
 export const ContextMenuRoot = ContextMenu.Root
 
 export const ContextMenuTrigger = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.Trigger>) => (
-    <ContextMenu.Trigger {...props} asChild>
-      <View aria-role="button">{props.children}</View>
+    <ContextMenu.Trigger action="press" {...props} asChild>
+      <Pressable>{props.children}</Pressable>
     </ContextMenu.Trigger>
   ),
   'Trigger'
@@ -21,21 +20,23 @@ export const ContextMenuContent = ContextMenu.create(
 
 export const ContextMenuItem = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.Item>) => (
-    <ContextMenu.Item {...props} />
+    <View style={styles.contextMenuItem}>
+      <ContextMenu.Item {...props} />
+    </View>
   ),
   'Item'
 )
 
 export const ContextMenuItemTitle = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.ItemTitle>) => (
-    <ContextMenu.ItemTitle {...props} />
+    <ContextMenu.ItemTitle style={styles.contextMenuItemText} {...props} />
   ),
   'ItemTitle'
 )
 
 export const ContextMenuItemIcon = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.ItemIcon>) => (
-    <ContextMenu.ItemIcon {...props} />
+    <ContextMenu.ItemIcon style={styles.contextMenuItemIcon} {...props} />
   ),
   'ItemIcon'
 )
@@ -116,3 +117,17 @@ export const ContextMenuArrow = ContextMenu.create(
   ),
   'Arrow'
 )
+
+const styles = StyleSheet.create({
+  contextMenuItem: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: 'black',
+  },
+  contextMenuItemText: {
+    color: '#fff',
+  },
+  contextMenuItemIcon: {
+    marginRight: 10,
+  },
+});
