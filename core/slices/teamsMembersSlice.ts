@@ -56,8 +56,6 @@ export const hasMoreMembers = (
     pageData: TeamPageData[], 
     teamId: number          
 ): boolean => {
-
-
     const teamPage = pageData.find((item) => item?.team_id === teamId);
 
     if (!teamPage) return true;
@@ -69,6 +67,8 @@ export const membersInTeam = (
     members: MembersResponse[],
     teamId: number
 ): MembersResponse[] => {
+    console.log(members);
+    console.log(members.filter((item) => item?.team_id === teamId));
     return members.filter((item) => item?.team_id === teamId);
 };
 

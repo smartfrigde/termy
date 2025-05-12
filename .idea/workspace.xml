@@ -35,7 +35,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;teams-functions&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/run/media/piotr/projekty/programing/web/praktyka 2025.05.05 - 2025.05.30/code | praktyka 2025.05.05 - 2025.05.30/fronted&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/pszwedo/Dokumenty/frontend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
@@ -46,7 +46,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/run/media/piotr/projekty/programing/web/praktyka 2025.05.05 - 2025.05.30/code | praktyka 2025.05.05 - 2025.05.30/fronted/node_modules/typescript/lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/pszwedo/Dokumenty/frontend/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -69,6 +69,8 @@
       <workItem from="1746770317128" duration="2644000" />
       <workItem from="1746772973001" duration="18985000" />
       <workItem from="1746793781242" duration="13354000" />
+      <workItem from="1747035008460" duration="84000" />
+      <workItem from="1747035555568" duration="570000" />
     </task>
     <servers />
   </component>

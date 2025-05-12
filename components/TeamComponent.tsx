@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ThemedText';
 import { TeamType } from '@/types/Team';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Modal,
     Pressable,
@@ -8,6 +8,8 @@ import {
     Text,
     TouchableOpacity,
     View,
+    FlatList,
+    ActivityIndicator,
 } from 'react-native';
 import { ThemedView } from './ThemedView';
 import {
@@ -19,13 +21,13 @@ import {
     Members, removeTeamMember, setTeamMember
 } from '@/core/slices/teamsMembersSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch} from '@/core/store';
-import {getMembers, deleteMember, updateMemberRole} from '@/core/teamManager';
+import { AppDispatch } from '@/core/store';
+import { getMembers, deleteMember, updateMemberRole } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
-import {selectUser} from "@/core/slices/authSlice";
-import {Role, hasGrandestRole, getRolesAtOrBelow} from '@/types/enums/TeamRoleEnum.d';
-import {JoinCodeDisplay} from "@/components/TeamJoinCodeDisplay";
-import {Octicons} from "@expo/vector-icons";
+import { selectUser } from "@/core/slices/authSlice";
+import { Role, hasGrandestRole, getRolesAtOrBelow } from '@/types/enums/TeamRoleEnum.d';
+import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
+import { Octicons } from "@expo/vector-icons";
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -57,11 +59,15 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     };
     const onMembersPress = () => {
         setIsMembersShow(!isMembersShow);
-        if (hasMore){
+        if (currentTeamsPageLocal === 0 && hasMore) {
             getData();
         }
     };
     const closeMembers = () => {
+        if (currentTeamsPageLocal === 0 && hasMore) {
+            getData();
+        }
+
         setIsMembersShow(!isMembersShow)
     };
     const deleteUser = async (userId: number) => {
@@ -73,37 +79,49 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
         }
     };
     const getData = async () => {
-        if (isFetching) return;
-        setIsFetching(true);
+        if (isFetching || isLoadingMore) return;
+        setIsLoadingMore(true);
 
         try {
             const data = await getMembers(item.id, currentTeamsPageLocal + 1);
-            if (data?.members && Array.isArray(data.members)) {
-                data.members.forEach((member: MembersResponse) => {
-                    const pageData: TeamPageData = {
-                        team_id: data.team_id,
-                        current_page: data.current_page,
-                        total_pages: data.total_pages,
-                        total_members: data.total_members
-                    };
-                    
+            if (data?.members) {
+                const pageData: TeamPageData = {
+                    team_id: data.team_id,
+                    current_page: data.current_page,
+                    total_pages: data.total_pages,
+                    total_members: data.total_members
+                };
+
+                data.members.forEach((member : MembersResponse) => {
                     dispatch(
                         addTeamMember({
                             members: member,
                             pageData: pageData,
-                        }
-                        )
+                        })
                     );
                 });
             }
         } catch (error) {
             console.error('Error fetching members:', error);
         } finally {
+            setIsLoadingMore(false);
             setIsFetching(false);
         }
     };
-    const [showRoleForMemberId, setShowRoleForMemberId] = useState<number | null>(null);
 
+    useEffect(() => {
+
+        if (currentTeamsPageLocal === 0 && hasMore) {
+            getData();
+        }
+
+        if (membersInTeamLocal.length < currentTeamsPageLocal * 30 && hasMore) {
+            getData();
+        }
+    }, [currentTeamsPageLocal]);
+
+    const [showRoleForMemberId, setShowRoleForMemberId] = useState<number | null>(null);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
     const roles = getRolesAtOrBelow(item.permission_in_team);
 
     async function updateRole(newRole: number, userId: number) {
@@ -115,7 +133,6 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
 
     }
 
-    // @ts-ignore
     return (
         <>
             <Pressable
@@ -145,8 +162,8 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                     </View>
 
                     <View style={{ margin: 20 }}>
-                    {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
-                            <JoinCodeDisplay joinCode={item.join_code}/>
+                        {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
+                            <JoinCodeDisplay joinCode={item.join_code} />
                         )}
                     </View>
 
@@ -155,69 +172,75 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                             <Octicons name="x" size={14} color="white" />
                         </Pressable>
 
-                        {membersInTeamLocal && membersInTeamLocal.length > 0 && (
-                            membersInTeamLocal.map((member: MembersResponse) => {
-                                const showRoleUI = showRoleForMemberId === member.id;
+                        <FlatList
+                            data={membersInTeamLocal}
+                            keyExtractor={(item) => `team_${item.team_id}_member_${item.id}`}
+                            renderItem={({ item: member }) => (
+                                <View style={[styles.memberCard]}>
+                                    <View style={styles.member}>
+                                        <ThemedText>{member.name + " " + member.surname}</ThemedText>
 
-                                return (
-                                    <View
-                                        key={`team_${item.id}_member_${member.id}`}
-                                        style={[styles.memberCard]}
-                                    >
-                                        <View style={styles.member}>
-                                            <ThemedText>{member.name + " " + member.surname}</ThemedText>
+                                        {hasGrandestRole(item.permission_in_team, member.permission_level_id) && (
+                                            <View style={styles.membersButtonContainer}>
+                                                <Pressable onPress={() => deleteUser(member.id)}>
+                                                    <Octicons name="trash" size={16} color="white" />
+                                                </Pressable>
 
-                                            {hasGrandestRole(item.permission_in_team, member.permission_level_id) && (
-                                                <View style={styles.membersButtonContainer}>
-                                                    <Pressable onPress={() => deleteUser(member.id)}>
-                                                        <Octicons name="trash" size={16} color="white" />
-                                                    </Pressable>
-
-                                                    <Pressable onPress={() =>
-                                                        setShowRoleForMemberId(prev => prev === member.id ? null : member.id)
-                                                    }>
-                                                        <Octicons name="gear" size={16} color="white" />
-                                                    </Pressable>
-                                                </View>
-                                            )}
-                                        </View>
-
-                                        {showRoleUI && (
-                                            <View>
-                                                {roles.map((role) => {
-                                                    const isSelected = roleToChange === Role[role as keyof typeof Role];
-                                                    return (
-                                                        <TouchableOpacity key={role}>
-                                                            <Pressable
-                                                                onPress={() =>
-                                                                    setRoleToChange(Role[role as keyof typeof Role])
-                                                                }
-                                                                style={[
-                                                                    styles.roleOption,
-                                                                    isSelected && styles.selectedRoleOption,
-                                                                ]}
-                                                            >
-                                                                <ThemedText style={isSelected && styles.selectedRoleText}>
-                                                                    {role}
-                                                                </ThemedText>
-                                                            </Pressable>
-                                                        </TouchableOpacity>
-                                                    );
-                                                })}
-                                                <View style={styles.roleButtons}>
-                                                    <Pressable onPress={() => updateRole(roleToChange, member.id)}>
-                                                        <Octicons name="check" size={14} color="white" />
-                                                    </Pressable>
-                                                    <Pressable onPress={() => setShowRoleForMemberId(null)}>
-                                                        <Octicons name="x" size={14} color="white" />
-                                                    </Pressable>
-                                                </View>
+                                                <Pressable onPress={() =>
+                                                    setShowRoleForMemberId(prev => prev === member.id ? null : member.id)
+                                                }>
+                                                    <Octicons name="gear" size={16} color="white" />
+                                                </Pressable>
                                             </View>
                                         )}
                                     </View>
-                                );
-                            })
-                        )}
+
+                                    {showRoleForMemberId === member.id && (
+                                        <View>
+                                            {roles.map((role) => {
+                                                const isSelected = roleToChange === Role[role as keyof typeof Role];
+                                                return (
+                                                    <TouchableOpacity key={role}>
+                                                        <Pressable
+                                                            onPress={() => setRoleToChange(Role[role as keyof typeof Role])}
+                                                            style={[
+                                                                styles.roleOption,
+                                                                isSelected && styles.selectedRoleOption,
+                                                            ]}
+                                                        >
+                                                            <ThemedText style={isSelected && styles.selectedRoleText}>
+                                                                {role}
+                                                            </ThemedText>
+                                                        </Pressable>
+                                                    </TouchableOpacity>
+                                                );
+                                            })}
+                                            <View style={styles.roleButtons}>
+                                                <Pressable onPress={() => updateRole(roleToChange, member.id)}>
+                                                    <Octicons name="check" size={14} color="white" />
+                                                </Pressable>
+                                                <Pressable onPress={() => setShowRoleForMemberId(null)}>
+                                                    <Octicons name="x" size={14} color="white" />
+                                                </Pressable>
+                                            </View>
+                                        </View>
+                                    )}
+                                </View>
+                            )}
+                            onEndReached={() => {
+                                if (hasMore && !isLoadingMore) {
+                                    getData();
+                                }
+                            }}
+                            onEndReachedThreshold={0.5}
+                            ListFooterComponent={() => (
+                                isLoadingMore ? (
+                                    <View style={styles.loading}>
+                                        <ActivityIndicator size="small" color="#007aff" />
+                                    </View>
+                                ) : null
+                            )}
+                        />
                     </View>
 
                 </ThemedView>
@@ -321,20 +344,22 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     roleOption: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    backgroundColor: '#333',
-    marginBottom: 5,
-    alignItems: 'center',
-},
-selectedRoleOption: {
-    backgroundColor: '#007aff',
-},
-selectedRoleText: {
-    color: '#fff',
-    fontWeight: 'bold',
-},
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        backgroundColor: '#333',
+        marginBottom: 6,
+    },
+    selectedRoleOption: {
+        backgroundColor: '#007aff',
+    },
+    selectedRoleText: {
+        color: '#fff',
+    },
+    loading: {
+        padding: 10,
+        alignItems: 'center',
+    },
 });
 
 export default TeamItem;
