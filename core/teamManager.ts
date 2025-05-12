@@ -155,10 +155,14 @@ export async function addMember(join_code: string) {
     }
 }
 
-export async function getLoginMemberInTeam(teamId: number) {
+export async function updateMemberRole(teamId: number, userId: number, role: number) {
     try {
-        const response = await fetchApi(`/teams/${teamId}/members/me`, {
-            method: "GET",
+        const response = await fetchApi(`/teams/${teamId}/members/${userId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({permission_level_id: role}),
         });
 
         if (!response.ok) {
