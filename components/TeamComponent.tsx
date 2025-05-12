@@ -24,7 +24,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '@/core/store';
 import { getMembers, deleteMember, updateMemberRole } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
-import { selectUser } from "@/core/slices/authSlice";
 import { Role, hasGrandestRole, getRolesAtOrBelow } from '@/types/enums/TeamRoleEnum.d';
 import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
 import { Octicons } from "@expo/vector-icons";

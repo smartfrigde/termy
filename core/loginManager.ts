@@ -1,6 +1,7 @@
 import { endpoint } from "@/constants/api";
 
 import { read, store } from "./settings";
+import { fetchApi } from "@/core/customFetch";
 
 
 export async function getCurrentUser(): Promise<User | null> {
@@ -50,6 +51,30 @@ export async function login(email: string, password: string) {
   }
   console.log(data);
   return data;
+}
+
+export async function update(id: number, name?: string, surname?: string, email?: string, password?: string | null) {
+
+  const body: Record<string, string> = {};
+  if (name !== undefined) body.name = name;
+  if (surname !== undefined) body.surname = surname;
+  if (email !== undefined) body.email = email;
+  if (password !== undefined && password !== null) body.password = password;
+
+
+  try {
+    const response = await fetchApi(`/users/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+
+    return await response.json();
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 // export function logout() {
