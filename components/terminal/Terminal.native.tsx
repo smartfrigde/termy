@@ -33,6 +33,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         console.log('SSH Client ready');
         // @ts-expect-error
         conn.startShell('vanilla');
+        conn.execute('\n')
       });
 
       conn.on('error', (err) => {

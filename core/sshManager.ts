@@ -33,6 +33,9 @@ export async function deleteServer(id: string) : Promise<Response> {
 
 export async function editServer(server: ServerType) {
     const serverDetails = new FormData();
+    if (server.id) {
+        serverDetails.append("id", server.id);
+    }
     serverDetails.append("name", server.name);
     serverDetails.append("hostname", server.hostname);
     serverDetails.append("port", server.port.toString());

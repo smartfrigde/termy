@@ -5,8 +5,8 @@ import { ThemedView } from '@/components/ThemedView';
 import { selectServers, setServers } from '@/core/slices/sshSlice';
 import { getServers } from '@/core/sshManager';
 import { Octicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { Dimensions, FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 const screenWidth = Dimensions.get('window').width;
 const numColumns = Math.floor(screenWidth / 200);
@@ -16,10 +16,19 @@ export default function DashboardScreen() {
   const servers = useSelector(selectServers);
   const dispatch = useDispatch();
   const [serverModalVisible, setServerModalVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refresh();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   const createServer = () => {
     setServerModalVisible(true);
   };
-  const refresh = () => { 
+  const refresh = () => {
     getServers().then((servers) => {
       console.log(servers);
       dispatch(setServers(servers.ssh_connections));
@@ -28,23 +37,25 @@ export default function DashboardScreen() {
   useEffect(() => {
     refresh();
   }, []);
-  
+
   return (
     <ThemedView style={{ flex: 1 }}>
-      <CreateServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh}/>
+      <CreateServerModal setModalVisible={setServerModalVisible} modalVisible={serverModalVisible} refresh={refresh} />
       <Hero />
       <TouchableOpacity onPress={createServer} style={styles.floatingButton}>
         <Octicons name="plus" size={24} color="white" />
       </TouchableOpacity>
-      <View style={styles.serverListContainer}>
-
-        <FlatList
-          data={servers}
-          numColumns={numColumns}
-          keyExtractor={item => item.id!}
-          renderItem={({ item }) => <ServerItem item={item} />}
-        />
-      </View>
+        <View style={styles.serverListContainer}>
+          <FlatList
+            data={servers}
+            numColumns={numColumns}
+            keyExtractor={item => item.id!}
+            renderItem={({ item }) => <ServerItem item={item} />}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
+        </View>
     </ThemedView>
   );
 }
