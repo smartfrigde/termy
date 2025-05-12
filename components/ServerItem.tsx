@@ -42,7 +42,7 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
           <ThemedText type="title">{item.name}</ThemedText>
         </ThemedView>
       </ContextMenuTrigger>
-      <ContextMenuContent style={{ flex: 1, height: "100%", width: "100%" }}>
+      <ContextMenuContent style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#121212", borderRadius: 20, padding: 10 }}>
         <ContextMenuItem key="edit" onSelect={handleEdit}>
           <ContextMenuItemTitle>Edit</ContextMenuItemTitle>
           <ContextMenuItemIcon ios="pencil">
