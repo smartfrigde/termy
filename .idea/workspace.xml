@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31a1f9f3-7bfa-4c03-9b31-9a4b536ddec8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/types/enums/TeamRoleEnum.d.ts" afterDir="false" />
+    <list default="true" id="31a1f9f3-7bfa-4c03-9b31-9a4b536ddec8" name="Changes" comment="Update: teams gui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/TeamComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/TeamComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/slices/teamsMembersSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/slices/teamsMembersSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/teamManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/teamManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/Team.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/Team.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +15,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -36,16 +33,20 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;teams-functions&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/run/media/piotr/projekty/programing/web/praktyka 2025.05.05 - 2025.05.30/code | praktyka 2025.05.05 - 2025.05.30/fronted&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/pszwedo/Dokumenty/frontend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/run/media/piotr/projekty/programing/web/praktyka 2025.05.05 - 2025.05.30/code | praktyka 2025.05.05 - 2025.05.30/fronted/node_modules/typescript/lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/pszwedo/Dokumenty/frontend/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -66,11 +67,18 @@
       <workItem from="1746729261811" duration="166000" />
       <workItem from="1746770122218" duration="182000" />
       <workItem from="1746770317128" duration="2644000" />
-      <workItem from="1746772973001" duration="17474000" />
+      <workItem from="1746772973001" duration="18985000" />
+      <workItem from="1746793781242" duration="13354000" />
+      <workItem from="1747035008460" duration="84000" />
+      <workItem from="1747035555568" duration="570000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update: teams gui" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update: teams gui" />
   </component>
 </project>

@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ThemedText';
 import { TeamType } from '@/types/Team';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Modal,
     Pressable,
@@ -8,6 +8,8 @@ import {
     Text,
     TouchableOpacity,
     View,
+    FlatList,
+    ActivityIndicator,
 } from 'react-native';
 import { ThemedView } from './ThemedView';
 import {
@@ -16,14 +18,16 @@ import {
     teamCurrentPage,
     addTeamMember,
     PageData,
-    Members, removeTeamMember
+    Members, removeTeamMember, setTeamMember
 } from '@/core/slices/teamsMembersSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch} from '@/core/store';
-import { getMembers, deleteMember, getLoginMemberInTeam } from '@/core/teamManager';
+import { AppDispatch } from '@/core/store';
+import { getMembers, deleteMember, updateMemberRole } from '@/core/teamManager';
 import { MembersResponse, TeamPageData } from '@/types/TeamMember';
-import {selectUser} from "@/core/slices/authSlice";
-import { Role } from '@/types/enums/TeamRoleEnum.d';
+import { selectUser } from "@/core/slices/authSlice";
+import { Role, hasGrandestRole, getRolesAtOrBelow } from '@/types/enums/TeamRoleEnum.d';
+import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
+import { Octicons } from "@expo/vector-icons";
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -43,34 +47,29 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     const dispatch = useDispatch<AppDispatch>();
     const [isFetching, setIsFetching] = useState(false);
     const [isMembersShow, setIsMembersShow] = useState(false);
-    const user = useSelector(selectUser);
-
+    const [roleToChange, setRoleToChange] = useState(1);
     const handlePress = () => {
         setVisibility.setModalVisible(item.id);
     };
-
     const hasMore = hasMoreMembers(teamPageData, item.id);
-      
     const membersInTeamLocal = membersInTeam(teamMembers, item.id);
-      
     const currentTeamsPageLocal = teamCurrentPage(teamPageData, item.id);
-
-
     const onExitPress = () => {
         setVisibility.setModalVisible(-1);
     };
-
     const onMembersPress = () => {
         setIsMembersShow(!isMembersShow);
-        if (hasMore){
+        if (currentTeamsPageLocal === 0 && hasMore) {
             getData();
         }
     };
-
     const closeMembers = () => {
-        setIsMembersShow(!isMembersShow)
-    }
+        if (currentTeamsPageLocal === 0 && hasMore) {
+            getData();
+        }
 
+        setIsMembersShow(!isMembersShow)
+    };
     const deleteUser = async (userId: number) => {
         const response = await deleteMember(item.id, userId);
         if (!response === null) {
@@ -78,41 +77,62 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                 removeTeamMember(userId)
             );
         }
-    }
-
-
+    };
     const getData = async () => {
-        if (isFetching) return;
-        setIsFetching(true);
+        if (isFetching || isLoadingMore) return;
+        setIsLoadingMore(true);
 
         try {
             const data = await getMembers(item.id, currentTeamsPageLocal + 1);
-            if (data?.members && Array.isArray(data.members)) {
-                data.members.forEach((member: MembersResponse) => {
-                    const pageData: TeamPageData = {
-                        team_id: data.team_id,
-                        current_page: data.current_page,
-                        total_pages: data.total_pages,
-                        total_members: data.total_members
-                    };
-                    
+            if (data?.members) {
+                const pageData: TeamPageData = {
+                    team_id: data.team_id,
+                    current_page: data.current_page,
+                    total_pages: data.total_pages,
+                    total_members: data.total_members
+                };
+
+                data.members.forEach((member : MembersResponse) => {
                     dispatch(
                         addTeamMember({
                             members: member,
                             pageData: pageData,
-                        }
-                        )
+                        })
                     );
                 });
             }
         } catch (error) {
             console.error('Error fetching members:', error);
         } finally {
+            setIsLoadingMore(false);
             setIsFetching(false);
         }
     };
 
-    // @ts-ignore
+    useEffect(() => {
+
+        if (currentTeamsPageLocal === 0 && hasMore) {
+            getData();
+        }
+
+        if (membersInTeamLocal.length < currentTeamsPageLocal * 30 && hasMore) {
+            getData();
+        }
+    }, [currentTeamsPageLocal]);
+
+    const [showRoleForMemberId, setShowRoleForMemberId] = useState<number | null>(null);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const roles = getRolesAtOrBelow(item.permission_in_team);
+
+    async function updateRole(newRole: number, userId: number) {
+        const response = await updateMemberRole(item.id, userId, newRole);
+
+        if (response && response.member) {
+            setTeamMember(response.member);
+        }
+
+    }
+
     return (
         <>
             <Pressable
@@ -122,53 +142,107 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                 ]}
                 onPress={handlePress}
             >
-                <ThemedText style={styles.teamText} type="defaultSemiBold">
-                    {item.name}
-                </ThemedText>
+                <ThemedText style={styles.teamText}>{item.name}</ThemedText>
             </Pressable>
 
             <Modal visible={visibleTeamId === item.id} animationType="slide">
                 <ThemedView style={styles.content}>
                     <View style={styles.topNav}>
                         <TouchableOpacity style={styles.topButton} onPress={onExitPress}>
-                            <Text style={styles.buttonText}>exit</Text>
+                            <Text style={styles.buttonText}>Exit</Text>
                         </TouchableOpacity>
 
-                        <ThemedText>{`Team ${item.name}`}</ThemedText>
-                        {(item.permission_in_team === Role.ADMIN || item.permission_in_team === Role.OWNER) && (
-                            <TouchableOpacity
-                                style={[styles.topButton]}
-                                onPress={onMembersPress}
-                            >
-                                <Text style={styles.buttonText}>members</Text>
-                            </TouchableOpacity>
+                        <ThemedText>{`Team: ${item.name}`}</ThemedText>
+
+                        {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
+                            <Pressable onPress={closeMembers}>
+                                <Octicons name="people" size={14} color="white" />
+                            </Pressable>
                         )}
                     </View>
 
-                    <View>
-                        {item.join_code}
+                    <View style={{ margin: 20 }}>
+                        {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
+                            <JoinCodeDisplay joinCode={item.join_code} />
+                        )}
                     </View>
 
-                    <View>
-                        {membersInTeamLocal && membersInTeamLocal.length > 0 ? (
-                            membersInTeamLocal.map((member : MembersResponse) => (
-                                <View  style={[
-                                    { display: isMembersShow ? 'flex' : 'none' },
-                                    styles.membersContent,
-                                ]} key={`team_${item.id}_member_${member.id}`}>
-                                    <Pressable onPress={closeMembers}>X</Pressable>
+                    <View style={[styles.membersContent, { display: isMembersShow ? 'flex' : 'none' }]}>
+                        <Pressable onPress={closeMembers}>
+                            <Octicons name="x" size={14} color="white" />
+                        </Pressable>
+
+                        <FlatList
+                            data={membersInTeamLocal}
+                            keyExtractor={(item) => `team_${item.team_id}_member_${item.id}`}
+                            renderItem={({ item: member }) => (
+                                <View style={[styles.memberCard]}>
                                     <View style={styles.member}>
                                         <ThemedText>{member.name + " " + member.surname}</ThemedText>
-                                        <Pressable onPress={() => deleteUser(member.id)}>
-                                            <Text style={styles.memberDeleteButton}>USUŃ</Text>
-                                        </Pressable>
+
+                                        {hasGrandestRole(item.permission_in_team, member.permission_level_id) && (
+                                            <View style={styles.membersButtonContainer}>
+                                                <Pressable onPress={() => deleteUser(member.id)}>
+                                                    <Octicons name="trash" size={16} color="white" />
+                                                </Pressable>
+
+                                                <Pressable onPress={() =>
+                                                    setShowRoleForMemberId(prev => prev === member.id ? null : member.id)
+                                                }>
+                                                    <Octicons name="gear" size={16} color="white" />
+                                                </Pressable>
+                                            </View>
+                                        )}
                                     </View>
+
+                                    {showRoleForMemberId === member.id && (
+                                        <View>
+                                            {roles.map((role) => {
+                                                const isSelected = roleToChange === Role[role as keyof typeof Role];
+                                                return (
+                                                    <TouchableOpacity key={role}>
+                                                        <Pressable
+                                                            onPress={() => setRoleToChange(Role[role as keyof typeof Role])}
+                                                            style={[
+                                                                styles.roleOption,
+                                                                isSelected && styles.selectedRoleOption,
+                                                            ]}
+                                                        >
+                                                            <ThemedText style={isSelected && styles.selectedRoleText}>
+                                                                {role}
+                                                            </ThemedText>
+                                                        </Pressable>
+                                                    </TouchableOpacity>
+                                                );
+                                            })}
+                                            <View style={styles.roleButtons}>
+                                                <Pressable onPress={() => updateRole(roleToChange, member.id)}>
+                                                    <Octicons name="check" size={14} color="white" />
+                                                </Pressable>
+                                                <Pressable onPress={() => setShowRoleForMemberId(null)}>
+                                                    <Octicons name="x" size={14} color="white" />
+                                                </Pressable>
+                                            </View>
+                                        </View>
+                                    )}
                                 </View>
-                            ))
-                        ) : (
-                            <Text></Text>
-                        )}
+                            )}
+                            onEndReached={() => {
+                                if (hasMore && !isLoadingMore) {
+                                    getData();
+                                }
+                            }}
+                            onEndReachedThreshold={0.5}
+                            ListFooterComponent={() => (
+                                isLoadingMore ? (
+                                    <View style={styles.loading}>
+                                        <ActivityIndicator size="small" color="#007aff" />
+                                    </View>
+                                ) : null
+                            )}
+                        />
                     </View>
+
                 </ThemedView>
             </Modal>
         </>
@@ -182,26 +256,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 15,
         paddingHorizontal: 20,
-        borderRadius: 15,
-        backgroundColor: 'rgba(51, 51, 51, 0.13)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
+        borderRadius: 12,
+        backgroundColor: '#2a2a2a',
         marginBottom: 15,
+        borderWidth: 1,
+        borderColor: '#444',
     },
     activeTeam: {
-        backgroundColor: 'rgba(51, 51, 51, 0.3)',
+        borderColor: '#007aff',
+        backgroundColor: '#1e1e1e',
     },
     teamText: {
         fontSize: 18,
-        color: '#ddd',
-    },
-    topButton: {
-        padding: 5,
-        borderRadius: 10,
-        backgroundColor: '#94c9ff',
+        color: '#eaeaea',
+        fontWeight: '600',
     },
     topNav: {
         paddingVertical: 10,
@@ -209,46 +277,89 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundColor: '#1f1f1f',
+        borderBottomWidth: 1,
+        borderBottomColor: '#333',
+    },
+    topButton: {
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: '#007aff',
     },
     buttonText: {
         fontSize: 16,
-        color: '#000',
+        color: '#fff',
+        fontWeight: '600',
     },
     content: {
         flex: 1,
+        backgroundColor: '#1e1e1e',
     },
     membersContent: {
-        "position": "fixed",
-        "backgroundColor": "#111213",
-        "top": 0,
-        "right": 0,
-        "paddingTop": 30,
-        "paddingRight": 20,
-        "paddingBottom": 30,
-        "paddingLeft": 20,
-        "height": "100%",
-        "minWidth": "60%"
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        height: '100%',
+        width: '70%',
+        backgroundColor: '#151515',
+        padding: 20,
+        borderLeftWidth: 1,
+        borderLeftColor: '#333',
     },
-
-    memberDeleteButton: {
-        "backgroundColor": "#c31515",
-        "color": "white",
-        "paddingTop": 5,
-        "paddingRight": 5,
-        "paddingBottom": 5,
-        "paddingLeft": 5,
-        "borderTopLeftRadius": 20,
-        "borderTopRightRadius": 20,
-        "borderBottomRightRadius": 20,
-        "borderBottomLeftRadius": 20
+    memberCard: {
+        backgroundColor: '#222',
+        padding: 12,
+        marginVertical: 8,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#333',
     },
-
     member: {
-        "display": "flex",
-        "flexDirection": "row",
-        "justifyContent": "space-between"
-    }
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    membersButtonContainer: {
+        flexDirection: 'row',
+        gap: 10,
+    },
+    roleChangeContainer: {
+        marginTop: 10,
+        padding: 10,
+        backgroundColor: '#2e2e2e',
+        borderRadius: 8,
+    },
+    roleButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    roleButton: {
+        padding: 8,
+        borderRadius: 8,
+        backgroundColor: '#007aff',
+    },
+    roleButtonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    roleOption: {
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        backgroundColor: '#333',
+        marginBottom: 6,
+    },
+    selectedRoleOption: {
+        backgroundColor: '#007aff',
+    },
+    selectedRoleText: {
+        color: '#fff',
+    },
+    loading: {
+        padding: 10,
+        alignItems: 'center',
+    },
 });
 
 export default TeamItem;
