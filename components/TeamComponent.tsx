@@ -28,6 +28,7 @@ import { selectUser } from "@/core/slices/authSlice";
 import { Role, hasGrandestRole, getRolesAtOrBelow } from '@/types/enums/TeamRoleEnum.d';
 import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
 import { Octicons } from "@expo/vector-icons";
+import TeamRemoveButtonAndModal from '@/components/TeamRemoveButtonAndModal';
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -164,6 +165,9 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                     <View style={{ margin: 20 }}>
                         {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
                             <JoinCodeDisplay joinCode={item.join_code} />
+                        )}
+                        {(item.permission_in_team === Role.OWNER) && (
+                            <TeamRemoveButtonAndModal teamId={item.id}></TeamRemoveButtonAndModal>
                         )}
                     </View>
 
