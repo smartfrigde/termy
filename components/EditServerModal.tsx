@@ -32,6 +32,7 @@ export function EditServerModal({
             id: item.id,
         }
         editServer(server).then((response) => {
+            console.log(JSON.stringify(response));
             if (response.status === 201) {
                 console.log('Server edited', server);
             }
