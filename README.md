@@ -37,6 +37,16 @@ npm install
 
 ---
 
+### 🔑 Create a .env file
+
+Create a .env file with following contents:
+```env
+EXPO_PUBLIC_API_URL=http://192.168.68.116
+```
+**Remember to replace the url with your backend url.**
+
+---
+
 ### ▶️ Run the App
 
 #### 🌐 Web (Chromium only)
@@ -53,6 +63,8 @@ expo start --web
 Make sure you have Android Studio installed:
 
 ```sh
+npm run android
+# or
 expo start --android
 ```
 
@@ -61,6 +73,8 @@ expo start --android
 Requires macOS with Xcode installed:
 
 ```sh
+npm run ios
+# or
 expo start --ios
 ```
 

@@ -5,19 +5,19 @@ import { deleteServer } from '@/core/sshManager';
 import { ServerType } from '@/types/Server';
 import { Octicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import ContextMenu from "react-native-context-menu-view";
 import { useDispatch } from 'react-redux';
+import { EditServerModal } from './EditServerModal';
+import TerminalModal from './terminal/Terminal.native';
 export const ServerItem = ({ item }: { item: ServerType }) => {
+    const [terminalModalVisible, setTerminalModalVisible] = useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
     const dispatch = useDispatch();
-    const [editVisible, setVisible] = useState(false);
-    const onHoverIn = () => {
-      setVisible(true);
-    };
-    const onHoverOut = () => {
-      setVisible(false);
-    };
-    const handlePress = () => {
-      alert(JSON.stringify(item));
+
+    const connect = () => {
+      setTerminalModalVisible(true);
+      console.log('Connecting to server', item);
     };
     const handleDelete = () => {
       deleteServer(item.id!).then((response) => {
@@ -27,22 +27,34 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
         }
       })
     };
+    const handleEdit = () => {
+      setEditModalVisible(true);
+    }
     return (
-
-      <Pressable onHoverIn={onHoverIn} onHoverOut={onHoverOut}>
+      <ContextMenu
+        title={item.name}
+        actions={[{ title: "Edit", systemIcon: "pencil" }, { title: "Remove", systemIcon: "trash" }]}
+        onPress={(e) => {
+          console.warn(
+            `Pressed ${e.nativeEvent.name} at index ${e.nativeEvent.index}`
+          );
+          if (e.nativeEvent.index === 1) {
+            handleDelete();
+          } else if (e.nativeEvent.index === 0) {
+            console.log('Edit server');
+            handleEdit();
+          }
+        }}
+      >
         <ThemedView style={styles.serverItem}>
-          <TouchableOpacity style={styles.connectButton} onPress={handlePress}>
+          <TouchableOpacity style={styles.connectButton} onPress={connect}>
             <Octicons name="link" size={24} color="white" />
           </TouchableOpacity>
           <ThemedText type="title">{item.name}</ThemedText>
-          {editVisible && (
-            <TouchableOpacity style={styles.editButton} onPress={handleDelete}>
-              <Octicons name="trash" size={24} color="white" />
-            </TouchableOpacity>
-          )}
         </ThemedView>
-  
-      </Pressable>
+        <TerminalModal server={item} visible={terminalModalVisible} setVisible={setTerminalModalVisible}/>
+        <EditServerModal item={item} setModalVisible={setEditModalVisible} modalVisible={editModalVisible}/>
+      </ContextMenu>
     );
   };
   
