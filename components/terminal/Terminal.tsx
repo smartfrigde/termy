@@ -5,6 +5,7 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import ThemedButton from '../ThemedButton';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
+import SpecialKeys from './SpecialKeys';
 import XTerm from './XTerm';
 
 interface TerminalModalProps {
@@ -41,6 +42,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         <ScrollView style={{ flex: 1, marginBottom: 20 }}>
           <XTerm output={output} />
         </ScrollView>
+        <SpecialKeys/>
         <ThemedView style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TextInput
             style={styles.textInput}
