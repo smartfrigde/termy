@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
+    blacklist: ['ssh', 'team_members', 'team'],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
