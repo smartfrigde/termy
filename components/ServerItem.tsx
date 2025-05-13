@@ -4,13 +4,13 @@ import { removeServer } from '@/core/slices/sshSlice';
 import { deleteServer } from '@/core/sshManager';
 import { ServerType } from '@/types/Server';
 import { Octicons } from '@expo/vector-icons';
-import { ContextMenuContent, ContextMenuItem } from '@radix-ui/react-context-menu';
+import { ContextMenuContent } from '@radix-ui/react-context-menu';
 import { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { EditServerModal } from './EditServerModal';
 import TerminalModal from './terminal/Terminal';
-import { ContextMenuItemIcon, ContextMenuItemTitle, ContextMenuRoot, ContextMenuTrigger } from './ui/ContextMenu';
+import { ContextMenuItem, ContextMenuItemIcon, ContextMenuItemTitle, ContextMenuRoot, ContextMenuTrigger } from './ui/ContextMenu';
 export const ServerItem = ({ item }: { item: ServerType }) => {
   const [terminalModalVisible, setTerminalModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -42,17 +42,17 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
           <ThemedText type="title">{item.name}</ThemedText>
         </ThemedView>
       </ContextMenuTrigger>
-      <ContextMenuContent style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#121212", borderRadius: 20, padding: 10, zIndex: 999999, position: 'static' }}>
+      <ContextMenuContent style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#121212", borderRadius: 20, padding: 10, zIndex: 999999, justifyContent: 'center', alignItems: 'center' }}>
         <ContextMenuItem key="edit" onSelect={handleEdit}>
           <ContextMenuItemTitle>Edit</ContextMenuItemTitle>
-          <ContextMenuItemIcon ios="pencil">
-            <Octicons name="pencil" size={24} color="white" />
+          <ContextMenuItemIcon>
+            <Octicons name="pencil" size={16} color="white" />
           </ContextMenuItemIcon>
         </ContextMenuItem>
         <ContextMenuItem key="delete" onSelect={handleDelete}>
           <ContextMenuItemTitle>Delete</ContextMenuItemTitle>
-          <ContextMenuItemIcon ios="trash">
-            <Octicons name="trash" size={24} color="white" />
+          <ContextMenuItemIcon>
+            <Octicons name="trash" size={16} color="white" />
           </ContextMenuItemIcon>
         </ContextMenuItem>
       </ContextMenuContent>

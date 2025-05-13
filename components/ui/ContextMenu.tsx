@@ -20,8 +20,8 @@ export const ContextMenuContent = ContextMenu.create(
 
 export const ContextMenuItem = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.Item>) => (
-    <View style={styles.contextMenuItem}>
-      <ContextMenu.Item {...props} />
+    <View>
+      <ContextMenu.Item style={{flexDirection: "row", flex: 1, display: "flex", width: "100%", backgroundColor: "#2f2f2f", borderRadius: 5, padding: 5, margin: 5}} {...props} />
     </View>
   ),
   'Item'
@@ -29,14 +29,14 @@ export const ContextMenuItem = ContextMenu.create(
 
 export const ContextMenuItemTitle = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.ItemTitle>) => (
-    <ContextMenu.ItemTitle style={styles.contextMenuItemText} {...props} />
+    <ContextMenu.ItemTitle style={{color: "#FFF", fontFamily: "sans-serif", marginRight: 10}} {...props} />
   ),
   'ItemTitle'
 )
 
 export const ContextMenuItemIcon = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.ItemIcon>) => (
-    <ContextMenu.ItemIcon style={styles.contextMenuItemIcon} {...props} />
+    <ContextMenu.ItemIcon {...props} />
   ),
   'ItemIcon'
 )
@@ -124,10 +124,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'black',
   },
-  contextMenuItemText: {
-    color: '#fff',
-  },
-  contextMenuItemIcon: {
-    marginRight: 10,
-  },
+
 });
