@@ -19,6 +19,9 @@ export async function createServer(server: ServerType) {
     serverDetails.append("port", server.port.toString());
     serverDetails.append("password", server.password);
     serverDetails.append("login", server.login);
+    if (server.team_id && server.team_id !== 0) {
+        serverDetails.append("team_id", server.team_id.toString());
+    }
     return await fetchApi("/ssh", {
         method: "POST",
         body: serverDetails

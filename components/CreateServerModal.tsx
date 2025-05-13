@@ -1,8 +1,11 @@
 import { ThemedText } from '@/components/ThemedText';
 import isMobile from '@/constants/isMobile';
+import { selectedTeams } from '@/core/slices/teamSlice';
 import { createServer } from '@/core/sshManager';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { NiceDropdown } from './NiceDropdown';
 import { ThemedView } from './ThemedView';
 
 interface ServerModalProps {
@@ -21,6 +24,18 @@ export function CreateServerModal({
     const [serverPort, setServerPort] = useState(0);
     const [serverPassword, setServerPassword] = useState('');
     const [serverUsername, setServerUsername] = useState('');
+    const teams = useSelector(selectedTeams);
+    const teamsData = teams.map((team) => {
+        return {
+            label: team.name,
+            value: team.id,
+        }
+    });
+    teamsData.push({
+        label: "Default",
+        value: 0,
+    });
+    const [selectedTeam, setSelectedTeam] = useState(0);
     const save = () => {
         const server = {
             name: serverName,
@@ -28,17 +43,18 @@ export function CreateServerModal({
             port: serverPort,
             password: serverPassword,
             login: serverUsername,
+            team_id: selectedTeam,
         }
         createServer(server).then((response) => {
             if (response.status === 201) {
                 console.log('Server created', server);
                 refresh();
             }
-        }). catch((err) => {
+        }).catch((err) => {
             console.log('Error creating server');
             console.error(err);
         })
-        
+
         setModalVisible(!modalVisible);
     }
     return (
@@ -47,7 +63,7 @@ export function CreateServerModal({
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {save()}}>
+                onRequestClose={() => { save() }}>
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
                         <ThemedText style={styles.modalText} type="subtitle">Add a server</ThemedText>
@@ -80,6 +96,14 @@ export function CreateServerModal({
                                 }
                             }}
                         />
+                        <ThemedText style={styles.modalText} type="defaultSemiBold">Server username</ThemedText>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Server username"
+                            placeholderTextColor="gray"
+                            value={serverUsername}
+                            onChangeText={setServerUsername}
+                        />
                         <ThemedText style={styles.modalText} type="defaultSemiBold">Server password</ThemedText>
                         <TextInput
                             style={styles.textInput}
@@ -89,15 +113,9 @@ export function CreateServerModal({
                             value={serverPassword}
                             onChangeText={setServerPassword}
                         />
-                        <ThemedText style={styles.modalText} type="defaultSemiBold">Server username</ThemedText>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Server username"
-                            placeholderTextColor="gray"
-                            value={serverUsername}
-                            onChangeText={setServerUsername}
-                        />
-                        
+                        <ThemedText style={styles.modalText} type="defaultSemiBold">Team</ThemedText>
+                        <NiceDropdown setValue={setSelectedTeam} value={selectedTeam} data={teamsData}></NiceDropdown>
+
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => save()}>
@@ -126,9 +144,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalView: {
-        margin: 20,
+        margin: 10,
         borderRadius: 20,
-        padding: 35,
+        padding: 20,
         width: isMobile() ? '90%' : '60%',
         backgroundColor: '#121212',
         alignItems: 'center',
@@ -146,10 +164,9 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 2,
     },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
+
     buttonClose: {
+        marginTop: 20,
         backgroundColor: '#2196F3',
     },
     textStyle: {
