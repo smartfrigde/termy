@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { EditServerModal } from './EditServerModal';
-import TerminalModal from './terminal/Terminal.native';
+import TerminalModal from './terminal/Terminal';
 import { ContextMenuItemIcon, ContextMenuItemTitle, ContextMenuRoot, ContextMenuTrigger } from './ui/ContextMenu';
 export const ServerItem = ({ item }: { item: ServerType }) => {
   const [terminalModalVisible, setTerminalModalVisible] = useState(false);
@@ -42,7 +42,7 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
           <ThemedText type="title">{item.name}</ThemedText>
         </ThemedView>
       </ContextMenuTrigger>
-      <ContextMenuContent style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#121212", borderRadius: 20, padding: 10 }}>
+      <ContextMenuContent style={{ flex: 1, height: "100%", width: "100%", backgroundColor: "#121212", borderRadius: 20, padding: 10, zIndex: 999999, position: 'static' }}>
         <ContextMenuItem key="edit" onSelect={handleEdit}>
           <ContextMenuItemTitle>Edit</ContextMenuItemTitle>
           <ContextMenuItemIcon ios="pencil">
