@@ -61,11 +61,12 @@ const RegisterScreen = () => {
                             console.log('Registration successful');
                             console.log(res);
                             router.navigate("/(auth)/login")
-                        } else {
-                            // Handle registration error
                         }
                     }
-                    );
+                    ).catch((error) => {
+                        console.error('Register error: ', error);
+                        alert('Registration failed.');
+                    });
                 }}
                 style={{
                     backgroundColor: '#007BFF',
@@ -73,7 +74,7 @@ const RegisterScreen = () => {
                     borderRadius: 5,
                     marginTop: 20,
                 }}
-                ></ThemedButton>
+            ></ThemedButton>
         </ThemedView>
     );
 };

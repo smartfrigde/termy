@@ -49,7 +49,10 @@ const LoginScreen = () => {
                         } else {
                             console.log('Login failed');
                         }
-                    })
+                    }).catch((error) => {
+                        console.error('Login error:', error);
+                        alert('Login failed. Please check your credentials.');
+                    });
                 }}
                 style={{
                     backgroundColor: '#007BFF',
@@ -57,7 +60,7 @@ const LoginScreen = () => {
                     borderRadius: 5,
                     marginTop: 20,
                 }}
-                ></ThemedButton>
+            ></ThemedButton>
         </ThemedView>
     );
 };

@@ -32,7 +32,7 @@ export default function DashboardScreen() {
     getServers().then((servers) => {
       console.log(servers);
       dispatch(setServers(servers.ssh_connections));
-    });
+    })
   }
   useEffect(() => {
     refresh();

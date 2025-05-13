@@ -1,7 +1,7 @@
 import { endpoint } from "@/constants/api";
 
-import { read, store } from "./settings";
 import { fetchApi } from "@/core/customFetch";
+import { read, store } from "./settings";
 
 
 export async function getCurrentUser(): Promise<User | null> {
@@ -53,7 +53,7 @@ export async function login(email: string, password: string) {
   return data;
 }
 
-export async function update(id: number, name?: string, surname?: string, email?: string, password?: string | null) {
+export async function update(id: string, name?: string, surname?: string, email?: string, password?: string | null) {
 
   const body: Record<string, string> = {};
   if (name !== undefined) body.name = name;
