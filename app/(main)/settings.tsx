@@ -1,5 +1,6 @@
 import { update as updateUser } from '@/core/loginManager';
 import { selectUser, setUser } from '@/core/slices/authSlice';
+import { AppDispatch } from '@/core/store';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -10,8 +11,7 @@ import {
   useColorScheme,
   View
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '@/core/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SettingsScreen() {
   const user = useSelector(selectUser);

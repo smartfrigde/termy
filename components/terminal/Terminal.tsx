@@ -21,7 +21,6 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
 
   };
 
-
   const sendCommand = () => {
     setOutput(command);
   };
