@@ -21,7 +21,7 @@ export const ContextMenuContent = ContextMenu.create(
 export const ContextMenuItem = ContextMenu.create(
   (props: React.ComponentProps<typeof ContextMenu.Item>) => (
     <View>
-      <ContextMenu.Item style={{flexDirection: "row", flex: 1, display: "flex", width: "100%", backgroundColor: "#2f2f2f", borderRadius: 5, padding: 5, margin: 5}} {...props} />
+      <ContextMenu.Item style={{flexDirection: "row", flex: 1, display: "flex", backgroundColor: "#2f2f2f", borderRadius: 5, padding: 5, margin: 5}} {...props} />
     </View>
   ),
   'Item'
