@@ -2,7 +2,7 @@ import { fetchApi } from "@/core/customFetch";
 
 export default async function addTeam(name: string) {
     try {
-        const response = await fetchApi(`/teams/`, {
+        const response = await fetchApi("/teams/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -127,7 +127,7 @@ export async function deleteMember(teamId: number, userId: number) {
 
 export async function addMember(join_code: string) {
     try {
-        const response = await fetchApi(`/teams/members`, {
+        const response = await fetchApi("/teams/members", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

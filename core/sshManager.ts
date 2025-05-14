@@ -2,7 +2,7 @@ import type { ServerType } from "@/types/Server";
 import { fetchApi } from "./customFetch";
 
 export async function getServers() {
-    const response = await fetchApi(`/ssh`, {
+    const response = await fetchApi("/ssh", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

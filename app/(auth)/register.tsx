@@ -77,7 +77,7 @@ const RegisterScreen = () => {
                     borderRadius: 5,
                     marginTop: 20,
                 }}
-            ></ThemedButton>
+            />
         </ThemedView>
     );
 };

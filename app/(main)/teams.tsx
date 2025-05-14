@@ -83,7 +83,7 @@ const TeamsScreen = () => {
     return (
         <>
             <ThemedView style={styles.container}>
-                <Stack.Screen options={{ title: `Your Teams` }} />
+                <Stack.Screen options={{ title: "Your Teams" }} />
                 <FlatList
                     data={paginateTeams(teams, currentPage, perPage)}
                     renderItem={({ item }) => (

@@ -94,7 +94,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 value={serverPort.toString()}
                 onChangeText={(text) => {
                     const port = Number.parseInt(text);
-                    if (!isNaN(port)) {
+                    if (!Number.isNaN(port)) {
                         setServerPort(port);
                     }
                 }}
@@ -123,7 +123,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Team
             </ThemedText>
-            <NiceDropdown setValue={setSelectedTeam} value={selectedTeam} data={teamsData}></NiceDropdown>
+            <NiceDropdown setValue={setSelectedTeam} value={selectedTeam} data={teamsData} />
 
             <Pressable style={[styles.button, styles.buttonClose]} onPress={() => save()}>
                 <ThemedText style={styles.textStyle}>Create</ThemedText>

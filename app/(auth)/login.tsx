@@ -64,7 +64,7 @@ const LoginScreen = () => {
                     borderRadius: 5,
                     marginTop: 20,
                 }}
-            ></ThemedButton>
+            />
         </ThemedView>
     );
 };

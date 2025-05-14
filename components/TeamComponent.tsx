@@ -108,7 +108,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
         if (membersInTeamLocal.length < currentTeamsPageLocal * 30 && hasMore) {
             getData();
         }
-    }, [currentTeamsPageLocal]);
+    }, [currentTeamsPageLocal, membersInTeamLocal]);
 
     const [showRoleForMemberId, setShowRoleForMemberId] = useState<number | null>(null);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -117,7 +117,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     async function updateRole(newRole: number, userId: number) {
         const response = await updateMemberRole(item.id, userId, newRole);
 
-        if (response && response.member) {
+        if (response?.member) {
             setTeamMember(response.member);
         }
     }
@@ -151,9 +151,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
                             <JoinCodeDisplay joinCode={item.join_code} />
                         )}
-                        {item.permission_in_team === Role.OWNER && (
-                            <TeamRemoveButtonAndModal teamId={item.id}></TeamRemoveButtonAndModal>
-                        )}
+                        {item.permission_in_team === Role.OWNER && <TeamRemoveButtonAndModal teamId={item.id} />}
                     </View>
 
                     <View style={[styles.membersContent, { display: isMembersShow ? "flex" : "none" }]}>
@@ -167,7 +165,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                             renderItem={({ item: member }) => (
                                 <View style={[styles.memberCard]}>
                                     <View style={styles.member}>
-                                        <ThemedText>{member.name + " " + member.surname}</ThemedText>
+                                        <ThemedText>{`${member.name} ${member.surname}`}</ThemedText>
 
                                         {hasGrandestRole(item.permission_in_team, member.permission_level_id) && (
                                             <View style={styles.membersButtonContainer}>

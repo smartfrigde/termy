@@ -37,7 +37,7 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
             while (attempts < 2) {
                 try {
                     const newToken = await refreshToken();
-                    headers["Authorization"] = `Bearer ${newToken}`;
+                    headers.Authorization = `Bearer ${newToken}`;
                     const retryResponse = await fetch(`${endpoint}${url}`, {
                         ...options,
                         headers,

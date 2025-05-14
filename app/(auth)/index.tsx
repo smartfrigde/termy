@@ -25,7 +25,7 @@ function AuthButtons() {
                         router.navigate("/(main)");
                     }}
                     style={styles.button}
-                    title={"Welcome back " + user?.name}
+                    title={`Welcome back ${user?.name}`}
                 />
                 <TouchableOpacity
                     onPress={() => {

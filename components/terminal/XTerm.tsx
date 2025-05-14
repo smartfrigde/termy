@@ -23,5 +23,5 @@ export default function XTerm({ output }: XTermProps) {
         }
     }, [output]);
 
-    return <div id="terminal" ref={terminalRef}></div>;
+    return <div id="terminal" ref={terminalRef} />;
 }

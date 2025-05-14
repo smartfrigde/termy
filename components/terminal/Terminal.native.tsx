@@ -38,7 +38,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
 
             conn.on("error", (err) => {
                 console.error("SSH Client error:", err);
-                setOutput((prev) => prev + "\nError: " + err.message);
+                setOutput((prev) => `${prev}\nError: ${err.message}`);
             });
 
             conn.on("Shell", (event) => {
@@ -70,11 +70,11 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
     const sendCommand = () => {
         if (clientRef.current) {
             console.log("Command sent:", command);
-            clientRef.current.writeToShell(command + "\n");
+            clientRef.current.writeToShell(`${command}\n`);
             setCommand("");
         } else {
             console.error("SSH Client is not connected");
-            setOutput((prev) => prev + "\nError: SSH Client is not connected.");
+            setOutput((prev) => `${prev}\nError: SSH Client is not connected.`);
         }
     };
 
