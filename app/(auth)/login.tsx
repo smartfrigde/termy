@@ -1,40 +1,39 @@
-import ThemedButton from '@/components/ThemedButton';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { login } from '@/core/loginManager';
-import { setApiToken, setIsLoggedIn, setRefreshToken, setUser } from '@/core/slices/authSlice';
-import { router, Stack } from 'expo-router';
-import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
-import { useDispatch } from 'react-redux';
+import ThemedButton from "@/components/ThemedButton";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { login } from "@/core/loginManager";
+import { setApiToken, setIsLoggedIn, setRefreshToken, setUser } from "@/core/slices/authSlice";
+import { Stack, router } from "expo-router";
+import React from "react";
+import { StyleSheet, TextInput } from "react-native";
+import { useDispatch } from "react-redux";
 
 const LoginScreen = () => {
     const dispatch = useDispatch();
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
     function handleLogin() {
-        login(
-            email,
-            password,
-        ).then((data) => {
-            if (data.user) {
-                dispatch(setApiToken(data.api_token))
-                dispatch(setRefreshToken(data.refresh_token))
-                dispatch(setUser(data.user))
-                dispatch(setIsLoggedIn(true))
-                console.log('Login successful');
-                router.navigate("/(main)")
-            } else {
-                console.log('Login failed');
-            }
-        }).catch((error) => {
-            console.error('Login error:', error);
-            alert('Login failed. Please check your credentials.');
-        });
+        login(email, password)
+            .then((data) => {
+                if (data.user) {
+                    dispatch(setApiToken(data.api_token));
+                    dispatch(setRefreshToken(data.refresh_token));
+                    dispatch(setUser(data.user));
+                    dispatch(setIsLoggedIn(true));
+                    console.log("Login successful");
+                    router.navigate("/(main)");
+                } else {
+                    console.log("Login failed");
+                }
+            })
+            .catch((error) => {
+                console.error("Login error:", error);
+                alert("Login failed. Please check your credentials.");
+            });
     }
     return (
         <ThemedView style={styles.container}>
-            <Stack.Screen options={{ title: 'Login' }} />
+            <Stack.Screen options={{ title: "Login" }} />
             <ThemedText type="defaultSemiBold">E-mail</ThemedText>
             <TextInput
                 style={styles.textInput}
@@ -60,7 +59,7 @@ const LoginScreen = () => {
                     handleLogin();
                 }}
                 style={{
-                    backgroundColor: '#007BFF',
+                    backgroundColor: "#007BFF",
                     padding: 10,
                     borderRadius: 5,
                     marginTop: 20,
@@ -76,11 +75,11 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     textInput: {
-        color: 'white',
+        color: "white",
         height: 40,
-        borderColor: 'gray',
+        borderColor: "gray",
         borderWidth: 1,
-        width: '100%',
+        width: "100%",
         marginBottom: 20,
         paddingLeft: 10,
     },

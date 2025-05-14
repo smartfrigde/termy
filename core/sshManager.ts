@@ -1,14 +1,14 @@
-import { ServerType } from "@/types/Server";
+import type { ServerType } from "@/types/Server";
 import { fetchApi } from "./customFetch";
 
 export async function getServers() {
     const response = await fetchApi(`/ssh`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
     });
-    console.log(response)
+    console.log(response);
     return await response.json();
 }
 
@@ -24,13 +24,13 @@ export async function createServer(server: ServerType) {
     }
     return await fetchApi("/ssh", {
         method: "POST",
-        body: serverDetails
+        body: serverDetails,
     });
 }
 
-export async function deleteServer(id: string) : Promise<Response> {
+export async function deleteServer(id: string): Promise<Response> {
     return await fetchApi(`/ssh/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
     });
 }
 
@@ -46,6 +46,6 @@ export async function editServer(server: ServerType) {
     serverDetails.append("login", server.login);
     return await fetchApi(`/ssh/${server.id}`, {
         method: "PATCH",
-        body: serverDetails
+        body: serverDetails,
     });
 }

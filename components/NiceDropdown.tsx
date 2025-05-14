@@ -1,7 +1,7 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from "@expo/vector-icons/AntDesign";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 
 interface DropdownComponentProps {
     data: Array<{ label: string; value: any }>;
@@ -9,21 +9,13 @@ interface DropdownComponentProps {
     setValue: (value: any) => void;
 }
 export function NiceDropdown({ data, value, setValue }: DropdownComponentProps) {
-    
     function renderItem(item: { label: string; value: any }) {
         return (
-        <View style={styles.item}>
-          <Text style={styles.textItem}>{item.label}</Text>
-          {item.value === value && (
-            <AntDesign
-              style={styles.icon}
-              color="black"
-              name="Safety"
-              size={20}
-            />
-          )}
-        </View>
-      );
+            <View style={styles.item}>
+                <Text style={styles.textItem}>{item.label}</Text>
+                {item.value === value && <AntDesign style={styles.icon} color="black" name="Safety" size={20} />}
+            </View>
+        );
     }
     return (
         <Dropdown
@@ -40,25 +32,23 @@ export function NiceDropdown({ data, value, setValue }: DropdownComponentProps) 
             placeholder="Select item"
             searchPlaceholder="Search..."
             value={value}
-            onChange={item => {
+            onChange={(item) => {
                 setValue(item.value);
             }}
-            renderLeftIcon={() => (
-                <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-            )}
+            renderLeftIcon={() => <AntDesign style={styles.icon} color="black" name="Safety" size={20} />}
             renderItem={renderItem}
         />
     );
-};
+}
 
 const styles = StyleSheet.create({
     dropdown: {
         margin: 5,
         height: 50,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 12,
         padding: 10,
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 1,
@@ -72,9 +62,9 @@ const styles = StyleSheet.create({
     },
     item: {
         padding: 17,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     textItem: {
         flex: 1,

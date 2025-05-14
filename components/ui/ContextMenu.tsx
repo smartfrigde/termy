@@ -1,128 +1,112 @@
-import { Pressable, StyleSheet, View } from 'react-native'
-import * as ContextMenu from 'zeego/context-menu'
-export const ContextMenuRoot = ContextMenu.Root
+import { Pressable, StyleSheet, View } from "react-native";
+import * as ContextMenu from "zeego/context-menu";
+export const ContextMenuRoot = ContextMenu.Root;
 
 export const ContextMenuTrigger = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Trigger>) => (
-    <ContextMenu.Trigger action="press" {...props} asChild>
-      <Pressable>{props.children}</Pressable>
-    </ContextMenu.Trigger>
-  ),
-  'Trigger'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Trigger>) => (
+        <ContextMenu.Trigger action="press" {...props} asChild>
+            <Pressable>{props.children}</Pressable>
+        </ContextMenu.Trigger>
+    ),
+    "Trigger",
+);
 
 export const ContextMenuContent = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Content>) => (
-    <ContextMenu.Content {...props} />
-  ),
-  'Content'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Content>) => <ContextMenu.Content {...props} />,
+    "Content",
+);
 
 export const ContextMenuItem = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Item>) => (
-    <View>
-      <ContextMenu.Item style={{flexDirection: "row", flex: 1, display: "flex", backgroundColor: "#2f2f2f", borderRadius: 5, padding: 5, margin: 5}} {...props} />
-    </View>
-  ),
-  'Item'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Item>) => (
+        <View>
+            <ContextMenu.Item
+                style={{
+                    flexDirection: "row",
+                    flex: 1,
+                    display: "flex",
+                    backgroundColor: "#2f2f2f",
+                    borderRadius: 5,
+                    padding: 5,
+                    margin: 5,
+                }}
+                {...props}
+            />
+        </View>
+    ),
+    "Item",
+);
 
 export const ContextMenuItemTitle = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.ItemTitle>) => (
-    <ContextMenu.ItemTitle style={{color: "#FFF", fontFamily: "sans-serif", marginRight: 10}} {...props} />
-  ),
-  'ItemTitle'
-)
+    (props: React.ComponentProps<typeof ContextMenu.ItemTitle>) => (
+        <ContextMenu.ItemTitle style={{ color: "#FFF", fontFamily: "sans-serif", marginRight: 10 }} {...props} />
+    ),
+    "ItemTitle",
+);
 
 export const ContextMenuItemIcon = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.ItemIcon>) => (
-    <ContextMenu.ItemIcon {...props} />
-  ),
-  'ItemIcon'
-)
+    (props: React.ComponentProps<typeof ContextMenu.ItemIcon>) => <ContextMenu.ItemIcon {...props} />,
+    "ItemIcon",
+);
 
 export const ContextMenuItemImage = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.ItemImage>) => (
-    <ContextMenu.ItemImage {...props} />
-  ),
-  'ItemImage'
-)
+    (props: React.ComponentProps<typeof ContextMenu.ItemImage>) => <ContextMenu.ItemImage {...props} />,
+    "ItemImage",
+);
 
 export const ContextMenuCheckboxItem = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.CheckboxItem>) => (
-    <ContextMenu.CheckboxItem {...props} />
-  ),
-  'CheckboxItem'
-)
+    (props: React.ComponentProps<typeof ContextMenu.CheckboxItem>) => <ContextMenu.CheckboxItem {...props} />,
+    "CheckboxItem",
+);
 
 export const ContextMenuLabel = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Label>) => (
-    <ContextMenu.Label {...props} />
-  ),
-  'Label'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Label>) => <ContextMenu.Label {...props} />,
+    "Label",
+);
 
 export const ContextMenuSeparator = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Separator>) => (
-    <ContextMenu.Separator {...props} />
-  ),
-  'Separator'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Separator>) => <ContextMenu.Separator {...props} />,
+    "Separator",
+);
 
 export const ContextMenuGroup = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Group>) => (
-    <ContextMenu.Group {...props} />
-  ),
-  'Group'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Group>) => <ContextMenu.Group {...props} />,
+    "Group",
+);
 
 export const ContextMenuSubTrigger = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.SubTrigger>) => (
-    <ContextMenu.SubTrigger {...props} />
-  ),
-  'SubTrigger'
-)
+    (props: React.ComponentProps<typeof ContextMenu.SubTrigger>) => <ContextMenu.SubTrigger {...props} />,
+    "SubTrigger",
+);
 
 export const ContextMenuSubContent = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.SubContent>) => (
-    <ContextMenu.SubContent {...props} />
-  ),
-  'SubContent'
-)
+    (props: React.ComponentProps<typeof ContextMenu.SubContent>) => <ContextMenu.SubContent {...props} />,
+    "SubContent",
+);
 
 export const ContextMenuSub = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Sub>) => (
-    <ContextMenu.Sub {...props} />
-  ),
-  'Sub'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Sub>) => <ContextMenu.Sub {...props} />,
+    "Sub",
+);
 
 export const ContextMenuItemIndicator = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.ItemIndicator>) => (
-    <ContextMenu.ItemIndicator {...props} />
-  ),
-  'ItemIndicator'
-)
+    (props: React.ComponentProps<typeof ContextMenu.ItemIndicator>) => <ContextMenu.ItemIndicator {...props} />,
+    "ItemIndicator",
+);
 
 export const ContextMenuPreview = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Preview>) => (
-    <ContextMenu.Preview {...props} />
-  ),
-  'Preview'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Preview>) => <ContextMenu.Preview {...props} />,
+    "Preview",
+);
 
 export const ContextMenuArrow = ContextMenu.create(
-  (props: React.ComponentProps<typeof ContextMenu.Arrow>) => (
-    <ContextMenu.Arrow {...props} />
-  ),
-  'Arrow'
-)
+    (props: React.ComponentProps<typeof ContextMenu.Arrow>) => <ContextMenu.Arrow {...props} />,
+    "Arrow",
+);
 
 const styles = StyleSheet.create({
-  contextMenuItem: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'black',
-  },
-
+    contextMenuItem: {
+        padding: 10,
+        borderRadius: 5,
+        backgroundColor: "black",
+    },
 });

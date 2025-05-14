@@ -1,5 +1,5 @@
-import { TeamType } from './../../types/Team.d';
 import { createSlice } from "@reduxjs/toolkit";
+import type { TeamType } from "./../../types/Team.d";
 
 export const teamSlice = createSlice({
     name: "team",
@@ -7,7 +7,7 @@ export const teamSlice = createSlice({
         teams: [] as TeamType[],
         totalPages: 2,
         currentPage: 0,
-        totalTeamsCount: 1
+        totalTeamsCount: 1,
     },
     reducers: {
         setTeams: (state, action: { payload: TeamType[] }) => {
@@ -15,10 +15,10 @@ export const teamSlice = createSlice({
         },
 
         setTeam: (state, action: { payload: TeamType }) => {
-            const index = state.teams.findIndex(team => team.id === action.payload.id);
+            const index = state.teams.findIndex((team) => team.id === action.payload.id);
             if (index !== -1) {
-                state.teams[index] = action.payload
-                state.totalTeamsCount =- 1
+                state.teams[index] = action.payload;
+                state.totalTeamsCount = -1;
             }
         },
 
@@ -36,7 +36,7 @@ export const teamSlice = createSlice({
                     currentPage: number;
                     totalTeamsCount?: number;
                 };
-            }
+            },
         ) => {
             state.teams.push(action.payload.team);
             state.totalPages = action.payload.totalPages;
@@ -45,20 +45,21 @@ export const teamSlice = createSlice({
             state.totalTeamsCount = action.payload.totalTeamsCount ?? state.totalTeamsCount + 1;
         },
 
-
         removeTeam: (state, action: { payload: number }) => {
-            const index = state.teams.findIndex(team => team.id === action.payload);
+            const index = state.teams.findIndex((team) => team.id === action.payload);
             if (index !== -1) {
                 state.teams.splice(index, 1);
-                state.totalTeamsCount =- 1
+                state.totalTeamsCount = -1;
             }
-        }
+        },
     },
 });
 
-export const selectedTeams = (state: { team: { teams: TeamType[]; }; }) => state.team.teams;
+export const selectedTeams = (state: { team: { teams: TeamType[] } }) => state.team.teams;
 
-export const hasMoreTeams = (state: { team: { currentPage: number; totalPages: number } }) => {
+export const hasMoreTeams = (state: {
+    team: { currentPage: number; totalPages: number };
+}) => {
     return state.team.currentPage < state.team.totalPages;
 };
 
@@ -68,5 +69,7 @@ export const teamsCount = (state: { team: { teams: TeamType[] } }) => {
     return state.team.teams.length;
 };
 
-export const totalUserTeamsCount = (state: { team: { totalTeamsCount: number; }; }) => state.team.totalTeamsCount;
-export const currentTeamsPage = (state: { team: { currentPage: number; }; }) => state.team.currentPage;
+export const totalUserTeamsCount = (state: {
+    team: { totalTeamsCount: number };
+}) => state.team.totalTeamsCount;
+export const currentTeamsPage = (state: { team: { currentPage: number } }) => state.team.currentPage;

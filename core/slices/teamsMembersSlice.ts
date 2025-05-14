@@ -1,4 +1,4 @@
-import { MembersResponse, TeamPageData } from "@/types/TeamMember";
+import type { MembersResponse, TeamPageData } from "@/types/TeamMember";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const teamMembersSlice = createSlice({
@@ -18,7 +18,7 @@ export const teamMembersSlice = createSlice({
                     members: MembersResponse;
                     pageData: TeamPageData;
                 };
-            }
+            },
         ) {
             state.members.push(action.payload.members);
 
@@ -42,20 +42,20 @@ export const teamMembersSlice = createSlice({
             if (index !== -1) {
                 state.members[index] = action.payload;
             }
-        }
-    }
-})
+        },
+    },
+});
 
 export const { addTeamMember, removeTeamMember, setTeamMember } = teamMembersSlice.actions;
 
+export const PageData = (state: {
+    team_members: { page_data: TeamPageData[] };
+}) => state.team_members.page_data;
+export const Members = (state: {
+    team_members: { members: MembersResponse[] };
+}) => state.team_members.members;
 
-export const PageData = (state: { team_members: { page_data: TeamPageData[]; }; }) => state.team_members.page_data;
-export const Members = (state: { team_members: { members: MembersResponse[]; }; }) => state.team_members.members;
-
-export const hasMoreMembers = (
-    pageData: TeamPageData[], 
-    teamId: number          
-): boolean => {
+export const hasMoreMembers = (pageData: TeamPageData[], teamId: number): boolean => {
     const teamPage = pageData.find((item) => item?.team_id === teamId);
 
     if (!teamPage) return true;
@@ -63,20 +63,13 @@ export const hasMoreMembers = (
     return teamPage.current_page < teamPage.total_pages;
 };
 
-export const membersInTeam = (
-    members: MembersResponse[],
-    teamId: number
-): MembersResponse[] => {
+export const membersInTeam = (members: MembersResponse[], teamId: number): MembersResponse[] => {
     console.log(members);
     console.log(members.filter((item) => item?.team_id === teamId));
     return members.filter((item) => item?.team_id === teamId);
 };
 
-export const teamCurrentPage = (
-    pageData: TeamPageData[], 
-    teamId: number          
-): number => {
-
+export const teamCurrentPage = (pageData: TeamPageData[], teamId: number): number => {
     const teamPage = pageData.find((item) => item?.team_id === teamId);
 
     if (!teamPage) return 0;

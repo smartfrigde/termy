@@ -1,38 +1,34 @@
-import ThemedButton from '@/components/ThemedButton';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { register } from '@/core/loginManager';
-import { router, Stack } from 'expo-router';
-import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import ThemedButton from "@/components/ThemedButton";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { register } from "@/core/loginManager";
+import { Stack, router } from "expo-router";
+import React from "react";
+import { StyleSheet, TextInput } from "react-native";
 
 const RegisterScreen = () => {
-    const [fName, setFName] = React.useState('');
-    const [lName, setLName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [fName, setFName] = React.useState("");
+    const [lName, setLName] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
     function handleRegister() {
-        register(
-            fName,
-            lName,
-            email,
-            password,
-        ).then((res) => {
-            if (res) {
-                console.log('Registration successful');
-                console.log(res);
-                router.navigate("/(auth)/login")
-            }
-        }
-        ).catch((error) => {
-            console.error('Register error: ', error);
-            alert('Registration failed.');
-        });
+        register(fName, lName, email, password)
+            .then((res) => {
+                if (res) {
+                    console.log("Registration successful");
+                    console.log(res);
+                    router.navigate("/(auth)/login");
+                }
+            })
+            .catch((error) => {
+                console.error("Register error: ", error);
+                alert("Registration failed.");
+            });
     }
     return (
         <ThemedView style={styles.container}>
-            <Stack.Screen options={{ title: 'Register' }} />
+            <Stack.Screen options={{ title: "Register" }} />
             <ThemedText type="defaultSemiBold">First name</ThemedText>
             <TextInput
                 style={styles.textInput}
@@ -76,7 +72,7 @@ const RegisterScreen = () => {
                     handleRegister();
                 }}
                 style={{
-                    backgroundColor: '#007BFF',
+                    backgroundColor: "#007BFF",
                     padding: 10,
                     borderRadius: 5,
                     marginTop: 20,
@@ -92,11 +88,11 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     textInput: {
-        color: 'white',
+        color: "white",
         height: 40,
-        borderColor: 'gray',
+        borderColor: "gray",
         borderWidth: 1,
-        width: '100%',
+        width: "100%",
         marginBottom: 20,
         paddingLeft: 10,
     },

@@ -4,7 +4,7 @@ import { read, store } from "./settings";
 export async function fetchApi(url: string, options: RequestInit = {}) {
     const headers = {
         ...options.headers,
-        "Authorization": `Bearer ${await read("apiToken")}`
+        Authorization: `Bearer ${await read("apiToken")}`,
     };
 
     const refreshToken = async () => {
@@ -13,10 +13,10 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
         const refreshResponse = await fetch(`${endpoint}/refresh-token`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${await read("apiToken")}`
+                Authorization: `Bearer ${await read("apiToken")}`,
             },
             body: refreshDetails,
-            redirect: "follow"
+            redirect: "follow",
         });
 
         if (refreshResponse.status === 200) {
@@ -38,7 +38,10 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
                 try {
                     const newToken = await refreshToken();
                     headers["Authorization"] = `Bearer ${newToken}`;
-                    const retryResponse = await fetch(`${endpoint}${url}`, { ...options, headers });
+                    const retryResponse = await fetch(`${endpoint}${url}`, {
+                        ...options,
+                        headers,
+                    });
                     if (retryResponse.ok) {
                         return retryResponse;
                     }
@@ -53,7 +56,7 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
 
         return response;
     } catch (error) {
-        console.error('Fetch error:', error);
+        console.error("Fetch error:", error);
         throw error;
     }
-};
+}

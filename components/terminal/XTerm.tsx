@@ -1,15 +1,15 @@
-'use client';
-import { Terminal } from '@xterm/xterm';
-import { useEffect, useRef } from 'react';
-import './Xterm.css';
+"use client";
+import { Terminal } from "@xterm/xterm";
+import { useEffect, useRef } from "react";
+import "./Xterm.css";
 
 interface XTermProps {
     output: string;
 }
 
 export default function XTerm({ output }: XTermProps) {
-    const terminalRef = useRef<HTMLDivElement | null>(null); 
-    const term = useRef<Terminal | null>(null); 
+    const terminalRef = useRef<HTMLDivElement | null>(null);
+    const term = useRef<Terminal | null>(null);
     useEffect(() => {
         if (!terminalRef.current) return;
 

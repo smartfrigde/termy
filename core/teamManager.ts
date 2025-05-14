@@ -1,5 +1,4 @@
-import {fetchApi} from "@/core/customFetch";
-
+import { fetchApi } from "@/core/customFetch";
 
 export default async function addTeam(name: string) {
     try {
@@ -15,7 +14,7 @@ export default async function addTeam(name: string) {
 
         if (response.ok) {
             const data = await response.json();
-            return data
+            return data;
         } else {
             console.error(`Błąd ${response.status}: ${response.statusText}`);
             return null;
@@ -26,10 +25,8 @@ export default async function addTeam(name: string) {
     }
 }
 
-
 export async function getTeams(page = 1) {
     try {
-        
         const response = await fetchApi(`/teams?page=${page}`, {
             method: "GET",
             headers: {
@@ -49,10 +46,8 @@ export async function getTeams(page = 1) {
     }
 }
 
-
 export async function deleteTeam(teamId: number) {
     try {
-        
         const response = await fetchApi(`/teams/${teamId}`, {
             method: "DELETE",
             headers: {
@@ -74,19 +69,16 @@ export async function deleteTeam(teamId: number) {
 
 export async function updateTeam(teamId: number, name: string) {
     try {
-        
         const response = await fetchApi(`/teams/${teamId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                
             },
             body: JSON.stringify({ name }),
         });
 
         if (response.ok) {
             return await response.json();
-            
         } else {
             console.error(`Błąd ${response.status}: ${response.statusText}`);
             return null;
@@ -97,7 +89,7 @@ export async function updateTeam(teamId: number, name: string) {
     }
 }
 
-export async function getMembers(teamId: number, page = 1){
+export async function getMembers(teamId: number, page = 1) {
     try {
         const response = await fetchApi(`/teams/${teamId}/members?page=${page}`, {
             method: "GET",
@@ -140,7 +132,7 @@ export async function addMember(join_code: string) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({join_code: join_code}),
+            body: JSON.stringify({ join_code: join_code }),
         });
 
         if (!response.ok) {
@@ -162,7 +154,7 @@ export async function updateMemberRole(teamId: number, userId: number, role: num
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({permission_level_id: role}),
+            body: JSON.stringify({ permission_level_id: role }),
         });
 
         if (!response.ok) {

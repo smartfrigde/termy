@@ -1,33 +1,27 @@
-import { ThemedText } from '@/components/ThemedText';
-import { TeamType } from '@/types/Team';
-import React, { useEffect, useState } from 'react';
+import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
+import TeamRemoveButtonAndModal from "@/components/TeamRemoveButtonAndModal";
+import { ThemedText } from "@/components/ThemedText";
 import {
-    Modal,
-    Pressable,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    FlatList,
-    ActivityIndicator,
-} from 'react-native';
-import { ThemedView } from './ThemedView';
-import {
+    Members,
+    PageData,
+    addTeamMember,
     hasMoreMembers,
     membersInTeam,
+    removeTeamMember,
+    setTeamMember,
     teamCurrentPage,
-    addTeamMember,
-    PageData,
-    Members, removeTeamMember, setTeamMember
-} from '@/core/slices/teamsMembersSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch } from '@/core/store';
-import { getMembers, deleteMember, updateMemberRole } from '@/core/teamManager';
-import { MembersResponse, TeamPageData } from '@/types/TeamMember';
-import { Role, hasGrandestRole, getRolesAtOrBelow } from '@/types/enums/TeamRoleEnum.d';
-import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
+} from "@/core/slices/teamsMembersSlice";
+import type { AppDispatch } from "@/core/store";
+import { deleteMember, getMembers, updateMemberRole } from "@/core/teamManager";
+import type { TeamType } from "@/types/Team";
+import type { MembersResponse, TeamPageData } from "@/types/TeamMember";
+import { Role, getRolesAtOrBelow, hasGrandestRole } from "@/types/enums/TeamRoleEnum.d";
 import { Octicons } from "@expo/vector-icons";
-import TeamRemoveButtonAndModal from '@/components/TeamRemoveButtonAndModal';
+import type React from "react";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { ThemedView } from "./ThemedView";
 
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
@@ -41,7 +35,6 @@ interface TeamItemProps {
 }
 
 const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility }) => {
-
     const teamPageData = useSelector(PageData);
     const teamMembers = useSelector(Members);
     const dispatch = useDispatch<AppDispatch>();
@@ -68,14 +61,12 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
             getData();
         }
 
-        setIsMembersShow(!isMembersShow)
+        setIsMembersShow(!isMembersShow);
     };
     const deleteUser = async (userId: number) => {
         const response = await deleteMember(item.id, userId);
         if (!response === null) {
-            dispatch(
-                removeTeamMember(userId)
-            );
+            dispatch(removeTeamMember(userId));
         }
     };
     const getData = async () => {
@@ -89,20 +80,20 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                     team_id: data.team_id,
                     current_page: data.current_page,
                     total_pages: data.total_pages,
-                    total_members: data.total_members
+                    total_members: data.total_members,
                 };
 
-                data.members.forEach((member : MembersResponse) => {
+                data.members.forEach((member: MembersResponse) => {
                     dispatch(
                         addTeamMember({
                             members: member,
                             pageData: pageData,
-                        })
+                        }),
                     );
                 });
             }
         } catch (error) {
-            console.error('Error fetching members:', error);
+            console.error("Error fetching members:", error);
         } finally {
             setIsLoadingMore(false);
             setIsFetching(false);
@@ -110,7 +101,6 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     };
 
     useEffect(() => {
-
         if (currentTeamsPageLocal === 0 && hasMore) {
             getData();
         }
@@ -130,16 +120,12 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
         if (response && response.member) {
             setTeamMember(response.member);
         }
-
     }
 
     return (
         <>
             <Pressable
-                style={[
-                    styles.teamContainer,
-                    visibleTeamId === item.id && styles.activeTeam,
-                ]}
+                style={[styles.teamContainer, visibleTeamId === item.id && styles.activeTeam]}
                 onPress={handlePress}
             >
                 <ThemedText style={styles.teamText}>{item.name}</ThemedText>
@@ -165,12 +151,12 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                         {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
                             <JoinCodeDisplay joinCode={item.join_code} />
                         )}
-                        {(item.permission_in_team === Role.OWNER) && (
+                        {item.permission_in_team === Role.OWNER && (
                             <TeamRemoveButtonAndModal teamId={item.id}></TeamRemoveButtonAndModal>
                         )}
                     </View>
 
-                    <View style={[styles.membersContent, { display: isMembersShow ? 'flex' : 'none' }]}>
+                    <View style={[styles.membersContent, { display: isMembersShow ? "flex" : "none" }]}>
                         <Pressable onPress={closeMembers}>
                             <Octicons name="x" size={14} color="white" />
                         </Pressable>
@@ -189,9 +175,13 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                                     <Octicons name="trash" size={16} color="white" />
                                                 </Pressable>
 
-                                                <Pressable onPress={() =>
-                                                    setShowRoleForMemberId(prev => prev === member.id ? null : member.id)
-                                                }>
+                                                <Pressable
+                                                    onPress={() =>
+                                                        setShowRoleForMemberId((prev) =>
+                                                            prev === member.id ? null : member.id,
+                                                        )
+                                                    }
+                                                >
                                                     <Octicons name="gear" size={16} color="white" />
                                                 </Pressable>
                                             </View>
@@ -205,7 +195,9 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                                 return (
                                                     <TouchableOpacity key={role}>
                                                         <Pressable
-                                                            onPress={() => setRoleToChange(Role[role as keyof typeof Role])}
+                                                            onPress={() =>
+                                                                setRoleToChange(Role[role as keyof typeof Role])
+                                                            }
                                                             style={[
                                                                 styles.roleOption,
                                                                 isSelected && styles.selectedRoleOption,
@@ -236,16 +228,15 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                 }
                             }}
                             onEndReachedThreshold={0.5}
-                            ListFooterComponent={() => (
+                            ListFooterComponent={() =>
                                 isLoadingMore ? (
                                     <View style={styles.loading}>
                                         <ActivityIndicator size="small" color="#007aff" />
                                     </View>
                                 ) : null
-                            )}
+                            }
                         />
                     </View>
-
                 </ThemedView>
             </Modal>
         </>
@@ -254,114 +245,114 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
 
 const styles = StyleSheet.create({
     teamContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 12,
-        backgroundColor: '#2a2a2a',
+        backgroundColor: "#2a2a2a",
         marginBottom: 15,
         borderWidth: 1,
-        borderColor: '#444',
+        borderColor: "#444",
     },
     activeTeam: {
-        borderColor: '#007aff',
-        backgroundColor: '#1e1e1e',
+        borderColor: "#007aff",
+        backgroundColor: "#1e1e1e",
     },
     teamText: {
         fontSize: 18,
-        color: '#eaeaea',
-        fontWeight: '600',
+        color: "#eaeaea",
+        fontWeight: "600",
     },
     topNav: {
         paddingVertical: 10,
         paddingHorizontal: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#1f1f1f',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#1f1f1f",
         borderBottomWidth: 1,
-        borderBottomColor: '#333',
+        borderBottomColor: "#333",
     },
     topButton: {
         padding: 10,
         borderRadius: 8,
-        backgroundColor: '#007aff',
+        backgroundColor: "#007aff",
     },
     buttonText: {
         fontSize: 16,
-        color: '#fff',
-        fontWeight: '600',
+        color: "#fff",
+        fontWeight: "600",
     },
     content: {
         flex: 1,
-        backgroundColor: '#1e1e1e',
+        backgroundColor: "#1e1e1e",
     },
     membersContent: {
-        position: 'absolute',
+        position: "absolute",
         right: 0,
         top: 0,
-        height: '100%',
-        width: '70%',
-        backgroundColor: '#151515',
+        height: "100%",
+        width: "70%",
+        backgroundColor: "#151515",
         padding: 20,
         borderLeftWidth: 1,
-        borderLeftColor: '#333',
+        borderLeftColor: "#333",
     },
     memberCard: {
-        backgroundColor: '#222',
+        backgroundColor: "#222",
         padding: 12,
         marginVertical: 8,
         borderRadius: 12,
         borderWidth: 1,
-        borderColor: '#333',
+        borderColor: "#333",
     },
     member: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     membersButtonContainer: {
-        flexDirection: 'row',
+        flexDirection: "row",
         gap: 10,
     },
     roleChangeContainer: {
         marginTop: 10,
         padding: 10,
-        backgroundColor: '#2e2e2e',
+        backgroundColor: "#2e2e2e",
         borderRadius: 8,
     },
     roleButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
         marginTop: 10,
     },
     roleButton: {
         padding: 8,
         borderRadius: 8,
-        backgroundColor: '#007aff',
+        backgroundColor: "#007aff",
     },
     roleButtonText: {
-        color: '#fff',
+        color: "#fff",
         fontSize: 16,
     },
     roleOption: {
         paddingVertical: 8,
         paddingHorizontal: 10,
         borderRadius: 8,
-        backgroundColor: '#333',
+        backgroundColor: "#333",
         marginBottom: 6,
     },
     selectedRoleOption: {
-        backgroundColor: '#007aff',
+        backgroundColor: "#007aff",
     },
     selectedRoleText: {
-        color: '#fff',
+        color: "#fff",
     },
     loading: {
         padding: 10,
-        alignItems: 'center',
+        alignItems: "center",
     },
 });
 
