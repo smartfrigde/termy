@@ -12,6 +12,26 @@ const LoginScreen = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    function handleLogin() {
+        login(
+            email,
+            password,
+        ).then((data) => {
+            if (data.user) {
+                dispatch(setApiToken(data.api_token))
+                dispatch(setRefreshToken(data.refresh_token))
+                dispatch(setUser(data.user))
+                dispatch(setIsLoggedIn(true))
+                console.log('Login successful');
+                router.navigate("/(main)")
+            } else {
+                console.log('Login failed');
+            }
+        }).catch((error) => {
+            console.error('Login error:', error);
+            alert('Login failed. Please check your credentials.');
+        });
+    }
     return (
         <ThemedView style={styles.container}>
             <Stack.Screen options={{ title: 'Login' }} />
@@ -21,6 +41,7 @@ const LoginScreen = () => {
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
                 onChangeText={(text) => setEmail(text)}
+                onSubmitEditing={handleLogin}
                 value={email}
             />
             <ThemedText type="defaultSemiBold">Password</ThemedText>
@@ -30,29 +51,13 @@ const LoginScreen = () => {
                 placeholder="********"
                 placeholderTextColor="gray"
                 onChangeText={(text) => setPassword(text)}
+                onSubmitEditing={handleLogin}
                 value={password}
             />
             <ThemedButton
                 title="Login"
                 onPress={() => {
-                    login(
-                        email,
-                        password,
-                    ).then((data) => {
-                        if (data.user) {
-                            dispatch(setApiToken(data.api_token))
-                            dispatch(setRefreshToken(data.refresh_token))
-                            dispatch(setUser(data.user))
-                            dispatch(setIsLoggedIn(true))
-                            console.log('Login successful');
-                            router.navigate("/(main)")
-                        } else {
-                            console.log('Login failed');
-                        }
-                    }).catch((error) => {
-                        console.error('Login error:', error);
-                        alert('Login failed. Please check your credentials.');
-                    });
+                    handleLogin();
                 }}
                 style={{
                     backgroundColor: '#007BFF',

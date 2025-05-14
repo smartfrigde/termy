@@ -12,6 +12,24 @@ const RegisterScreen = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
+    function handleRegister() {
+        register(
+            fName,
+            lName,
+            email,
+            password,
+        ).then((res) => {
+            if (res) {
+                console.log('Registration successful');
+                console.log(res);
+                router.navigate("/(auth)/login")
+            }
+        }
+        ).catch((error) => {
+            console.error('Register error: ', error);
+            alert('Registration failed.');
+        });
+    }
     return (
         <ThemedView style={styles.container}>
             <Stack.Screen options={{ title: 'Register' }} />
@@ -19,6 +37,7 @@ const RegisterScreen = () => {
             <TextInput
                 style={styles.textInput}
                 placeholder="John"
+                onSubmitEditing={handleRegister}
                 placeholderTextColor="gray"
                 onChangeText={(text) => setFName(text)}
                 value={fName}
@@ -28,6 +47,7 @@ const RegisterScreen = () => {
                 style={styles.textInput}
                 placeholder="Doe"
                 placeholderTextColor="gray"
+                onSubmitEditing={handleRegister}
                 onChangeText={(text) => setLName(text)}
                 value={lName}
             />
@@ -36,6 +56,7 @@ const RegisterScreen = () => {
                 style={styles.textInput}
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
+                onSubmitEditing={handleRegister}
                 onChangeText={(text) => setEmail(text)}
                 value={email}
             />
@@ -43,6 +64,7 @@ const RegisterScreen = () => {
             <TextInput
                 style={styles.textInput}
                 secureTextEntry={true}
+                onSubmitEditing={handleRegister}
                 placeholder="********"
                 placeholderTextColor="gray"
                 onChangeText={(text) => setPassword(text)}
@@ -51,22 +73,7 @@ const RegisterScreen = () => {
             <ThemedButton
                 title="Register"
                 onPress={() => {
-                    register(
-                        fName,
-                        lName,
-                        email,
-                        password,
-                    ).then((res) => {
-                        if (res) {
-                            console.log('Registration successful');
-                            console.log(res);
-                            router.navigate("/(auth)/login")
-                        }
-                    }
-                    ).catch((error) => {
-                        console.error('Register error: ', error);
-                        alert('Registration failed.');
-                    });
+                    handleRegister();
                 }}
                 style={{
                     backgroundColor: '#007BFF',
