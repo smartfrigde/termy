@@ -23,6 +23,9 @@
             "complexity": {
                 "noForEach": "off"
             },
+            "correctness": {
+                "useExhaustiveDependencies": "off"
+            },
             "style": {
                 "useNodejsImportProtocol": "off",
                 "noNonNullAssertion": "off",

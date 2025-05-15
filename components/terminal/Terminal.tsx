@@ -18,7 +18,7 @@ interface TerminalModalProps {
 export default function TerminalModal({ server, visible, setVisible }: TerminalModalProps) {
     const [command, setCommand] = useState("");
     const [output, setOutput] = useState("");
-    var socket: WebSocket;
+    let socket: WebSocket;
 
     useEffect(() => {
         if (!visible) return;
@@ -31,7 +31,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
 
         socket.onmessage = (event) => {
             console.log("Message from server:", event.data);
-            setOutput((prevOutput) => prevOutput + "\n" + event.data);
+            setOutput((prevOutput) => `${prevOutput}\n${event.data}`);
         };
 
         socket.onerror = (error) => {

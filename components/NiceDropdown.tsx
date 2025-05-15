@@ -4,12 +4,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 interface DropdownComponentProps {
-    data: Array<{ label: string; value: any }>;
-    value: any;
-    setValue: (value: any) => void;
+    data: Array<{ label: string; value: string | number }>;
+    value: number;
+    setValue: (value: number) => void;
 }
 export function NiceDropdown({ data, value, setValue }: DropdownComponentProps) {
-    function renderItem(item: { label: string; value: any }) {
+    function renderItem(item: { label: string; value: number }) {
         return (
             <View style={styles.item}>
                 <Text style={styles.textItem}>{item.label}</Text>

@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import { setApiToken, setRefreshToken, setUser } from "./slices/authSlice";
 
-export async function store(key: string, value: any) {
+export async function store(key: string, value: string | object) {
     try {
         const jsonValue = JSON.stringify(value);
         await AsyncStorage.setItem(key, jsonValue);
