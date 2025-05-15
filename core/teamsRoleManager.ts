@@ -1,4 +1,8 @@
-import { Role, type RoleNumber } from "@/types/enums/TeamRoleEnum";
+export enum Role {
+    OWNER = 3,
+    ADMINISTRATOR = 2,
+    MEMBERS = 1,
+}
 
 export function hasGrandestRole(userRole: RoleNumber, compareTo: RoleNumber): boolean {
     return userRole >= compareTo;

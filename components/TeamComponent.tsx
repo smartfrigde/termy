@@ -13,10 +13,9 @@ import {
 } from "@/core/slices/teamsMembersSlice";
 import type { AppDispatch } from "@/core/store";
 import { deleteMember, getMembers, updateMemberRole } from "@/core/teamManager";
-import { getRolesAtOrBelow, hasGrandestRole } from "@/core/teamsRoleManager";
+import { Role, getRolesAtOrBelow, hasGrandestRole } from "@/core/teamsRoleManager";
 import type { TeamType } from "@/types/Team";
 import type { MembersResponse, TeamPageData } from "@/types/TeamMember";
-import { Role } from "@/types/enums/TeamRoleEnum";
 import { Octicons } from "@expo/vector-icons";
 import type React from "react";
 import { useEffect, useState } from "react";
