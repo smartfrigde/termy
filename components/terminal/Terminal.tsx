@@ -42,7 +42,6 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         socket.onclose = () => {
             console.log("WebSocket connection closed");
         };
-        
     }, [visible]);
     const connectSSH = async () => {
         try {
@@ -61,17 +60,25 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             setOutput("Failed to connect to SSH. Please check your credentials.");
         }
     };
-    const handleKeyUp = (event: React.KeyboardEvent) => {
-        if (event.key === "Enter" && command.trim()) {
+    const handleKeyUp = (e: KeyboardEvent) => {
+        if (!visible) return;
+        if (e.key === "Enter") {
             socket.send(
                 JSON.stringify({
+                    content: "\r",
                     type: "command",
-                    data: command,
                 }),
             );
-            setCommand("");
+        } else {
+            socket.send(
+                JSON.stringify({
+                    content: e.key,
+                    type: "command",
+                }),
+            );
         }
     };
+    document.addEventListener("keyup", (e) => handleKeyUp(e));
     const disconnectSSH = () => {
         socket?.close();
         console.log("Disconnected from WebSocket");
