@@ -1,7 +1,8 @@
+import { websocket } from "@/constants/api";
 import type { ServerType } from "@/types/Server";
 import { useState } from "react";
 import { Modal, StyleSheet } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import ThemedButton from "../ThemedButton";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
@@ -17,13 +18,58 @@ interface TerminalModalProps {
 export default function TerminalModal({ server, visible, setVisible }: TerminalModalProps) {
     const [command, setCommand] = useState("");
     const [output, setOutput] = useState("");
-
-    const disconnectSSH = () => {};
-
-    const sendCommand = () => {
-        setOutput(command);
+    if (!visible) return;
+    const socket = new WebSocket(`ws://${websocket}/ws`);
+    const connectSSH = async () => {
+        try {
+            socket.send(
+                JSON.stringify({
+                    hostname: server.hostname,
+                    port: server.port,
+                    login: server.login,
+                    password: server.password,
+                    type: "connect",
+                }),
+            );
+            console.log("Connected to server", server);
+        } catch (error) {
+            console.error("Failed to connect to SSH:", error);
+            setOutput("Failed to connect to SSH. Please check your credentials.");
+        }
+    };
+    const handleKeyUp = (event: React.KeyboardEvent) => {
+        if (event.key === "Enter" && command.trim()) {
+            socket.send(
+                JSON.stringify({
+                    type: "command",
+                    data: command,
+                }),
+            );
+            setCommand("");
+        }
+    };
+    
+    socket.onopen = () => {
+        console.log("WebSocket connection established");
     };
 
+    socket.onmessage = (event) => {
+        console.log("Message from server:", event.data);
+        setOutput((prevOutput) => prevOutput + "\n" + event.data);
+    };
+
+    socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+    };
+
+    socket.onclose = () => {
+        console.log("WebSocket connection closed");
+    };
+    const disconnectSSH = () => {
+        socket.close();
+        console.log("Disconnected from WebSocket");
+    };
+    connectSSH();
     return (
         <Modal animationType="slide" transparent={false} visible={visible}>
             <ThemedView style={{ flex: 1, padding: 20 }}>
@@ -47,16 +93,6 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                     <XTerm output={output} />
                 </ScrollView>
                 <SpecialKeys />
-                <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="cmd"
-                        placeholderTextColor="gray"
-                        value={command}
-                        onChangeText={setCommand}
-                    />
-                    <ThemedButton title="Send" onPress={sendCommand} />
-                </ThemedView>
             </ThemedView>
         </Modal>
     );
