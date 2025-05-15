@@ -1,6 +1,6 @@
 import { websocket } from "@/constants/api";
 import type { ServerType } from "@/types/Server";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ThemedButton from "../ThemedButton";
@@ -18,8 +18,31 @@ interface TerminalModalProps {
 export default function TerminalModal({ server, visible, setVisible }: TerminalModalProps) {
     const [command, setCommand] = useState("");
     const [output, setOutput] = useState("");
-    if (!visible) return;
-    const socket = new WebSocket(`ws://${websocket}/ws`);
+    var socket: WebSocket;
+    
+    useEffect(() => {
+        if (!visible) return;
+        console.log(websocket)
+        socket = new WebSocket(`ws://${websocket}/ws`);
+
+        socket.onopen = () => {
+            console.log("WebSocket connection established");
+        };
+
+        socket.onmessage = (event) => {
+            console.log("Message from server:", event.data);
+            setOutput((prevOutput) => prevOutput + "\n" + event.data);
+        };
+
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        socket.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+        connectSSH();
+    }, [visible]);
     const connectSSH = async () => {
         try {
             socket.send(
@@ -48,28 +71,11 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             setCommand("");
         }
     };
-    
-    socket.onopen = () => {
-        console.log("WebSocket connection established");
-    };
-
-    socket.onmessage = (event) => {
-        console.log("Message from server:", event.data);
-        setOutput((prevOutput) => prevOutput + "\n" + event.data);
-    };
-
-    socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-    };
-
-    socket.onclose = () => {
-        console.log("WebSocket connection closed");
-    };
     const disconnectSSH = () => {
-        socket.close();
+        socket?.close();
         console.log("Disconnected from WebSocket");
     };
-    connectSSH();
+
     return (
         <Modal animationType="slide" transparent={false} visible={visible}>
             <ThemedView style={{ flex: 1, padding: 20 }}>
