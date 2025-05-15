@@ -14,7 +14,7 @@ interface ServerViewProps {
 }
 
 function CTextInput(props: React.ComponentProps<typeof TextInput>) {
-    const InputComponent = isMobile() ? TextInput : BottomSheetTextInput;
+    const InputComponent = isMobile() ? BottomSheetTextInput: TextInput;
     return <InputComponent {...props} />;
 }
 
