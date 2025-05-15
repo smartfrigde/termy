@@ -19,10 +19,10 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
     const [command, setCommand] = useState("");
     const [output, setOutput] = useState("");
     var socket: WebSocket;
-    
+
     useEffect(() => {
         if (!visible) return;
-        console.log(websocket)
+        console.log(websocket);
         socket = new WebSocket(`ws://${websocket}/ws`);
 
         socket.onopen = () => {

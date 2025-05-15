@@ -4,7 +4,6 @@
     "version": "1.0.0",
     "scripts": {
         "start": "expo start",
-        "reset-project": "node ./scripts/reset-project.js",
         "android": "expo start --android",
         "ios": "expo start --ios",
         "web": "expo start --web",
@@ -74,9 +73,9 @@
         "zeego": {
             "@react-native-menu/menu": "1.2.3"
         },
-		"@expo/metro-config": {
-			"lightningcss": "v1.30.1"
-		}
+        "@expo/metro-config": {
+            "lightningcss": "v1.30.1"
+        }
     },
     "private": true
 }
