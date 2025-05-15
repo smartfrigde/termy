@@ -27,11 +27,12 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
 
         socket.onopen = () => {
             console.log("WebSocket connection established");
+            connectSSH();
         };
 
         socket.onmessage = (event) => {
             console.log("Message from server:", event.data);
-            setOutput((prevOutput) => `${prevOutput}\n${event.data}`);
+            setOutput((prevOutput) => `${prevOutput}${event.data}`);
         };
 
         socket.onerror = (error) => {
@@ -41,7 +42,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         socket.onclose = () => {
             console.log("WebSocket connection closed");
         };
-        connectSSH();
+        
     }, [visible]);
     const connectSSH = async () => {
         try {
