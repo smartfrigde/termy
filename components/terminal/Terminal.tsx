@@ -59,7 +59,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             setOutput("Failed to connect to SSH. Please check your credentials.");
         }
     };
-    const handleKeyUp = (e: KeyboardEvent) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
         if (!visible) return;
         if (e.key === "Enter") {
             socket?.send(
@@ -77,7 +77,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             );
         }
     };
-    document.addEventListener("keyup", (e) => handleKeyUp(e));
+    document.addEventListener("keypress", (e) => handleKeyPress(e));
     const disconnectSSH = () => {
         socket?.close();
         console.log("Disconnected from WebSocket");

@@ -15,7 +15,7 @@ export default function XTerm({ output }: XTermProps) {
         if (!terminalRef.current) return;
 
         if (!term.current) {
-            term.current = new Terminal();
+            term.current = new Terminal({ fontFamily: 'Ubuntu Mono, courier-new, courier, monospace' });
             term.current.open(terminalRef.current);
         }
 
