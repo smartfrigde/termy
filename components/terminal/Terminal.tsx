@@ -17,8 +17,8 @@ interface TerminalModalProps {
 
 export default function TerminalModal({ server, visible, setVisible }: TerminalModalProps) {
     const [output, setOutput] = useState("");
+    const [lastOutput, setLastOutput] = useState("");
     let socket: WebSocket;
-
     useEffect(() => {
         if (!visible) return;
         console.log(websocket);
@@ -30,6 +30,8 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         };
 
         socket.onmessage = (event) => {
+            if (event.data === lastOutput) return;
+            setLastOutput(event.data);
             console.log("Message from server:", event.data);
             setOutput((prevOutput) => `${prevOutput}${event.data}`);
         };
