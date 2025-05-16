@@ -16,7 +16,6 @@ interface TerminalModalProps {
 }
 
 export default function TerminalModal({ server, visible, setVisible }: TerminalModalProps) {
-    const [command, setCommand] = useState("");
     const [output, setOutput] = useState("");
     let socket: WebSocket;
 
@@ -63,14 +62,14 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
     const handleKeyUp = (e: KeyboardEvent) => {
         if (!visible) return;
         if (e.key === "Enter") {
-            socket.send(
+            socket?.send(
                 JSON.stringify({
                     content: "\r",
                     type: "command",
                 }),
             );
         } else {
-            socket.send(
+            socket?.send(
                 JSON.stringify({
                     content: e.key,
                     type: "command",
@@ -104,7 +103,13 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                     />
                 </ThemedView>
                 <ScrollView style={{ flex: 1, marginBottom: 20 }}>
-                    <XTerm output={output} />
+                    <XTerm
+                        dom={{
+                            scrollEnabled: true,
+                            showsVerticalScrollIndicator: true,
+                        }}
+                        output={output}
+                    />
                 </ScrollView>
                 <SpecialKeys />
             </ThemedView>

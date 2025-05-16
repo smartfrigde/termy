@@ -1,3 +1,8 @@
 .xterm-helpers {
     display: none;
 }
+
+.xterm-scroll-area {
+    height: 100% !important;
+    width: 100% !important;
+}

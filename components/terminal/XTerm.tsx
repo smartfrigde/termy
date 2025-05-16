@@ -5,6 +5,7 @@ import "./Xterm.css";
 
 interface XTermProps {
     output: string;
+    dom: import('expo/dom').DOMProps;
 }
 
 export default function XTerm({ output }: XTermProps) {
