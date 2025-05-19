@@ -138,7 +138,9 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                         alignItems: "center",
                     }}
                 >
-                    <ThemedText type="title">{server.name} - {server.hostname}</ThemedText>
+                    <ThemedText type="title">
+                        {server.name} - {server.hostname}
+                    </ThemedText>
                     <ThemedButton
                         tabIndex={-1}
                         title="Close"
