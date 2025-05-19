@@ -43,6 +43,6 @@ export function EditServerModal({ item, modalVisible, setModalVisible }: EditSer
 }
 const styles = StyleSheet.create({
     view: {
-        margin: 10
+        margin: 10,
     },
 });
