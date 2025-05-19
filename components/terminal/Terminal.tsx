@@ -154,7 +154,9 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                         }}
                     />
                 </ThemedView>
-                <ScrollView style={{ flex: 1, marginBottom: 20, filter: colorScheme === "dark" ? "none" : "invert(1)" }}>
+                <ScrollView
+                    style={{ flex: 1, marginBottom: 20, filter: colorScheme === "dark" ? "none" : "invert(1)" }}
+                >
                     <XTerm
                         dom={{
                             scrollEnabled: true,
