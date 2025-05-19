@@ -1,4 +1,6 @@
+import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
+import { ThemedView } from "@/components/ThemedView";
 import { update as updateUser } from "@/core/loginManager";
 import { selectUser, setUser } from "@/core/slices/authSlice";
 import type { AppDispatch } from "@/core/store";
@@ -33,45 +35,10 @@ export default function SettingsScreen() {
         }
     };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: "#121212",
-            padding: 20,
-        },
-        section: {
-            marginBottom: 30,
-        },
-        sectionTitle: {
-            fontSize: 18,
-            fontWeight: "bold",
-            color: "#FFFFFF",
-            marginBottom: 10,
-        },
-        input: {
-            backgroundColor: "#1E1E1E",
-            color: "#FFFFFF",
-            padding: 10,
-            borderRadius: 8,
-            marginBottom: 10,
-        },
-        button: {
-            backgroundColor: "#2196F3",
-            padding: 15,
-            borderRadius: 8,
-            alignItems: "center",
-            marginTop: 10,
-        },
-        buttonText: {
-            color: "#FFFFFF",
-            fontWeight: "bold",
-        },
-    });
-
     return (
-        <View style={styles.container}>
+        <ThemedView style={styles.container}>
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Personal data</Text>
+                <ThemedText style={styles.sectionTitle}>Personal data</ThemedText>
                 <ThemedTextInput
                     placeholder="Name"
                     value={name}
@@ -94,7 +61,7 @@ export default function SettingsScreen() {
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Security</Text>
+                <ThemedText style={styles.sectionTitle}>Security</ThemedText>
                 <ThemedTextInput
                     placeholder="New password"
                     placeholderTextColor={"#AAAAAA"}
@@ -114,6 +81,37 @@ export default function SettingsScreen() {
             <TouchableOpacity style={styles.button} onPress={handleSaveChanges}>
                 <Text style={styles.buttonText}>Save Changes</Text>
             </TouchableOpacity>
-        </View>
+        </ThemedView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+    },
+    section: {
+        marginBottom: 30,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+    input: {
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    button: {
+        backgroundColor: "#2196F3",
+        padding: 15,
+        borderRadius: 8,
+        alignItems: "center",
+        marginTop: 10,
+    },
+    buttonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+    },
+});

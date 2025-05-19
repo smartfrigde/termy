@@ -10,6 +10,8 @@ export const Colors = {
     light: {
         text: "#11181C",
         background: "#fff",
+        backgroundInput: "#F0F0F0",
+        itemColor: "#F0F0F0",
         tint: tintColorLight,
         icon: "#687076",
         tabIconDefault: "#687076",
@@ -18,6 +20,8 @@ export const Colors = {
     dark: {
         text: "#ECEDEE",
         background: "#151718",
+        backgroundInput: "#1E1E1E",
+        itemColor: "#121212",
         tint: tintColorDark,
         icon: "#9BA1A6",
         tabIconDefault: "#9BA1A6",

@@ -37,7 +37,6 @@ const LoginScreen = () => {
             <Stack.Screen options={{ title: "Login" }} />
             <ThemedText type="defaultSemiBold">E-mail</ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
                 onChangeText={(text) => setEmail(text)}
@@ -46,7 +45,6 @@ const LoginScreen = () => {
             />
             <ThemedText type="defaultSemiBold">Password</ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 secureTextEntry={true}
                 placeholder="********"
                 placeholderTextColor="gray"
@@ -74,15 +72,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-    },
-    ThemedTextInput: {
-        color: "white",
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        width: "100%",
-        marginBottom: 20,
-        paddingLeft: 10,
     },
 });
 

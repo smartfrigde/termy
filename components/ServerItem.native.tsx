@@ -1,6 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { removeServer } from "@/core/slices/sshSlice";
 import { deleteServer } from "@/core/sshManager";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import type { ServerType } from "@/types/Server";
 import { Octicons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -57,7 +58,7 @@ function RightAction(
 export const ServerItem = ({ item }: { item: ServerType }) => {
     const [terminalModalVisible, setTerminalModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
-
+    const itemColor = useThemeColor({}, "itemColor");
     const connect = () => {
         setTerminalModalVisible(true);
         console.log("Connecting to server", item);
@@ -66,13 +67,13 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
     return (
         <>
             <ReanimatedSwipeable
-                containerStyle={styles.serverItem}
+                containerStyle={[styles.serverItem, { backgroundColor: itemColor }]}
                 friction={2}
                 enableTrackpadTwoFingerGesture
                 rightThreshold={40}
                 renderRightActions={(progress, dragX) => RightAction(progress, dragX, item, setEditModalVisible)}
             >
-                <ThemedView style={styles.flexContainer}>
+                <ThemedView style={[styles.flexContainer, { backgroundColor: itemColor }]}>
                     <TouchableOpacity style={styles.connectButton} onPress={connect}>
                         <Octicons name="link" size={24} color="white" />
                     </TouchableOpacity>
@@ -92,7 +93,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 10,
         display: "flex",
-        backgroundColor: "#121212",
         borderRadius: 20,
         width: "100%",
         height: "100%",
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
         padding: 10, // Adjust padding for the container
     },
     flexContainer: {
-        backgroundColor: "#121212",
         flex: 1,
         flexDirection: "row",
         alignItems: "center",

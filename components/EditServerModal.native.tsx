@@ -1,3 +1,4 @@
+import { useThemeColor } from "@/hooks/useThemeColor";
 import type { ServerType } from "@/types/Server";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { useCallback, useRef } from "react";
@@ -12,6 +13,7 @@ interface EditServerModalProps {
 
 export function EditServerModal({ item, modalVisible, setModalVisible }: EditServerModalProps) {
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const bgColor = useThemeColor({}, "background");
     if (modalVisible) {
         bottomSheetModalRef.current?.present();
     }
@@ -27,12 +29,12 @@ export function EditServerModal({ item, modalVisible, setModalVisible }: EditSer
                 ref={bottomSheetModalRef}
                 onChange={handleSheetChanges}
                 backgroundStyle={{
-                    backgroundColor: "#121212",
+                    backgroundColor: bgColor,
                 }}
                 snapPoints={["90%"]}
                 enableDynamicSizing={false}
             >
-                <BottomSheetView style={styles.view}>
+                <BottomSheetView style={[styles.view, { backgroundColor: bgColor }]}>
                     <EditServerView item={item} setModalVisible={setModalVisible} />
                 </BottomSheetView>
             </BottomSheetModal>
@@ -41,7 +43,6 @@ export function EditServerModal({ item, modalVisible, setModalVisible }: EditSer
 }
 const styles = StyleSheet.create({
     view: {
-        margin: 10,
-        backgroundColor: "#121212",
+        margin: 10
     },
 });

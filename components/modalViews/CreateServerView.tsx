@@ -62,7 +62,6 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server name
             </ThemedText>
             <ThemedTextInput
-                style={styles.textInput}
                 placeholder="Server name"
                 placeholderTextColor="gray"
                 value={serverName}
@@ -72,7 +71,6 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server address
             </ThemedText>
             <ThemedTextInput
-                style={styles.textInput}
                 placeholder="Server address"
                 placeholderTextColor="gray"
                 value={serverAddress}
@@ -82,7 +80,6 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server port
             </ThemedText>
             <ThemedTextInput
-                style={styles.textInput}
                 placeholder="Server port"
                 placeholderTextColor="gray"
                 value={serverPort.toString()}
@@ -97,7 +94,6 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server username
             </ThemedText>
             <ThemedTextInput
-                style={styles.textInput}
                 placeholder="Server username"
                 placeholderTextColor="gray"
                 value={serverUsername}
@@ -107,7 +103,6 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server password
             </ThemedText>
             <ThemedTextInput
-                style={styles.textInput}
                 placeholder="Server password"
                 placeholderTextColor="gray"
                 secureTextEntry={true}
@@ -126,15 +121,6 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
     );
 }
 const styles = StyleSheet.create({
-    textInput: {
-        color: "white",
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        width: "100%",
-        marginBottom: 20,
-        paddingLeft: 10,
-    },
     button: {
         borderRadius: 20,
         padding: 10,
@@ -151,7 +137,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     modalText: {
-        marginBottom: 15,
+        marginBottom: 8,
         textAlign: "left",
     },
 });

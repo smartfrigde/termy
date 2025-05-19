@@ -47,7 +47,6 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
                 Server name
             </ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="Server name"
                 placeholderTextColor="gray"
                 value={serverName}
@@ -57,7 +56,6 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
                 Server address
             </ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="Server address"
                 placeholderTextColor="gray"
                 value={serverAddress}
@@ -67,7 +65,6 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
                 Server port
             </ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="Server port"
                 placeholderTextColor="gray"
                 value={serverPort.toString()}
@@ -82,7 +79,6 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
                 Server username
             </ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="Server username"
                 placeholderTextColor="gray"
                 value={serverUsername}
@@ -92,7 +88,6 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
                 Server password
             </ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="Server password"
                 placeholderTextColor="gray"
                 secureTextEntry={true}
@@ -106,15 +101,6 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
     );
 }
 const styles = StyleSheet.create({
-    ThemedTextInput: {
-        color: "white",
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        width: "100%",
-        marginBottom: 20,
-        paddingLeft: 10,
-    },
     centeredView: {
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.5)",

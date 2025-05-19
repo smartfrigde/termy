@@ -2,6 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { removeServer } from "@/core/slices/sshSlice";
 import { deleteServer } from "@/core/sshManager";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import type { ServerType } from "@/types/Server";
 import { Octicons } from "@expo/vector-icons";
 import { ContextMenuContent } from "@radix-ui/react-context-menu";
@@ -20,6 +21,7 @@ import {
 export const ServerItem = ({ item }: { item: ServerType }) => {
     const [terminalModalVisible, setTerminalModalVisible] = useState(false);
     const [editModalVisible, setEditModalVisible] = useState(false);
+    const itemColor = useThemeColor({}, "itemColor");
     const dispatch = useDispatch();
 
     const connect = () => {
@@ -41,7 +43,7 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
         <>
             <ContextMenuRoot>
                 <ContextMenuTrigger style={{ flex: 1, height: "100%", width: "100%" }}>
-                    <ThemedView style={styles.serverItem}>
+                    <ThemedView style={[styles.serverItem, { backgroundColor: itemColor }]}>
                         <TouchableOpacity style={styles.connectButton} onPress={connect}>
                             <Octicons name="link" size={24} color="white" />
                         </TouchableOpacity>
@@ -53,7 +55,7 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
                         flex: 1,
                         height: "100%",
                         width: "100%",
-                        backgroundColor: "#121212",
+                        backgroundColor: itemColor,
                         borderRadius: 20,
                         padding: 10,
                         zIndex: 999999,
@@ -88,7 +90,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         padding: 10,
-        backgroundColor: "#121212",
         borderRadius: 20,
         margin: 5, // Add margin between items
         shadowColor: "#000", // For iOS shadow

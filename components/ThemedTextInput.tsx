@@ -9,19 +9,20 @@ export type ThemedTextProps = TextInputProps & {
 };
 
 export function ThemedTextInput({ style, type = "default", lightColor, darkColor, ...rest }: ThemedTextProps) {
-    const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+    const bgColor = useThemeColor({ light: lightColor, dark: darkColor }, "backgroundInput");
+    const textColor = useThemeColor({ light: lightColor, dark: darkColor }, "text");
     if (type === "modal") {
-        return <ModalTextInput style={[styles.input, { color }, style]} {...rest} />;
+        return (
+            <ModalTextInput style={[styles.input, { backgroundColor: bgColor, color: textColor }, style]} {...rest} />
+        );
     }
     if (type === "default") {
-        return <TextInput style={[styles.input, { color }, style]} {...rest} />;
+        return <TextInput style={[styles.input, { backgroundColor: bgColor, color: textColor }, style]} {...rest} />;
     }
 }
 
 const styles = StyleSheet.create({
     input: {
-        backgroundColor: "#1E1E1E",
-        color: "#FFFFFF",
         padding: 10,
         borderRadius: 8,
         marginBottom: 10,

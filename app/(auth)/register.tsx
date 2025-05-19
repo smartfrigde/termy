@@ -31,7 +31,6 @@ const RegisterScreen = () => {
             <Stack.Screen options={{ title: "Register" }} />
             <ThemedText type="defaultSemiBold">First name</ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="John"
                 onSubmitEditing={handleRegister}
                 placeholderTextColor="gray"
@@ -40,7 +39,6 @@ const RegisterScreen = () => {
             />
             <ThemedText type="defaultSemiBold">Last name</ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="Doe"
                 placeholderTextColor="gray"
                 onSubmitEditing={handleRegister}
@@ -49,7 +47,6 @@ const RegisterScreen = () => {
             />
             <ThemedText type="defaultSemiBold">E-mail</ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
                 onSubmitEditing={handleRegister}
@@ -58,7 +55,6 @@ const RegisterScreen = () => {
             />
             <ThemedText type="defaultSemiBold">Password</ThemedText>
             <ThemedTextInput
-                style={styles.ThemedTextInput}
                 secureTextEntry={true}
                 onSubmitEditing={handleRegister}
                 placeholder="********"
@@ -86,15 +82,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-    },
-    ThemedTextInput: {
-        color: "white",
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        width: "100%",
-        marginBottom: 20,
-        paddingLeft: 10,
     },
 });
 

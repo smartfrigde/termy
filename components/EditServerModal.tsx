@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 20,
         width: isMobile() ? "90%" : "60%",
-        backgroundColor: "#121212",
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
