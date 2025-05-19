@@ -126,6 +126,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                 >
                     <ThemedText type="title">Terminal</ThemedText>
                     <ThemedButton
+                        tabIndex={-1}
                         title="Close"
                         onPress={() => {
                             disconnectSSH();

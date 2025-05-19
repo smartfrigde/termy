@@ -1,25 +1,26 @@
 import type React from "react";
 import {
     type GestureResponderEvent,
+    Pressable,
     type StyleProp,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    type ViewStyle,
+    type ViewStyle
 } from "react-native";
 
 interface ThemedButtonProps {
     title: string;
     style?: StyleProp<ViewStyle>;
+    tabIndex?: 0 | -1 | undefined;
     onPress?: (event: GestureResponderEvent) => void;
 }
 
-const ThemedButton: React.FC<ThemedButtonProps> = ({ title, onPress, style }) => {
+const ThemedButton: React.FC<ThemedButtonProps> = ({ title, onPress, style, tabIndex }) => {
     const styling = (Array.isArray(style) ? style : [style]) ?? null;
     return (
-        <TouchableOpacity style={[...styling, styles.button]} onPress={onPress}>
+        <Pressable tabIndex={tabIndex} style={[...styling, styles.button]} onPress={onPress}>
             <Text style={[styles.text]}>{title}</Text>
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 
