@@ -1,53 +1,38 @@
 import { ThemedText } from "@/components/ThemedText";
-
-import { selectedTeams } from "@/core/slices/teamSlice";
-import { createServer } from "@/core/sshManager";
+import isMobile from "@/constants/isMobile";
+import { editServer } from "@/core/sshManager";
+import type { ServerType } from "@/types/Server";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
-import { NiceDropdown } from "../NiceDropdown";
 import { ModalTextInput } from "./ModalTextInput";
-interface ServerViewProps {
+interface EditServerViewProps {
+    item: ServerType;
     setModalVisible: (e: boolean) => void;
-    refresh: () => void;
 }
-
-export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) {
-    const [serverName, setServerName] = useState("");
-    const [serverAddress, setServerAdress] = useState("");
-    const [serverPort, setServerPort] = useState(22);
-    const [serverPassword, setServerPassword] = useState("");
-    const [serverUsername, setServerUsername] = useState("");
-    const teams = useSelector(selectedTeams);
-    const teamsData = teams.map((team) => {
-        return {
-            label: team.name,
-            value: team.id,
-        };
-    });
-    teamsData.push({
-        label: "Default",
-        value: 0,
-    });
-    const [selectedTeam, setSelectedTeam] = useState(0);
-    const save = () => {
+export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
+    const [serverName, setServerName] = useState(item.name);
+    const [serverAddress, setServerAdress] = useState(item.hostname);
+    const [serverPort, setServerPort] = useState(item.port);
+    const [serverPassword, setServerPassword] = useState(item.password);
+    const [serverUsername, setServerUsername] = useState(item.login);
+    const edit = () => {
         const server = {
             name: serverName,
             hostname: serverAddress,
             port: serverPort,
             password: serverPassword,
             login: serverUsername,
-            team_id: selectedTeam,
+            id: item.id,
         };
-        createServer(server)
+        editServer(server)
             .then((response) => {
+                console.log(JSON.stringify(response));
                 if (response.status === 201) {
-                    console.log("Server created", server);
-                    refresh();
+                    console.log("Server edited", server);
                 }
             })
             .catch((err) => {
-                console.log("Error creating server");
+                console.log("Error editing server");
                 console.error(err);
             });
 
@@ -56,13 +41,13 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
     return (
         <>
             <ThemedText style={styles.modalText} type="subtitle">
-                Add a server
+                Editing {item.name}
             </ThemedText>
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server name
             </ThemedText>
             <ModalTextInput
-                style={styles.textInput}
+                style={styles.ModalTextInput}
                 placeholder="Server name"
                 placeholderTextColor="gray"
                 value={serverName}
@@ -72,7 +57,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server address
             </ThemedText>
             <ModalTextInput
-                style={styles.textInput}
+                style={styles.ModalTextInput}
                 placeholder="Server address"
                 placeholderTextColor="gray"
                 value={serverAddress}
@@ -82,7 +67,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server port
             </ThemedText>
             <ModalTextInput
-                style={styles.textInput}
+                style={styles.ModalTextInput}
                 placeholder="Server port"
                 placeholderTextColor="gray"
                 value={serverPort.toString()}
@@ -97,7 +82,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server username
             </ThemedText>
             <ModalTextInput
-                style={styles.textInput}
+                style={styles.ModalTextInput}
                 placeholder="Server username"
                 placeholderTextColor="gray"
                 value={serverUsername}
@@ -107,26 +92,21 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 Server password
             </ThemedText>
             <ModalTextInput
-                style={styles.textInput}
+                style={styles.ModalTextInput}
                 placeholder="Server password"
                 placeholderTextColor="gray"
                 secureTextEntry={true}
                 value={serverPassword}
                 onChangeText={setServerPassword}
             />
-            <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Team
-            </ThemedText>
-            <NiceDropdown setValue={setSelectedTeam} value={selectedTeam} data={teamsData} />
-
-            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => save()}>
-                <ThemedText style={styles.textStyle}>Create</ThemedText>
+            <Pressable style={[styles.button, styles.buttonClose]} onPress={() => edit()}>
+                <ThemedText style={styles.textStyle}>Save</ThemedText>
             </Pressable>
         </>
     );
 }
 const styles = StyleSheet.create({
-    textInput: {
+    ModalTextInput: {
         color: "white",
         height: 40,
         borderColor: "gray",
@@ -135,14 +115,37 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingLeft: 10,
     },
+    centeredView: {
+        flex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView: {
+        margin: 20,
+        borderRadius: 20,
+        padding: 35,
+        width: isMobile() ? "90%" : "60%",
+        backgroundColor: "#121212",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
     button: {
         borderRadius: 20,
         padding: 10,
         elevation: 2,
     },
-
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
     buttonClose: {
-        marginTop: 20,
         backgroundColor: "#2196F3",
     },
     textStyle: {

@@ -9,7 +9,7 @@ import { Pressable } from "react-native-gesture-handler";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import Reanimated, { type SharedValue, useAnimatedStyle } from "react-native-reanimated";
 import { useDispatch } from "react-redux";
-import { EditServerModal } from "./EditServerModal";
+import { EditServerModal } from "./EditServerModal.native";
 import { ThemedView } from "./ThemedView";
 import TerminalModal from "./terminal/Terminal";
 function RightAction(
