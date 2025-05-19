@@ -1,8 +1,9 @@
+import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { update as updateUser } from "@/core/loginManager";
 import { selectUser, setUser } from "@/core/slices/authSlice";
 import type { AppDispatch } from "@/core/store";
 import React, { useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, useColorScheme } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SettingsScreen() {
@@ -71,22 +72,19 @@ export default function SettingsScreen() {
         <View style={styles.container}>
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Personal data</Text>
-                <TextInput
-                    style={styles.input}
+                <ThemedTextInput
                     placeholder="Name"
                     value={name}
                     onChangeText={setName}
                     placeholderTextColor={"#AAAAAA"}
                 />
-                <TextInput
-                    style={styles.input}
+                <ThemedTextInput
                     placeholder="Surname"
                     placeholderTextColor={"#AAAAAA"}
                     value={surname}
                     onChangeText={setSurname}
                 />
-                <TextInput
-                    style={styles.input}
+                <ThemedTextInput
                     placeholder="Email"
                     placeholderTextColor={"#AAAAAA"}
                     value={email}
@@ -97,16 +95,14 @@ export default function SettingsScreen() {
 
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Security</Text>
-                <TextInput
-                    style={styles.input}
+                <ThemedTextInput
                     placeholder="New password"
                     placeholderTextColor={"#AAAAAA"}
                     value={newPassword}
                     onChangeText={setNewPassword}
                     secureTextEntry
                 />
-                <TextInput
-                    style={styles.input}
+                <ThemedTextInput
                     placeholder="Confirm new password"
                     placeholderTextColor={"#AAAAAA"}
                     value={confirmPassword}

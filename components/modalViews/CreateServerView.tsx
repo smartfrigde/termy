@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { NiceDropdown } from "../NiceDropdown";
-import { ModalTextInput } from "./ModalTextInput";
+import { ThemedTextInput } from "../ThemedTextInput";
 interface ServerViewProps {
     setModalVisible: (e: boolean) => void;
     refresh: () => void;
@@ -61,7 +61,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server name
             </ThemedText>
-            <ModalTextInput
+            <ThemedTextInput
                 style={styles.textInput}
                 placeholder="Server name"
                 placeholderTextColor="gray"
@@ -71,7 +71,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server address
             </ThemedText>
-            <ModalTextInput
+            <ThemedTextInput
                 style={styles.textInput}
                 placeholder="Server address"
                 placeholderTextColor="gray"
@@ -81,12 +81,12 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server port
             </ThemedText>
-            <ModalTextInput
+            <ThemedTextInput
                 style={styles.textInput}
                 placeholder="Server port"
                 placeholderTextColor="gray"
                 value={serverPort.toString()}
-                onChangeText={(text) => {
+                onChangeText={(text: string) => {
                     const port = Number.parseInt(text);
                     if (!Number.isNaN(port)) {
                         setServerPort(port);
@@ -96,7 +96,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server username
             </ThemedText>
-            <ModalTextInput
+            <ThemedTextInput
                 style={styles.textInput}
                 placeholder="Server username"
                 placeholderTextColor="gray"
@@ -106,7 +106,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server password
             </ThemedText>
-            <ModalTextInput
+            <ThemedTextInput
                 style={styles.textInput}
                 placeholder="Server password"
                 placeholderTextColor="gray"

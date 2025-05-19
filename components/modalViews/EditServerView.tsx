@@ -4,7 +4,7 @@ import { editServer } from "@/core/sshManager";
 import type { ServerType } from "@/types/Server";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { ModalTextInput } from "./ModalTextInput";
+import { ThemedTextInput } from "../ThemedTextInput";
 interface EditServerViewProps {
     item: ServerType;
     setModalVisible: (e: boolean) => void;
@@ -46,8 +46,8 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server name
             </ThemedText>
-            <ModalTextInput
-                style={styles.ModalTextInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="Server name"
                 placeholderTextColor="gray"
                 value={serverName}
@@ -56,8 +56,8 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server address
             </ThemedText>
-            <ModalTextInput
-                style={styles.ModalTextInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="Server address"
                 placeholderTextColor="gray"
                 value={serverAddress}
@@ -66,8 +66,8 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server port
             </ThemedText>
-            <ModalTextInput
-                style={styles.ModalTextInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="Server port"
                 placeholderTextColor="gray"
                 value={serverPort.toString()}
@@ -81,8 +81,8 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server username
             </ThemedText>
-            <ModalTextInput
-                style={styles.ModalTextInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="Server username"
                 placeholderTextColor="gray"
                 value={serverUsername}
@@ -91,8 +91,8 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
             <ThemedText style={styles.modalText} type="defaultSemiBold">
                 Server password
             </ThemedText>
-            <ModalTextInput
-                style={styles.ModalTextInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="Server password"
                 placeholderTextColor="gray"
                 secureTextEntry={true}
@@ -106,7 +106,7 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
     );
 }
 const styles = StyleSheet.create({
-    ModalTextInput: {
+    ThemedTextInput: {
         color: "white",
         height: 40,
         borderColor: "gray",

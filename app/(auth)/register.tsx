@@ -1,11 +1,11 @@
 import ThemedButton from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedView } from "@/components/ThemedView";
 import { register } from "@/core/loginManager";
 import { Stack, router } from "expo-router";
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
-
+import { StyleSheet } from "react-native";
 const RegisterScreen = () => {
     const [fName, setFName] = React.useState("");
     const [lName, setLName] = React.useState("");
@@ -30,8 +30,8 @@ const RegisterScreen = () => {
         <ThemedView style={styles.container}>
             <Stack.Screen options={{ title: "Register" }} />
             <ThemedText type="defaultSemiBold">First name</ThemedText>
-            <TextInput
-                style={styles.textInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="John"
                 onSubmitEditing={handleRegister}
                 placeholderTextColor="gray"
@@ -39,8 +39,8 @@ const RegisterScreen = () => {
                 value={fName}
             />
             <ThemedText type="defaultSemiBold">Last name</ThemedText>
-            <TextInput
-                style={styles.textInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="Doe"
                 placeholderTextColor="gray"
                 onSubmitEditing={handleRegister}
@@ -48,8 +48,8 @@ const RegisterScreen = () => {
                 value={lName}
             />
             <ThemedText type="defaultSemiBold">E-mail</ThemedText>
-            <TextInput
-                style={styles.textInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
                 onSubmitEditing={handleRegister}
@@ -57,8 +57,8 @@ const RegisterScreen = () => {
                 value={email}
             />
             <ThemedText type="defaultSemiBold">Password</ThemedText>
-            <TextInput
-                style={styles.textInput}
+            <ThemedTextInput
+                style={styles.ThemedTextInput}
                 secureTextEntry={true}
                 onSubmitEditing={handleRegister}
                 placeholder="********"
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
     },
-    textInput: {
+    ThemedTextInput: {
         color: "white",
         height: 40,
         borderColor: "gray",
