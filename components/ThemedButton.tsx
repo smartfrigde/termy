@@ -12,7 +12,7 @@ const ThemedButton: React.FC<ThemedButtonProps> = ({ title, onPress, style, tabI
     const styling = (Array.isArray(style) ? style : [style]) ?? null;
     return (
         <Pressable tabIndex={tabIndex} style={[...styling, styles.button]} onPress={onPress}>
-            <Text style={[styles.text]}>{title}</Text>
+            <Text tabIndex={tabIndex} style={[styles.text]}>{title}</Text>
         </Pressable>
     );
 };

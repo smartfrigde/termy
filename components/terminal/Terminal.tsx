@@ -2,7 +2,7 @@ import { websocket } from "@/constants/api";
 import { translateCtrlCombo, translateKey } from "@/core/keyTranslate";
 import type { ServerType } from "@/types/Server";
 import { useEffect, useRef, useState } from "react";
-import { Modal, StyleSheet } from "react-native";
+import { Modal } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ThemedButton from "../ThemedButton";
 import { ThemedText } from "../ThemedText";
@@ -138,11 +138,15 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                         alignItems: "center",
                     }}
                 >
-                    <ThemedText type="title">Terminal</ThemedText>
+                    <ThemedText type="title">{server.name} - {server.hostname}</ThemedText>
                     <ThemedButton
                         tabIndex={-1}
                         title="Close"
-                        onPress={() => {
+                        onPress={(e) => {
+                            // @ts-expect-error untyped
+                            if (e.code === "Enter") {
+                                return false;
+                            }
                             disconnectSSH();
                             setVisible(false);
                         }}
@@ -161,13 +165,3 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         </Modal>
     );
 }
-
-const styles = StyleSheet.create({
-    textInput: {
-        color: "white",
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        width: "80%",
-    },
-});
