@@ -1,12 +1,5 @@
 import type React from "react";
-import {
-    type GestureResponderEvent,
-    Pressable,
-    type StyleProp,
-    StyleSheet,
-    Text,
-    type ViewStyle
-} from "react-native";
+import { type GestureResponderEvent, Pressable, type StyleProp, StyleSheet, Text, type ViewStyle } from "react-native";
 
 interface ThemedButtonProps {
     title: string;

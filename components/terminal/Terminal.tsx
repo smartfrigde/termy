@@ -1,5 +1,5 @@
 import { websocket } from "@/constants/api";
-import { translateKey } from "@/core/keyTranslate";
+import { translateCtrlCombo, translateKey } from "@/core/keyTranslate";
 import type { ServerType } from "@/types/Server";
 import { useEffect, useRef, useState } from "react";
 import { Modal, StyleSheet } from "react-native";
@@ -59,12 +59,26 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             if (isDoublePress.current && lastPressed.current === keyCode) {
                 isDoublePress.current = false;
                 // Double press detected
-                socketRef.current?.send(
-                    JSON.stringify({
-                        content: translateKey(e.key),
-                        type: "command",
-                    }),
-                );
+                // Support for keyboard shortcuts (Ctrl, Meta, Alt)
+                const modifiers = [];
+                if (e.ctrlKey) modifiers.push("Ctrl");
+                if (e.metaKey) modifiers.push("Meta");
+                if (e.altKey) modifiers.push("Alt");
+                if (modifiers.length > 0) {
+                    socketRef.current?.send(
+                        JSON.stringify({
+                            content: translateCtrlCombo(e.key),
+                            type: "command",
+                        }),
+                    );
+                } else {
+                    socketRef.current?.send(
+                        JSON.stringify({
+                            content: translateKey(e.key),
+                            type: "command",
+                        }),
+                    );
+                }
             } else {
                 isDoublePress.current = true;
                 if (timeoutRef.current) clearTimeout(timeoutRef.current);
