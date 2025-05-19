@@ -6,8 +6,26 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
+import React, { useEffect } from 'react';
+import { getEcho } from '@/scripts/echo';
+import { selectUser } from "@/core/slices/authSlice";
 export default function RootLayout() {
+
+    const user = useSelector(selectUser)
+
+    useEffect(() => {
+        if (user?.id) {
+            getEcho().then((echo) => {
+                echo
+                    .private(`sync.user.${user.id}`)
+                    .listen('.sync.nots', (event: any) => {
+                        console.log('📩 Odebrano wiadomość:', event);
+                    });
+            });
+        }
+    }, []);
+
     const colorScheme = useColorScheme();
     return (
         <Provider store={store}>
