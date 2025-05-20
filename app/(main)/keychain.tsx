@@ -11,9 +11,9 @@ const KeychainScreen = () => {
                 alg: "RSASSA-PKCS1-v1_5",
                 size: 2048,
                 hash: "SHA-256",
-                name: "MyKey"
-            })
-        )
+                name: "MyKey",
+            }),
+        );
     }
     return (
         <ThemedView
