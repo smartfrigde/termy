@@ -50,10 +50,7 @@ export function TeamJoinPanel({
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
                         <ThemedText style={styles.modalText} type="subtitle">
-                            Join to team
-                        </ThemedText>
-                        <ThemedText style={styles.modalText} type="defaultSemiBold">
-                            Join to team
+                            Join to a team
                         </ThemedText>
                         <TextInput
                             style={styles.textInput}
@@ -101,7 +98,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 35,
         width: isMobile() ? "90%" : "60%",
-        backgroundColor: "#121212",
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
