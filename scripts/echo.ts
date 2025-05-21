@@ -17,7 +17,12 @@ export async function getEcho() {
     forceTLS: false,
     encrypted: false,
     disableStats: true,
-  authEndpoint: 'http://localhost/broadcasting/auth',
+    authEndpoint: "http://localhost/broadcast/auth",
+    auth: {
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+      }
+    },
   });
 
   return echo;
