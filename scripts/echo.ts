@@ -1,37 +1,24 @@
 import Echo from 'laravel-echo';
-import Pusher from 'pusher-js/react-native';
-import { read } from '@/core/settings'; // dopasuj ścieżkę
+import Pusher from 'pusher-js/react-native'; // <- ważne dla RN!
+import { read } from '@/core/settings';
 
-let echoInstance: Echo | null = null;
+export async function getEcho() {
+  const apiToken = await read('apiToken');
 
-export const getEcho = async (): Promise<Echo> => {
-  if (echoInstance) return echoInstance;
+  // Ustaw Pusher globalnie (dla Echo)
+  global.Pusher = Pusher;
 
-  window.Pusher = Pusher;
-
-  const token = await read('apiToken');
-
-  echoInstance = new Echo({
-    broadcaster: 'pusher',
+  const echo = new Echo({
+    broadcaster: 'reverb',
     key: 'local',
     wsHost: 'localhost',
-    wsPort: 6001,
+    wsPort: 8765,
+    wssPort: 8765,
     forceTLS: false,
+    encrypted: false,
     disableStats: true,
-    authEndpoint: 'http://localhost:8000/broadcasting/auth',
-    auth: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+  authEndpoint: 'http://localhost/broadcasting/auth',
   });
 
-  return echoInstance;
-};
-
-export const disconnectEcho = () => {
-  if (echoInstance) {
-    echoInstance.disconnect();
-    echoInstance = null;
-  }
-};
+  return echo;
+}
