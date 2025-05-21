@@ -1,19 +1,13 @@
+import { GenerateKeyModal } from "@/components/GenerateKeyModal";
 import { ThemedView } from "@/components/ThemedView";
 import { Octicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { generateKeyPair } from "web-ssh-keygen";
 const KeychainScreen = () => {
+    const [generateModalVisible, setGenerateModalVisible] = useState(false);
     function createKey() {
-        console.log(
-            generateKeyPair({
-                alg: "RSASSA-PKCS1-v1_5",
-                size: 2048,
-                hash: "SHA-256",
-                name: "MyKey",
-            }),
-        );
+        setGenerateModalVisible(true);
     }
     return (
         <ThemedView
@@ -28,6 +22,7 @@ const KeychainScreen = () => {
             <TouchableOpacity onPress={createKey} style={styles.floatingButton}>
                 <Octicons name="key" size={24} color="white" />
             </TouchableOpacity>
+            <GenerateKeyModal modalVisible={generateModalVisible} setModalVisible={setGenerateModalVisible} />
         </ThemedView>
     );
 };
