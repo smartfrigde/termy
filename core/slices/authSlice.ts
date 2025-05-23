@@ -6,6 +6,7 @@ export const authSlice = createSlice({
         apiToken: null,
         refreshToken: null,
         isLoggedIn: false,
+        sync_version: null,
     },
     reducers: {
         setUser: (state, action) => {
@@ -26,8 +27,11 @@ export const authSlice = createSlice({
             state.refreshToken = null;
             state.isLoggedIn = false;
         },
+        setSyncVersion: (state, action) => {
+            state.sync_version = action.payload;
+        }
     },
 });
 export const selectUser = (state: { auth: { user: User } }) => state.auth.user;
 export const selectIsLoggedIn = (state: { auth: { isLoggedIn: boolean } }) => state.auth.isLoggedIn;
-export const { setUser, setApiToken, setRefreshToken, setIsLoggedIn, logout } = authSlice.actions;
+export const { setUser, setApiToken, setRefreshToken, setIsLoggedIn, logout, setSyncVersion } = authSlice.actions;

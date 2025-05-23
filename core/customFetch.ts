@@ -1,5 +1,6 @@
-import { endpoint } from "@/constants/api";
+import { endpoint } from "../constants/api";
 import { read, store } from "./settings";
+import {setSyncVersion} from "./slices/authSlice";
 
 export async function fetchApi(url: string, options: RequestInit = {}) {
     const headers = {
@@ -43,6 +44,8 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
                         headers,
                     });
                     if (retryResponse.ok) {
+                        await changeSyncVersion(response);
+
                         return retryResponse;
                     }
                 } catch (error) {
@@ -54,9 +57,25 @@ export async function fetchApi(url: string, options: RequestInit = {}) {
             }
         }
 
+        if (response.ok) {
+            await changeSyncVersion(response);
+        }
+
         return response;
     } catch (error) {
         console.error("Fetch error:", error);
         throw error;
+    }
+}
+
+export async function changeSyncVersion(response: Response) {
+    const clone = response.clone();
+    try {
+        const data = await clone.json();
+        if (data?.sync_version) {
+            setSyncVersion(data.sync_version);
+        }
+    } catch (err) {
+        console.warn("Nie udało się odczytać sync_version:", err);
     }
 }
