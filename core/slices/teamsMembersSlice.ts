@@ -64,8 +64,6 @@ export const hasMoreMembers = (pageData: TeamPageData[], teamId: number): boolea
 };
 
 export const membersInTeam = (members: MembersResponse[], teamId: number): MembersResponse[] => {
-    console.log(members);
-    console.log(members.filter((item) => item?.team_id === teamId));
     return members.filter((item) => item?.team_id === teamId);
 };
 
