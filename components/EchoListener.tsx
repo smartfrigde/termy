@@ -14,14 +14,15 @@ useEffect(() => {
         const channelName = `sync.user.${user.id}`;
         const channel = echo.private(channelName);
 
-        // 🔌 Nasłuchuj połączenia
-        echo.connector.pusher.connection.bind('connected', () => {
-            console.log('✅ Połączono z WebSocket');
-        });
-
-        // 📡 Nasłuch wiadomości
         channel.listen('.sync.nots', (event: any) => {
-            console.log('📩 Odebrano wiadomość:', event);
+            if (event?.user_id && event?.user_id === user.id){
+                if (event?.message){
+                    let data = event.message;
+                    if (data.type === ""){
+                        
+                    }
+                }
+            }
         });
     };
 
