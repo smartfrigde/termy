@@ -13,7 +13,7 @@ export default async function addTeam(name: string) {
         });
 
         if (response.ok) {
-            return response;
+            return await response.json();
         } else {
             console.error(`Błąd ${response.status}: ${response.statusText}`);
             return null;

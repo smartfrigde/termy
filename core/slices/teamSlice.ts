@@ -52,6 +52,13 @@ export const teamSlice = createSlice({
                 state.totalTeamsCount = -1;
             }
         },
+
+        resetTeams: (state) => {
+            state.teams = [];
+            state.totalPages = 2;
+            state.currentPage = 0;
+            state.totalTeamsCount = 1;
+        },
     },
 });
 
@@ -63,7 +70,7 @@ export const hasMoreTeams = (state: {
     return state.team.currentPage < state.team.totalPages;
 };
 
-export const { setTeams, addTeam, removeTeam, setTeam } = teamSlice.actions;
+export const { resetTeams, setTeams, addTeam, removeTeam, setTeam } = teamSlice.actions;
 
 export const teamsCount = (state: { team: { teams: TeamType[] } }) => {
     return state.team.teams.length;
