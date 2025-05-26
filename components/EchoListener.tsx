@@ -5,8 +5,8 @@ import { selectSyncVersion, selectUser } from "@/core/slices/authSlice";
 import { DataCategories } from "@/core/DataCategoriesManager";
 import { currentTeamsPage, resetTeams } from "@/core/slices/teamSlice";
 import { resetSshSlice } from "@/core/slices/sshSlice";
-import { resetTeamMembers } from "@/core/slices/teamsMembersSlice";
-import { getTeams } from "@/core/teamManager";
+import { addTeamMember, PageData, resetTeamMembers, teamCurrentPage } from "@/core/slices/teamsMembersSlice";
+import { getMembers, getTeams } from "@/core/teamManager";
 import { TeamType } from "@/types/Team";
 import { addTeam as addTeamToSlice } from "@/core/slices/teamSlice";
 
@@ -64,6 +64,35 @@ export const EchoListener = () => {
                         break;
                     case DataCategories.members:
                         dispatch(resetTeamMembers());
+
+                        if (data?.team_id) {
+                            const teamId = data.team_id;
+                            const teamPageData = useSelector(PageData);
+                            const maxPage = teamCurrentPage(teamPageData, teamId);
+
+                            try {
+                                for (let page = 1; page <= maxPage; page++) {
+                                    const response = await getMembers(teamId, 1);
+                                    if (response.ok) {
+                                        const membersData = await response.json();
+                                        membersData.members.forEach((member: any) => {
+                                            dispatch(addTeamMember({
+                                                members: member,
+                                                pageData: {
+                                                    team_id: teamId, current_page: 1, total_pages: 1,
+                                                    total_members: 0
+                                                },
+                                            }));
+                                        });
+                                    } else {
+                                        console.error(`Błąd ${response.status}: ${response.statusText}`);
+                                    }
+                                }
+                            } catch (error) {
+                                console.error("Network error:", error);
+                            }
+                        }
+
                         break;
                     default:
                         console.warn("Nieobsługiwana kategoria:", data.category);
