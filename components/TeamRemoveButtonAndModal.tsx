@@ -21,9 +21,9 @@ const TeamRemoveButtonAndModal: React.FC<TeamRemoveButtonAndModalProps> = ({ tea
     };
 
     const handleConfirmDelete = async () => {
-        const reponse = await deleteTeam(teamId);
+        const response = await deleteTeam(teamId);
 
-        if (reponse !== null) {
+        if (response !== null) {
             dispatch(removeTeam(teamId));
         }
 
