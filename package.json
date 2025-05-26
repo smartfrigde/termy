@@ -50,6 +50,7 @@
         "react-native-gesture-handler": "~2.24.0",
         "react-native-ios-context-menu": "^3.1.0",
         "react-native-ios-utilities": "^5.1.2",
+        "react-native-nitro-modules": "^0.25.2",
         "react-native-quick-crypto": "^0.7.13",
         "react-native-reanimated": "~3.17.4",
         "react-native-redux-persist2": "^0.0.3",
@@ -59,8 +60,8 @@
         "react-native-webview": "13.13.5",
         "react-redux": "^9.2.0",
         "redux-persist": "^6.0.0",
+        "ssh-keygen-rn": "^1.0.0",
         "v86react": "^1.0.14",
-        "web-ssh-keygen": "^0.1.2",
         "xterm": "^5.3.0",
         "zeego": "^3.0.6"
     },

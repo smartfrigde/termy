@@ -1,10 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
 import isMobile from "@/constants/isMobile";
+import { selectUser } from "@/core/slices/authSlice";
 import { addKey } from "@/core/slices/sshSlice";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { useDispatch } from "react-redux";
-import { generateKeyPair } from "web-ssh-keygen";
+import { useDispatch, useSelector } from "react-redux";
+import { generateKeyPair } from "ssh-keygen-rn";
 import { NiceDropdown } from "../NiceDropdown";
 import { ThemedTextInput } from "../ThemedTextInput";
 interface GenerateKeyViewProps {
@@ -14,6 +15,8 @@ export function GenerateKeyView({ setModalVisible }: GenerateKeyViewProps) {
     const [selectedSize, setSelectedSize] = useState(0);
     const [selectedHash, setSelectedHash] = useState(0);
     const [name, setName] = useState("");
+    const [passphrase, setPassphrase] = useState("");
+    const auth = useSelector(selectUser);
     const dispatch = useDispatch();
     const possibleHashes = [
         { label: "SHA-1", value: "SHA-1" },
@@ -27,13 +30,7 @@ export function GenerateKeyView({ setModalVisible }: GenerateKeyViewProps) {
         { label: "4096", value: 4096 },
     ];
     const generate = async () => {
-        const keys = await generateKeyPair({
-            alg: "RSASSA-PKCS1-v1_5",
-            size: selectedSize as 1024 | 2048 | 4096,
-            // @ts-expect-error fix types
-            hash: selectedHash as "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512",
-            name: name,
-        });
+        const keys = await generateKeyPair(selectedSize, passphrase);
         console.log("Key generated", keys);
         dispatch(addKey({ name: name, publicKey: keys.publicKey, privateKey: keys.privateKey, id: "hi" }));
         setModalVisible(false);
@@ -55,6 +52,16 @@ export function GenerateKeyView({ setModalVisible }: GenerateKeyViewProps) {
                 Size
             </ThemedText>
             <NiceDropdown setValue={setSelectedSize} value={selectedSize} data={possibleSizes} />
+            <ThemedText style={styles.modalText} type="defaultSemiBold">
+                Passphrase
+            </ThemedText>
+            <ThemedTextInput
+                placeholder="*******"
+                placeholderTextColor="gray"
+                secureTextEntry
+                value={passphrase}
+                onChangeText={setPassphrase}
+            />
             <Pressable style={[styles.button, styles.buttonClose]} onPress={() => generate()}>
                 <ThemedText style={styles.textStyle}>Save</ThemedText>
             </Pressable>
