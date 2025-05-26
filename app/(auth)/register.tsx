@@ -34,6 +34,7 @@ const RegisterScreen = () => {
                 placeholder="John"
                 onSubmitEditing={handleRegister}
                 placeholderTextColor="gray"
+                autoComplete="name"
                 onChangeText={(text) => setFName(text)}
                 value={fName}
             />
@@ -48,6 +49,7 @@ const RegisterScreen = () => {
             <ThemedText type="defaultSemiBold">E-mail</ThemedText>
             <ThemedTextInput
                 placeholder="johndoe@example.com"
+                autoComplete="email"
                 placeholderTextColor="gray"
                 onSubmitEditing={handleRegister}
                 onChangeText={(text) => setEmail(text)}
@@ -58,6 +60,7 @@ const RegisterScreen = () => {
                 secureTextEntry={true}
                 onSubmitEditing={handleRegister}
                 placeholder="********"
+                autoComplete="password"
                 placeholderTextColor="gray"
                 onChangeText={(text) => setPassword(text)}
                 value={password}

@@ -39,6 +39,7 @@ const LoginScreen = () => {
             <ThemedTextInput
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
+                autoComplete="email"
                 onChangeText={(text) => setEmail(text)}
                 onSubmitEditing={handleLogin}
                 value={email}
@@ -48,6 +49,7 @@ const LoginScreen = () => {
                 secureTextEntry={true}
                 placeholder="********"
                 placeholderTextColor="gray"
+                autoComplete="password"
                 onChangeText={(text) => setPassword(text)}
                 onSubmitEditing={handleLogin}
                 value={password}
