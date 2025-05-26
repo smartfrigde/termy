@@ -6,8 +6,8 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
+import React from "react";
 import { Provider } from "react-redux";
-import React from 'react';
 
 import { EchoListener } from "@/components/EchoListener"; // nowy komponent (poniżej)
 

@@ -32,8 +32,8 @@ export const authSlice = createSlice({
         },
 
         resetUser(state) {
-            state.user = null
-        }
+            state.user = null;
+        },
     },
 });
 export const selectUser = (state: { auth: { user: User } }) => state.auth.user;

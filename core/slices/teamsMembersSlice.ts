@@ -8,7 +8,6 @@ export const teamMembersSlice = createSlice({
         page_data: [] as TeamPageData[],
     },
     reducers: {
-
         resetTeamMembers: (state) => {
             state.members = [];
             state.page_data = [];

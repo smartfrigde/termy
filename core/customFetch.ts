@@ -1,6 +1,6 @@
 import { endpoint } from "../constants/api";
 import { read, store } from "./settings";
-import {setSyncVersion} from "./slices/authSlice";
+import { setSyncVersion } from "./slices/authSlice";
 
 export async function fetchApi(url: string, options: RequestInit = {}) {
     const headers = {

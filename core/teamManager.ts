@@ -1,4 +1,4 @@
-import {fetchApi} from "@/core/customFetch";
+import { fetchApi } from "@/core/customFetch";
 
 export default async function addTeam(name: string) {
     try {

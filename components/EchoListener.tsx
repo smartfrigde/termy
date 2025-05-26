@@ -1,15 +1,15 @@
+import { DataCategories } from "@/core/DataCategoriesManager";
+import { selectSyncVersion, selectUser } from "@/core/slices/authSlice";
+import { resetSshSlice } from "@/core/slices/sshSlice";
+import { addTeam as addTeamToSlice, currentTeamsPage, resetTeams } from "@/core/slices/teamSlice";
+import { PageData, addTeamMember, resetTeamMembers, teamCurrentPage } from "@/core/slices/teamsMembersSlice";
+import { getMembers, getTeams } from "@/core/teamManager";
+import { getEcho } from "@/scripts/echo";
+import type { TeamType } from "@/types/Team";
+import type { MembersResponse } from "@/types/TeamMember";
+import type { Channel } from "laravel-echo";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getEcho } from "@/scripts/echo";
-import { selectSyncVersion, selectUser } from "@/core/slices/authSlice";
-import { DataCategories } from "@/core/DataCategoriesManager";
-import { currentTeamsPage, resetTeams } from "@/core/slices/teamSlice";
-import { resetSshSlice } from "@/core/slices/sshSlice";
-import { addTeamMember, PageData, resetTeamMembers, teamCurrentPage } from "@/core/slices/teamsMembersSlice";
-import { getMembers, getTeams } from "@/core/teamManager";
-import type { TeamType } from "@/types/Team";
-import { addTeam as addTeamToSlice } from "@/core/slices/teamSlice";
-import type { MembersResponse } from "@/types/TeamMember";
 
 export const EchoListener = () => {
     const user = useSelector(selectUser);
@@ -19,16 +19,14 @@ export const EchoListener = () => {
 
     useEffect(() => {
         if (!user?.id) return;
-
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        let channel: any;
+        let channel: Channel;
 
         const initEcho = async () => {
             const echo = await getEcho();
             const channelName = `sync.user.${user.id}`;
             channel = echo.private(channelName);
 
-            channel.listen('.sync.nots', async (event: { message: string; user_id: number }) => {
+            channel.listen(".sync.nots", async (event: { message: string; user_id: number }) => {
                 const data = JSON.parse(event?.message);
                 if (!data || Number(event.user_id) !== Number(user.id)) return;
 
@@ -42,20 +40,20 @@ export const EchoListener = () => {
                         break;
                     case DataCategories.team: {
                         const maxPage = teamCurrnetPage || 1;
-                        dispatch(
-                            resetTeams(),
-                        );
+                        dispatch(resetTeams());
 
                         for (let page = 1; page <= maxPage; page++) {
                             try {
                                 const data = await getTeams(page);
                                 if (data?.teams && Array.isArray(data.teams)) {
                                     data.teams.forEach((team: TeamType) => {
-                                        dispatch(addTeamToSlice({
-                                            team,
-                                            totalPages: data.total_pages,
-                                            currentPage: data.current_page,
-                                        }));
+                                        dispatch(
+                                            addTeamToSlice({
+                                                team,
+                                                totalPages: data.total_pages,
+                                                currentPage: data.current_page,
+                                            }),
+                                        );
                                     });
                                 }
                             } catch (error) {
@@ -78,13 +76,17 @@ export const EchoListener = () => {
                                     const response = await getMembers(teamId, 1);
                                     if (response.ok) {
                                         response.members.forEach((member: MembersResponse) => {
-                                            dispatch(addTeamMember({
-                                                members: member,
-                                                pageData: {
-                                                    team_id: teamId, current_page: response.current_page, total_pages: response.total_pages,
-                                                    total_members: 0
-                                                },
-                                            }));
+                                            dispatch(
+                                                addTeamMember({
+                                                    members: member,
+                                                    pageData: {
+                                                        team_id: teamId,
+                                                        current_page: response.current_page,
+                                                        total_pages: response.total_pages,
+                                                        total_members: 0,
+                                                    },
+                                                }),
+                                            );
                                         });
                                     } else {
                                         console.error(`Błąd ${response.status}: ${response.statusText}`);
@@ -107,11 +109,10 @@ export const EchoListener = () => {
 
         return () => {
             if (channel) {
-                channel.stopListening('.sync.nots');
+                channel.stopListening(".sync.nots");
             }
         };
     }, [user?.id, syncVersion]);
-
 
     return null;
 };
