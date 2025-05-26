@@ -7,8 +7,9 @@ import { currentTeamsPage, resetTeams } from "@/core/slices/teamSlice";
 import { resetSshSlice } from "@/core/slices/sshSlice";
 import { addTeamMember, PageData, resetTeamMembers, teamCurrentPage } from "@/core/slices/teamsMembersSlice";
 import { getMembers, getTeams } from "@/core/teamManager";
-import { TeamType } from "@/types/Team";
+import type { TeamType } from "@/types/Team";
 import { addTeam as addTeamToSlice } from "@/core/slices/teamSlice";
+import type { MembersResponse } from "@/types/TeamMember";
 
 export const EchoListener = () => {
     const user = useSelector(selectUser);
@@ -19,6 +20,7 @@ export const EchoListener = () => {
     useEffect(() => {
         if (!user?.id) return;
 
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         let channel: any;
 
         const initEcho = async () => {
@@ -26,9 +28,9 @@ export const EchoListener = () => {
             const channelName = `sync.user.${user.id}`;
             channel = echo.private(channelName);
 
-            channel.listen('.sync.nots', async (event: any) => {
+            channel.listen('.sync.nots', async (event: { message: string; user_id: number }) => {
                 const data = JSON.parse(event?.message);
-                if (!data || event.user_id !== user.id) return;
+                if (!data || Number(event.user_id) !== Number(user.id)) return;
 
                 if (data.type !== "report_new_sync_version") return;
 
@@ -38,7 +40,7 @@ export const EchoListener = () => {
                     case DataCategories.ssh:
                         dispatch(resetSshSlice());
                         break;
-                    case DataCategories.team:
+                    case DataCategories.team: {
                         const maxPage = teamCurrnetPage || 1;
                         dispatch(
                             resetTeams(),
@@ -62,6 +64,7 @@ export const EchoListener = () => {
                             }
                         }
                         break;
+                    }
                     case DataCategories.members:
                         dispatch(resetTeamMembers());
 
@@ -74,12 +77,11 @@ export const EchoListener = () => {
                                 for (let page = 1; page <= maxPage; page++) {
                                     const response = await getMembers(teamId, 1);
                                     if (response.ok) {
-                                        const membersData = await response.json();
-                                        membersData.members.forEach((member: any) => {
+                                        response.members.forEach((member: MembersResponse) => {
                                             dispatch(addTeamMember({
                                                 members: member,
                                                 pageData: {
-                                                    team_id: teamId, current_page: 1, total_pages: 1,
+                                                    team_id: teamId, current_page: response.current_page, total_pages: response.total_pages,
                                                     total_members: 0
                                                 },
                                             }));
