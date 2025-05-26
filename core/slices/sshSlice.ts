@@ -28,10 +28,8 @@ export const sshSlice = createSlice({
 
         resetSshSlice(state){
             state.servers = [];
-        }
-    },
-});
-        setKeys: (state, action: { payload: KeyType[] }) => {
+        },
+       setKeys: (state, action: { payload: KeyType[] }) => {
             state.keys = action.payload;
         },
         addKey: (state, action: { payload: KeyType }) => {
@@ -51,7 +49,7 @@ export const sshSlice = createSlice({
 });
 export const selectServers = (state: { ssh: { servers: ServerType[] } }) => state.ssh.servers;
 export const selectKeys = (state: { ssh: { keys: KeyType[] } }) => state.ssh.keys;
-export const { setServers, addServer, removeServer, setKeys, addKey, removeKey } = sshSlice.actions;
+export const { resetSshSlice, setServers, addServer, removeServer, setKeys, addKey, removeKey } = sshSlice.actions;
 
 export const filterTeamServers = (servers: ServerType[], teamId: number) => {
     if (!servers) return [];
