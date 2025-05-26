@@ -1,12 +1,13 @@
+import { translateKey } from "@/core/keyTranslate";
 import type { ServerType } from "@/types/Server";
 import SSHClient from "@dylankenneally/react-native-ssh-sftp";
 import { useEffect, useRef, useState } from "react";
-import { Modal, StyleSheet } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { Modal, type NativeSyntheticEvent, StyleSheet, type TextInputKeyPressEventData } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import ThemedButton from "../ThemedButton";
 import { ThemedText } from "../ThemedText";
+import { ThemedTextInput } from "../ThemedTextInput";
 import { ThemedView } from "../ThemedView";
-
 interface TerminalModalProps {
     server: ServerType;
     visible: boolean;
@@ -14,7 +15,6 @@ interface TerminalModalProps {
 }
 
 export default function TerminalModal({ server, visible, setVisible }: TerminalModalProps) {
-    const [command, setCommand] = useState("");
     const [output, setOutput] = useState("");
     const clientRef = useRef<SSHClient | null>(null);
 
@@ -67,17 +67,20 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
         }
     }, [visible]);
 
-    const sendCommand = () => {
+    function sendKey(e: NativeSyntheticEvent<TextInputKeyPressEventData> | string) {
         if (clientRef.current) {
-            console.log("Command sent:", command);
-            clientRef.current.writeToShell(`${command}\n`);
-            setCommand("");
+            if (typeof e === "string") {
+                console.log("Key sent:", e);
+                clientRef.current.writeToShell(e);
+            } else if (e.nativeEvent?.key) {
+                console.log("Key sent:", e.nativeEvent.key);
+                clientRef.current.writeToShell(translateKey(e.nativeEvent.key));
+            }
         } else {
             console.error("SSH Client is not connected");
             setOutput((prev) => `${prev}\nError: SSH Client is not connected.`);
         }
-    };
-
+    }
     return (
         <Modal animationType="slide" transparent={false} visible={visible}>
             <ThemedView style={{ flex: 1, padding: 20 }}>
@@ -101,14 +104,20 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                     <ThemedText>{output}</ThemedText>
                 </ScrollView>
                 <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
-                    <TextInput
+                    <ThemedTextInput
                         style={styles.textInput}
-                        placeholder="cmd"
+                        placeholder="Type in your keystrokes here."
                         placeholderTextColor="gray"
-                        value={command}
-                        onChangeText={setCommand}
+                        value=""
+                        returnKeyLabel="Enter"
+                        autoFocus
+                        autoCapitalize="none"
+                        onKeyPress={sendKey}
+                        onSubmitEditing={(e) => {
+                            sendKey("\n");
+                            e.preventDefault();
+                        }}
                     />
-                    <ThemedButton title="Send" onPress={sendCommand} />
                 </ThemedView>
             </ThemedView>
         </Modal>
@@ -117,10 +126,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
 
 const styles = StyleSheet.create({
     textInput: {
-        color: "white",
         height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        width: "80%",
+        width: "100%",
     },
 });
