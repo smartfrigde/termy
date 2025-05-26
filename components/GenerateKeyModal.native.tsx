@@ -7,9 +7,10 @@ import { GenerateKeyView } from "./modalViews/GenerateKeyView";
 interface GenerateKeyModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
+    refresh: () => void;
 }
 
-export function GenerateKeyModal({ modalVisible, setModalVisible }: GenerateKeyModalProps) {
+export function GenerateKeyModal({ modalVisible, setModalVisible, refresh }: GenerateKeyModalProps) {
     const bgColor = useThemeColor({}, "background");
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     if (modalVisible) {
@@ -33,7 +34,7 @@ export function GenerateKeyModal({ modalVisible, setModalVisible }: GenerateKeyM
                 enableDynamicSizing={false}
             >
                 <BottomSheetView style={[styles.view, { backgroundColor: bgColor }]}>
-                    <GenerateKeyView setModalVisible={setModalVisible} />
+                    <GenerateKeyView refresh={refresh} setModalVisible={setModalVisible} />
                 </BottomSheetView>
             </BottomSheetModal>
         </>

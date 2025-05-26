@@ -1,19 +1,33 @@
 import { GenerateKeyModal } from "@/components/GenerateKeyModal";
 import { KeyItem } from "@/components/KeyItem";
 import { ThemedView } from "@/components/ThemedView";
-import { selectKeys } from "@/core/slices/sshSlice";
+import { getKeys } from "@/core/keyManager";
+import { selectKeys, setKeys } from "@/core/slices/sshSlice";
 import { Octicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const screenWidth = Dimensions.get("window").width;
 const numColumns = Math.floor(screenWidth / 200);
 
 const KeychainScreen = () => {
     const [generateModalVisible, setGenerateModalVisible] = useState(false);
     const keys = useSelector(selectKeys);
-    console.log("keys", keys);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        refresh();
+    }, []);
+    function refresh() {
+        getKeys()
+            .then((data) => {
+                console.log("Fetched keys:", data);
+                dispatch(setKeys(data.keys));
+            })
+            .catch((error) => {
+                console.error("Error fetching keys:", error);
+            });
+    }
     function createKey() {
         setGenerateModalVisible(true);
     }
@@ -38,7 +52,11 @@ const KeychainScreen = () => {
                     renderItem={({ item }) => <KeyItem item={item} />}
                 />
             </View>
-            <GenerateKeyModal modalVisible={generateModalVisible} setModalVisible={setGenerateModalVisible} />
+            <GenerateKeyModal
+                refresh={refresh}
+                modalVisible={generateModalVisible}
+                setModalVisible={setGenerateModalVisible}
+            />
         </ThemedView>
     );
 };

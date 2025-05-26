@@ -1,23 +1,20 @@
 import { ThemedText } from "@/components/ThemedText";
 import isMobile from "@/constants/isMobile";
-import { selectUser } from "@/core/slices/authSlice";
-import { addKey } from "@/core/slices/sshSlice";
+import { createKey } from "@/core/keyManager";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import { generateKeyPair } from "ssh-keygen-rn";
 import { NiceDropdown } from "../NiceDropdown";
 import { ThemedTextInput } from "../ThemedTextInput";
 interface GenerateKeyViewProps {
     setModalVisible: (e: boolean) => void;
+    refresh: () => void;
 }
-export function GenerateKeyView({ setModalVisible }: GenerateKeyViewProps) {
+export function GenerateKeyView({ setModalVisible, refresh }: GenerateKeyViewProps) {
     const [selectedSize, setSelectedSize] = useState(0);
     const [selectedHash, setSelectedHash] = useState(0);
     const [name, setName] = useState("");
     const [passphrase, setPassphrase] = useState("");
-    const auth = useSelector(selectUser);
-    const dispatch = useDispatch();
     const possibleHashes = [
         { label: "SHA-1", value: "SHA-1" },
         { label: "SHA-256", value: "SHA-256" },
@@ -32,8 +29,20 @@ export function GenerateKeyView({ setModalVisible }: GenerateKeyViewProps) {
     const generate = async () => {
         const keys = await generateKeyPair(selectedSize, passphrase);
         console.log("Key generated", keys);
-        dispatch(addKey({ name: name, publicKey: keys.publicKey, privateKey: keys.privateKey, id: "hi" }));
-        setModalVisible(false);
+        createKey({
+            name: name,
+            publicKey: keys.publicKey,
+            privateKey: keys.privateKey,
+            passphrase: passphrase,
+        })
+            .then((response) => {
+                console.log("Key created on server", response);
+                refresh();
+                setModalVisible(false);
+            })
+            .catch((error) => {
+                console.error("Error creating key on server", error);
+            });
     };
     return (
         <>

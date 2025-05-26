@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { deleteKey } from "@/core/keyManager";
 import { removeKey } from "@/core/slices/sshSlice";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import type { KeyType } from "@/types/Key";
@@ -22,7 +23,12 @@ export const KeyItem = ({ item }: { item: KeyType }) => {
         console.log(item);
     };
     const handleDelete = () => {
-        dispatch(removeKey(item.id!));
+        deleteKey(item.id!).then((response) => {
+            if (response.status === 200) {
+                console.log("Key deleted", item);
+                dispatch(removeKey(item.id!));
+            }
+        });
     };
 
     return (

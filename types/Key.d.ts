@@ -1,5 +1,5 @@
 export type KeyType = {
-    id: string;
+    id?: string;
     name: string;
     publicKey: string;
     privateKey: string;

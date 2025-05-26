@@ -6,9 +6,10 @@ import { GenerateKeyView } from "./modalViews/GenerateKeyView";
 interface GenerateKeyModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
+    refresh: () => void;
 }
 
-export function GenerateKeyModal({ modalVisible, setModalVisible }: GenerateKeyModalProps) {
+export function GenerateKeyModal({ modalVisible, setModalVisible, refresh }: GenerateKeyModalProps) {
     return (
         <>
             <Modal
@@ -21,7 +22,7 @@ export function GenerateKeyModal({ modalVisible, setModalVisible }: GenerateKeyM
             >
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
-                        <GenerateKeyView setModalVisible={setModalVisible} />
+                        <GenerateKeyView refresh={refresh} setModalVisible={setModalVisible} />
                     </ThemedView>
                 </View>
             </Modal>
