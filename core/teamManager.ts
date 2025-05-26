@@ -1,4 +1,4 @@
-import { fetchApi } from "@/core/customFetch";
+import {fetchApi} from "@/core/customFetch";
 
 export default async function addTeam(name: string) {
     try {
@@ -13,14 +13,13 @@ export default async function addTeam(name: string) {
         });
 
         if (response.ok) {
-            const data = await response.json();
-            return data;
+            return await response.json();
         } else {
             console.error(`Błąd ${response.status}: ${response.statusText}`);
             return null;
         }
     } catch (error) {
-        console.error("Network error: :", error);
+        console.error("Network error: teamManager:", error);
         return null;
     }
 }

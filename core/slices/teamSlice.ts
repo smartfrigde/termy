@@ -49,8 +49,15 @@ export const teamSlice = createSlice({
             const index = state.teams.findIndex((team) => team.id === action.payload);
             if (index !== -1) {
                 state.teams.splice(index, 1);
-                state.totalTeamsCount = -1;
+                state.totalTeamsCount = state.teams.length;
             }
+        },
+
+        resetTeams: (state) => {
+            state.teams = [] as TeamType[];
+            state.totalPages = 2;
+            state.currentPage = 0;
+            state.totalTeamsCount = 1;
         },
     },
 });
@@ -63,7 +70,7 @@ export const hasMoreTeams = (state: {
     return state.team.currentPage < state.team.totalPages;
 };
 
-export const { setTeams, addTeam, removeTeam, setTeam } = teamSlice.actions;
+export const { resetTeams, setTeams, addTeam, removeTeam, setTeam } = teamSlice.actions;
 
 export const teamsCount = (state: { team: { teams: TeamType[] } }) => {
     return state.team.teams.length;

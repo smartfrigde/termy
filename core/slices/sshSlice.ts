@@ -24,6 +24,13 @@ export const sshSlice = createSlice({
                 state.servers = array;
             }
         },
+
+
+        resetSshSlice(state){
+            state.servers = [];
+        }
+    },
+});
         setKeys: (state, action: { payload: KeyType[] }) => {
             state.keys = action.payload;
         },

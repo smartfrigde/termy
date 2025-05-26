@@ -18,8 +18,8 @@ export function TeamAddModal({ modalVisible, setModalVisible }: ServerModalProps
 
     const save = async () => {
         const data = await addTeam(teamName);
-        if (data.team) {
-            setModalVisible(!modalVisible);
+        setModalVisible(!modalVisible);
+        if (data?.team) {
             dispatch(
                 createTeam({
                     team: data.team,

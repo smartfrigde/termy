@@ -8,6 +8,12 @@ export const teamMembersSlice = createSlice({
         page_data: [] as TeamPageData[],
     },
     reducers: {
+
+        resetTeamMembers: (state) => {
+            state.members = [];
+            state.page_data = [];
+        },
+
         addTeamMember(
             state: {
                 members: MembersResponse[];
@@ -46,7 +52,7 @@ export const teamMembersSlice = createSlice({
     },
 });
 
-export const { addTeamMember, removeTeamMember, setTeamMember } = teamMembersSlice.actions;
+export const { resetTeamMembers, addTeamMember, removeTeamMember, setTeamMember } = teamMembersSlice.actions;
 
 export const PageData = (state: {
     team_members: { page_data: TeamPageData[] };
@@ -64,8 +70,6 @@ export const hasMoreMembers = (pageData: TeamPageData[], teamId: number): boolea
 };
 
 export const membersInTeam = (members: MembersResponse[], teamId: number): MembersResponse[] => {
-    console.log(members);
-    console.log(members.filter((item) => item?.team_id === teamId));
     return members.filter((item) => item?.team_id === teamId);
 };
 

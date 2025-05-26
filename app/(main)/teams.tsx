@@ -35,7 +35,6 @@ const TeamsScreen = () => {
 
     useEffect(() => {
         if (teams.length < currentPage * perPage && hasMoreTeamsLocal) {
-            console.log("wywołuje");
             getData();
         }
     }, [currentPage]);
