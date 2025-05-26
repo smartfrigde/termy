@@ -49,12 +49,12 @@ export const teamSlice = createSlice({
             const index = state.teams.findIndex((team) => team.id === action.payload);
             if (index !== -1) {
                 state.teams.splice(index, 1);
-                state.totalTeamsCount = -1;
+                state.totalTeamsCount = state.teams.length;
             }
         },
 
         resetTeams: (state) => {
-            state.teams = [];
+            state.teams = [] as TeamType[];
             state.totalPages = 2;
             state.currentPage = 0;
             state.totalTeamsCount = 1;

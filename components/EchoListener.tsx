@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getEcho } from "@/scripts/echo";
-import {selectSyncVersion, selectUser} from "@/core/slices/authSlice";
-import {DataCategories} from "@/core/DataCategoriesManager";
-import {resetTeams} from "@/core/slices/teamSlice";
-import {resetSshSlice} from "@/core/slices/sshSlice";
-import {resetTeamMembers} from "@/core/slices/teamsMembersSlice";
+import { selectSyncVersion, selectUser } from "@/core/slices/authSlice";
+import { DataCategories } from "@/core/DataCategoriesManager";
+import { resetTeams } from "@/core/slices/teamSlice";
+import { resetSshSlice } from "@/core/slices/sshSlice";
+import { resetTeamMembers } from "@/core/slices/teamsMembersSlice";
 
 export const EchoListener = () => {
     const user = useSelector(selectUser);
     const syncVersion = useSelector(selectSyncVersion);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!user?.id) return;
@@ -28,16 +29,19 @@ export const EchoListener = () => {
                 if (data.type !== "report_new_sync_version") return;
 
                 if (syncVersion >= data.new_synchronization_version) return;
+
                 switch (data.category) {
                     case DataCategories.ssh:
-                        resetSshSlice();
+                        dispatch(resetSshSlice());
                         break;
                     case DataCategories.team:
-                        resetTeams();
-                        resetTeamMembers();
+                        dispatch(
+                            resetTeams(),
+                            resetTeamMembers()
+                        );
                         break;
                     case DataCategories.members:
-                        resetTeamMembers();
+                        dispatch(resetTeamMembers());
                         break;
                     default:
                         console.warn("Nieobsługiwana kategoria:", data.category);
