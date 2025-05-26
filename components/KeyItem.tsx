@@ -1,16 +1,13 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { removeServer } from "@/core/slices/sshSlice";
-import { deleteServer } from "@/core/sshManager";
+import { deleteKey } from "@/core/keyManager";
+import { removeKey } from "@/core/slices/sshSlice";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import type { ServerType } from "@/types/Server";
+import type { KeyType } from "@/types/Key";
 import { Octicons } from "@expo/vector-icons";
 import { ContextMenuContent } from "@radix-ui/react-context-menu";
-import { useState } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
-import { EditServerModal } from "./EditServerModal";
-import TerminalModal from "./terminal/Terminal";
 import {
     ContextMenuItem,
     ContextMenuItemIcon,
@@ -18,34 +15,29 @@ import {
     ContextMenuRoot,
     ContextMenuTrigger,
 } from "./ui/ContextMenu";
-export const ServerItem = ({ item }: { item: ServerType }) => {
-    const [terminalModalVisible, setTerminalModalVisible] = useState(false);
-    const [editModalVisible, setEditModalVisible] = useState(false);
+export const KeyItem = ({ item }: { item: KeyType }) => {
     const itemColor = useThemeColor({}, "itemColor");
     const dispatch = useDispatch();
 
     const connect = () => {
-        setTerminalModalVisible(true);
-        console.log("Connecting to server", item);
+        console.log(item);
     };
     const handleDelete = () => {
-        deleteServer(item.id!).then((response) => {
+        deleteKey(item.id!).then((response) => {
             if (response.status === 200) {
-                console.log("Server deleted", item);
-                dispatch(removeServer(item.id!));
+                console.log("Key deleted", item);
+                dispatch(removeKey(item.id!));
             }
         });
     };
-    const handleEdit = () => {
-        setEditModalVisible(true);
-    };
+
     return (
         <>
             <ContextMenuRoot>
                 <ContextMenuTrigger style={{ flex: 1, height: "100%", width: "100%" }}>
                     <ThemedView style={[styles.serverItem, { backgroundColor: itemColor }]}>
                         <TouchableOpacity style={styles.connectButton} onPress={connect}>
-                            <Octicons name="link" size={24} color="white" />
+                            <Octicons name="key" size={24} color="white" />
                         </TouchableOpacity>
                         <ThemedText type="title">{item.name}</ThemedText>
                     </ThemedView>
@@ -63,8 +55,8 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
                         alignItems: "center",
                     }}
                 >
-                    <ContextMenuItem key="edit" onSelect={handleEdit}>
-                        <ContextMenuItemTitle>Edit</ContextMenuItemTitle>
+                    <ContextMenuItem key="edit">
+                        <ContextMenuItemTitle>Change name</ContextMenuItemTitle>
                         <ContextMenuItemIcon>
                             <Octicons name="pencil" size={16} color="white" />
                         </ContextMenuItemIcon>
@@ -77,8 +69,6 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
                     </ContextMenuItem>
                 </ContextMenuContent>
             </ContextMenuRoot>
-            <TerminalModal server={item} visible={terminalModalVisible} setVisible={setTerminalModalVisible} />
-            <EditServerModal item={item} setModalVisible={setEditModalVisible} modalVisible={editModalVisible} />
         </>
     );
 };

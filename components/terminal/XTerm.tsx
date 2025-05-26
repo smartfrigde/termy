@@ -1,7 +1,7 @@
 "use client";
 import { Terminal } from "@xterm/xterm";
 import { useEffect, useRef } from "react";
-import "@/components/terminal/Xterm.css";
+import "./Xterm.css";
 
 interface XTermProps {
     output: string;

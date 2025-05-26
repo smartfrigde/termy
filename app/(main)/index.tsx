@@ -62,20 +62,6 @@ export default function DashboardScreen() {
 }
 
 const styles = StyleSheet.create({
-    serverItem: {
-        flex: 1, // Allow items to stretch and fill available space
-        minWidth: "45%", // Ensure a minimum width for each item
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 10,
-        backgroundColor: "#121212",
-        borderRadius: 20,
-        margin: 5, // Add margin between items
-        shadowColor: "#000", // For iOS shadow
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-    },
     serverListContainer: {
         flex: 1,
         padding: 10, // Adjust padding for the container

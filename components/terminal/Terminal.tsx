@@ -2,7 +2,7 @@ import { websocket } from "@/constants/api";
 import { translateCtrlCombo, translateKey } from "@/core/keyTranslate";
 import type { ServerType } from "@/types/Server";
 import { useEffect, useRef, useState } from "react";
-import { Modal } from "react-native";
+import { Modal, useColorScheme } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ThemedButton from "../ThemedButton";
 import { ThemedText } from "../ThemedText";
@@ -19,7 +19,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
     const [output, setOutput] = useState("");
     const [lastOutput, setLastOutput] = useState("");
     const socketRef = useRef<WebSocket | null>(null);
-
+    const colorScheme = useColorScheme() ?? "light";
     // Double-press detection refs
     const lastPressed = useRef<number | null>(null);
     const isDoublePress = useRef<boolean>(false);
@@ -138,7 +138,9 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                         alignItems: "center",
                     }}
                 >
-                    <ThemedText type="title">{server.name} - {server.hostname}</ThemedText>
+                    <ThemedText type="title">
+                        {server.name} - {server.hostname}
+                    </ThemedText>
                     <ThemedButton
                         tabIndex={-1}
                         title="Close"
@@ -152,7 +154,9 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                         }}
                     />
                 </ThemedView>
-                <ScrollView style={{ flex: 1, marginBottom: 20 }}>
+                <ScrollView
+                    style={{ flex: 1, marginBottom: 20, filter: colorScheme === "dark" ? "none" : "invert(1)" }}
+                >
                     <XTerm
                         dom={{
                             scrollEnabled: true,

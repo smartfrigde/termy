@@ -1,16 +1,15 @@
 import isMobile from "@/constants/isMobile";
-import type { ServerType } from "@/types/Server";
 import { Modal, StyleSheet, View } from "react-native";
 import { ThemedView } from "./ThemedView";
-import { EditServerView } from "./modalViews/EditServerView";
+import { GenerateKeyView } from "./modalViews/GenerateKeyView";
 
-interface EditServerModalProps {
-    item: ServerType;
+interface GenerateKeyModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
+    refresh: () => void;
 }
 
-export function EditServerModal({ item, modalVisible, setModalVisible }: EditServerModalProps) {
+export function GenerateKeyModal({ modalVisible, setModalVisible, refresh }: GenerateKeyModalProps) {
     return (
         <>
             <Modal
@@ -23,7 +22,7 @@ export function EditServerModal({ item, modalVisible, setModalVisible }: EditSer
             >
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
-                        <EditServerView item={item} setModalVisible={setModalVisible} />
+                        <GenerateKeyView refresh={refresh} setModalVisible={setModalVisible} />
                     </ThemedView>
                 </View>
             </Modal>

@@ -1,10 +1,11 @@
+import type { KeyType } from "@/types/Key";
 import type { ServerType } from "@/types/Server";
 import { createSlice } from "@reduxjs/toolkit";
 export const sshSlice = createSlice({
     name: "ssh",
     initialState: {
         servers: [] as ServerType[],
-        keys: [], // to-do: add GPG keys to the slice
+        keys: [] as KeyType[],
     },
     reducers: {
         setServers: (state, action: { payload: ServerType[] }) => {
@@ -24,13 +25,33 @@ export const sshSlice = createSlice({
             }
         },
 
+
         resetSshSlice(state){
             state.servers = [];
         }
     },
 });
+        setKeys: (state, action: { payload: KeyType[] }) => {
+            state.keys = action.payload;
+        },
+        addKey: (state, action: { payload: KeyType }) => {
+            const array = state.keys;
+            array.push(action.payload);
+            state.keys = array;
+        },
+        removeKey: (state, action: { payload: string }) => {
+            const array = state.keys;
+            const index = array.findIndex((key) => key.id === action.payload);
+            if (index !== -1) {
+                array.splice(index, 1);
+                state.keys = array;
+            }
+        },
+    },
+});
 export const selectServers = (state: { ssh: { servers: ServerType[] } }) => state.ssh.servers;
-export const { resetSshSlice, setServers, addServer, removeServer } = sshSlice.actions;
+export const selectKeys = (state: { ssh: { keys: KeyType[] } }) => state.ssh.keys;
+export const { setServers, addServer, removeServer, setKeys, addKey, removeKey } = sshSlice.actions;
 
 export const filterTeamServers = (servers: ServerType[], teamId: number) => {
     if (!servers) return [];

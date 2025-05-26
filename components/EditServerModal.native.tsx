@@ -1,18 +1,19 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
+import type { ServerType } from "@/types/Server";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { useCallback, useRef } from "react";
 import { StyleSheet } from "react-native";
-import { CreateServerView } from "./modalViews/CreateServerView";
+import { EditServerView } from "./modalViews/EditServerView";
 
-interface ServerModalProps {
+interface EditServerModalProps {
+    item: ServerType;
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
-    refresh: () => void;
 }
 
-export function CreateServerModal({ modalVisible, setModalVisible, refresh }: ServerModalProps) {
-    const bgColor = useThemeColor({}, "background");
+export function EditServerModal({ item, modalVisible, setModalVisible }: EditServerModalProps) {
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const bgColor = useThemeColor({}, "background");
     if (modalVisible) {
         bottomSheetModalRef.current?.present();
     }
@@ -34,7 +35,7 @@ export function CreateServerModal({ modalVisible, setModalVisible, refresh }: Se
                 enableDynamicSizing={false}
             >
                 <BottomSheetView style={[styles.view, { backgroundColor: bgColor }]}>
-                    <CreateServerView refresh={refresh} setModalVisible={setModalVisible} />
+                    <EditServerView item={item} setModalVisible={setModalVisible} />
                 </BottomSheetView>
             </BottomSheetModal>
         </>

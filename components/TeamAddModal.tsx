@@ -2,8 +2,6 @@ import { ThemedText } from "@/components/ThemedText";
 import isMobile from "@/constants/isMobile";
 import { addTeam as createTeam } from "@/core/slices/teamSlice";
 import addTeam from "@/core/teamManager";
-import { TeamType } from "@/types/Team";
-import { Background } from "@react-navigation/elements";
 import { useState } from "react";
 import { Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { useDispatch } from "react-redux";
@@ -41,7 +39,7 @@ export function TeamAddModal({ modalVisible, setModalVisible }: ServerModalProps
                             Add a team
                         </ThemedText>
                         <ThemedText style={styles.modalText} type="defaultSemiBold">
-                            team name
+                            Team name
                         </ThemedText>
                         <TextInput
                             style={styles.textInput}
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 35,
         width: isMobile() ? "90%" : "60%",
-        backgroundColor: "#121212",
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

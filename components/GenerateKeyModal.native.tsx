@@ -2,15 +2,15 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { useCallback, useRef } from "react";
 import { StyleSheet } from "react-native";
-import { CreateServerView } from "./modalViews/CreateServerView";
+import { GenerateKeyView } from "./modalViews/GenerateKeyView";
 
-interface ServerModalProps {
+interface GenerateKeyModalProps {
     setModalVisible: (e: boolean) => void;
     modalVisible: boolean;
     refresh: () => void;
 }
 
-export function CreateServerModal({ modalVisible, setModalVisible, refresh }: ServerModalProps) {
+export function GenerateKeyModal({ modalVisible, setModalVisible, refresh }: GenerateKeyModalProps) {
     const bgColor = useThemeColor({}, "background");
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     if (modalVisible) {
@@ -34,7 +34,7 @@ export function CreateServerModal({ modalVisible, setModalVisible, refresh }: Se
                 enableDynamicSizing={false}
             >
                 <BottomSheetView style={[styles.view, { backgroundColor: bgColor }]}>
-                    <CreateServerView refresh={refresh} setModalVisible={setModalVisible} />
+                    <GenerateKeyView refresh={refresh} setModalVisible={setModalVisible} />
                 </BottomSheetView>
             </BottomSheetModal>
         </>
