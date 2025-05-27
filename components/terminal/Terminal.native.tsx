@@ -8,6 +8,7 @@ import ThemedButton from "../ThemedButton";
 import { ThemedText } from "../ThemedText";
 import { ThemedTextInput } from "../ThemedTextInput";
 import { ThemedView } from "../ThemedView";
+import SpecialKeys from "./SpecialKeys";
 interface TerminalModalProps {
     server: ServerType;
     visible: boolean;
@@ -81,6 +82,15 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
             setOutput((prev) => `${prev}\nError: SSH Client is not connected.`);
         }
     }
+    function sendSpecialKey(key: string) {
+        if (clientRef.current) {
+            console.log("Special key sent:", key);
+            clientRef.current.writeToShell(translateKey(key));
+        } else {
+            console.error("SSH Client is not connected");
+            setOutput((prev) => `${prev}\nError: SSH Client is not connected.`);
+        }
+    }
     return (
         <Modal animationType="slide" transparent={false} visible={visible}>
             <ThemedView style={{ flex: 1, padding: 20 }}>
@@ -103,6 +113,7 @@ export default function TerminalModal({ server, visible, setVisible }: TerminalM
                 <ScrollView style={{ flex: 1, marginBottom: 20 }}>
                     <ThemedText>{output}</ThemedText>
                 </ScrollView>
+                <SpecialKeys sendKey={sendSpecialKey} />
                 <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
                     <ThemedTextInput
                         style={styles.textInput}
