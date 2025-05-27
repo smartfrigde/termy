@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import isMobile from "@/constants/isMobile";
+import { showAlert } from "@/core/alert";
 import { editServer } from "@/core/sshManager";
 import type { ServerType } from "@/types/Server";
 import { useState } from "react";
@@ -32,6 +33,7 @@ export function EditServerView({ item, setModalVisible }: EditServerViewProps) {
                 }
             })
             .catch((err) => {
+                showAlert("Failed to edit server. Please check your inputs.", "Error");
                 console.log("Error editing server");
                 console.error(err);
             });

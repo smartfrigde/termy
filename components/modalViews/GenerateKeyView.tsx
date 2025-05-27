@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import isMobile from "@/constants/isMobile";
+import { showAlert } from "@/core/alert";
 import { createKey } from "@/core/keyManager";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
@@ -41,7 +42,8 @@ export function GenerateKeyView({ setModalVisible, refresh }: GenerateKeyViewPro
                 setModalVisible(false);
             })
             .catch((error) => {
-                console.error("Error creating key on server", error);
+                showAlert("Failed to create key. Please check your inputs.", "Error");
+                console.log("Error creating key on server", error);
             });
     };
     return (
