@@ -1,13 +1,12 @@
 import { Alert, Platform } from "react-native";
 
-export function showAlert(message: string,title?: string) {
+export function showAlert(message: string, title?: string) {
     switch (Platform.OS) {
-        case 'ios':
-        case 'android':
-            Alert.alert(title ?? "Termy", message)
+        case "ios":
+        case "android":
+            Alert.alert(title ?? "Termy", message);
             break;
-        case 'web':
+        case "web":
             alert(message);
     }
-   
 }
