@@ -1,6 +1,7 @@
 import isMobile from "@/constants/isMobile";
 import type { ServerType } from "@/types/Server";
 import { Modal, StyleSheet, View } from "react-native";
+import ThemedButton from "./ThemedButton";
 import { ThemedView } from "./ThemedView";
 import { EditServerView } from "./modalViews/EditServerView";
 
@@ -21,6 +22,7 @@ export function EditServerModal({ item, modalVisible, setModalVisible }: EditSer
                     setModalVisible(!modalVisible);
                 }}
             >
+                <ThemedButton style={styles.floatingX} onPress={() => setModalVisible(false)} title="X" />
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView}>
                         <EditServerView item={item} setModalVisible={setModalVisible} />
@@ -32,6 +34,15 @@ export function EditServerModal({ item, modalVisible, setModalVisible }: EditSer
 }
 
 const styles = StyleSheet.create({
+    floatingX: {
+        position: "absolute",
+        top: 20,
+        right: 20,
+        zIndex: 1000,
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        borderRadius: 50,
+        padding: 10,
+    },
     centeredView: {
         flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.5)",
