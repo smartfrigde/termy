@@ -32,8 +32,8 @@ export function GenerateKeyView({ setModalVisible, refresh }: GenerateKeyViewPro
         console.log("Key generated", keys);
         createKey({
             name: name,
-            publicKey: keys.publicKey,
-            privateKey: keys.privateKey,
+            public_key: keys.publicKey,
+            private_key: keys.privateKey,
             passphrase: passphrase,
         })
             .then((response) => {
