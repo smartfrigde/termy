@@ -4,7 +4,7 @@ import { deleteTeam } from "@/core/teamManager";
 import { Octicons } from "@expo/vector-icons";
 import type React from "react";
 import { useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { ThemedView } from "./ThemedView";
 
@@ -15,6 +15,10 @@ interface TeamRemoveButtonAndModalProps {
 const TeamRemoveButtonAndModal: React.FC<TeamRemoveButtonAndModalProps> = ({ teamId }) => {
     const [isShowConfirmWindow, setConfirmWindow] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
+    const colorScheme = useColorScheme();
+    const isLightTheme = colorScheme === "light";
+
+    const styles = isLightTheme ? lightStyles : darkStyles;
 
     const handleDeletePress = () => {
         setConfirmWindow(true);
@@ -37,14 +41,14 @@ const TeamRemoveButtonAndModal: React.FC<TeamRemoveButtonAndModalProps> = ({ tea
     return (
         <View>
             <TouchableOpacity onPress={handleDeletePress} style={styles.deleteButton}>
-                <Octicons name="trash" size={16} color="red" />
+                <Octicons name="trash" size={16} color={isLightTheme ? "#d32f2f" : "red"} />
                 <Text style={styles.deleteText}>Delete team</Text>
             </TouchableOpacity>
 
             <Modal visible={isShowConfirmWindow} transparent animationType="fade" onRequestClose={handleCancel}>
                 <View style={styles.modalOverlay}>
                     <ThemedView style={styles.modalContent}>
-                        <Text>Are you sure you want to delete this team?</Text>
+                        <Text style={styles.modalText}>Are you sure you want to delete this team?</Text>
                         <View style={styles.modalButtons}>
                             <TouchableOpacity onPress={handleConfirmDelete} style={styles.confirmButton}>
                                 <Text style={styles.confirmText}>Yes</Text>
@@ -60,27 +64,92 @@ const TeamRemoveButtonAndModal: React.FC<TeamRemoveButtonAndModalProps> = ({ tea
     );
 };
 
-const styles = StyleSheet.create({
+const commonButtonPadding = {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+};
+
+const lightStyles = StyleSheet.create({
     deleteButton: {
         flexDirection: "row",
         alignItems: "center",
-        paddingTop: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
-        paddingLeft: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderWidth: 2,
+        borderColor: "#d32f2f",
+        borderRadius: 20,
+        justifyContent: "center",
+        backgroundColor: "#fff",
+    },
+    deleteText: {
+        marginLeft: 4,
+        color: "#d32f2f",
+        fontWeight: "600",
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalContent: {
+        backgroundColor: "#f9f9f9",
+        padding: 16,
+        borderRadius: 8,
+        width: "80%",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 5,
+    },
+    modalText: {
+        color: "#333",
+        fontSize: 16,
+    },
+    modalButtons: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        marginTop: 16,
+    },
+    confirmButton: {
+        ...commonButtonPadding,
+        marginRight: 8,
+        backgroundColor: "#d32f2f",
+    },
+    confirmText: {
+        color: "white",
+        fontWeight: "600",
+        fontSize: 14,
+    },
+    cancelButton: {
+        ...commonButtonPadding,
+        backgroundColor: "#e0e0e0",
+    },
+    cancelText: {
+        color: "#333",
+        fontWeight: "600",
+        fontSize: 14,
+    },
+});
+
+const darkStyles = StyleSheet.create({
+    deleteButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 10,
+        paddingHorizontal: 10,
         borderWidth: 2,
         borderColor: "red",
-        borderStyle: "solid",
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
-        borderBottomLeftRadius: 20,
-        transitionDuration: "0.25s",
+        borderRadius: 20,
         justifyContent: "center",
+        backgroundColor: "#2a2a2a",
     },
     deleteText: {
         marginLeft: 4,
         color: "red",
+        fontWeight: "600",
     },
     modalOverlay: {
         flex: 1,
@@ -89,10 +158,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalContent: {
-        backgroundColor: "white",
+        backgroundColor: "#1e1e1e",
         padding: 16,
         borderRadius: 8,
         width: "80%",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 8,
+        elevation: 5,
+    },
+    modalText: {
+        color: "#eaeaea",
+        fontSize: 16,
     },
     modalButtons: {
         flexDirection: "row",
@@ -100,14 +178,23 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     confirmButton: {
+        ...commonButtonPadding,
         marginRight: 8,
+        backgroundColor: "#ff4444",
     },
     confirmText: {
-        color: "red",
+        color: "white",
+        fontWeight: "600",
+        fontSize: 14,
     },
-    cancelButton: {},
+    cancelButton: {
+        ...commonButtonPadding,
+        backgroundColor: "#555",
+    },
     cancelText: {
-        color: "blue",
+        color: "#ccc",
+        fontWeight: "600",
+        fontSize: 14,
     },
 });
 
