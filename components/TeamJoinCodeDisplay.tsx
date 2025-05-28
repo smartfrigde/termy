@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import type React from "react";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from "react-native";
 
 interface JoinCodeProps {
     joinCode: string;

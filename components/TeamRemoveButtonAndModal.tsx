@@ -4,7 +4,7 @@ import { deleteTeam } from "@/core/teamManager";
 import { Octicons } from "@expo/vector-icons";
 import type React from "react";
 import { useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from "react-native";
 import { useDispatch } from "react-redux";
 import { ThemedView } from "./ThemedView";
 

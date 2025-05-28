@@ -1,6 +1,8 @@
 import { JoinCodeDisplay } from "@/components/TeamJoinCodeDisplay";
 import TeamRemoveButtonAndModal from "@/components/TeamRemoveButtonAndModal";
 import { ThemedText } from "@/components/ThemedText";
+import { selectUser } from "@/core/slices/authSlice";
+import { removeTeam } from "@/core/slices/teamSlice";
 import {
     Members,
     PageData,
@@ -14,17 +16,25 @@ import {
 import type { AppDispatch } from "@/core/store";
 import { deleteMember, getMembers, updateMemberRole } from "@/core/teamManager";
 import { Role, getRolesAtOrBelow, hasGrandestRole } from "@/core/teamsRoleManager";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import type { TeamType } from "@/types/Team";
 import type { MembersResponse, TeamPageData } from "@/types/TeamMember";
 import { Octicons } from "@expo/vector-icons";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from "react-native";
+import {
+    ActivityIndicator,
+    FlatList,
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    useColorScheme,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { ThemedView } from "./ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { selectUser } from "@/core/slices/authSlice";
-import { removeTeam } from "@/core/slices/teamSlice";
 interface TeamVisibilityProps {
     setModalVisible: (id: number) => void;
     modVisible: number;
@@ -60,7 +70,6 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
     const closeLeaveModal = () => setLeaveModalVisible(false);
     const onExitPress = () => {
         setVisibility.setModalVisible(-1);
-
     };
     const onMembersPress = () => {
         setIsMembersShow(!isMembersShow);
@@ -146,8 +155,6 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
         }
     }
 
-
-
     return (
         <>
             <Pressable
@@ -158,7 +165,6 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                 <TouchableOpacity onPress={() => handleLeaveTeam()}>
                     <Octicons name="sign-out" size={16} color="red" />
                 </TouchableOpacity>
-
             </Pressable>
 
             <Modal visible={visibleTeamId === item.id} animationType="slide">
@@ -200,7 +206,11 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                         {hasGrandestRole(item.permission_in_team, member.permission_level_id) && (
                                             <View style={styles.membersButtonContainer}>
                                                 <Pressable onPress={() => deleteUser(member.id)}>
-                                                    <Octicons name="trash" size={16} color={colorScheme === "dark" ? "white" : "black"} />
+                                                    <Octicons
+                                                        name="trash"
+                                                        size={16}
+                                                        color={colorScheme === "dark" ? "white" : "black"}
+                                                    />
                                                 </Pressable>
 
                                                 <Pressable
@@ -210,7 +220,11 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                                         )
                                                     }
                                                 >
-                                                    <Octicons name="gear" size={16} color={colorScheme === "dark" ? "white" : "black"} />
+                                                    <Octicons
+                                                        name="gear"
+                                                        size={16}
+                                                        color={colorScheme === "dark" ? "white" : "black"}
+                                                    />
                                                 </Pressable>
                                             </View>
                                         )}
@@ -240,10 +254,18 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                                             })}
                                             <View style={styles.roleButtons}>
                                                 <Pressable onPress={() => updateRole(roleToChange, member.id)}>
-                                                    <Octicons name="check" size={14} color={colorScheme === "dark" ? "white" : "black"} />
+                                                    <Octicons
+                                                        name="check"
+                                                        size={14}
+                                                        color={colorScheme === "dark" ? "white" : "black"}
+                                                    />
                                                 </Pressable>
                                                 <Pressable onPress={() => setShowRoleForMemberId(null)}>
-                                                    <Octicons name="x" size={14} color={colorScheme === "dark" ? "white" : "black"} />
+                                                    <Octicons
+                                                        name="x"
+                                                        size={14}
+                                                        color={colorScheme === "dark" ? "white" : "black"}
+                                                    />
                                                 </Pressable>
                                             </View>
                                         </View>

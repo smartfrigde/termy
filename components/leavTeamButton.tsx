@@ -1,6 +1,6 @@
-import type React from "react";
-import { TouchableOpacity, Text, StyleSheet, useColorScheme, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import type React from "react";
+import { StyleSheet, Text, TouchableOpacity, View, useColorScheme } from "react-native";
 
 interface LeaveTeamButtonProps {
     onLeaveTeam: () => void;
@@ -29,7 +29,7 @@ export const LeaveTeamButton: React.FC<LeaveTeamButtonProps> = ({ onLeaveTeam, d
 
 const lightStyles = StyleSheet.create({
     button: {
-        backgroundColor: "#d9534f", 
+        backgroundColor: "#d9534f",
         paddingVertical: 12,
         paddingHorizontal: 20,
         borderRadius: 8,
