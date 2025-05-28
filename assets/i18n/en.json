@@ -1,10 +1,13 @@
 {
     "en": {
         "title": "Welcome to the Application",
-        "description": "This is a sample application demonstrating internationalization.",
-        "button": {
-            "submit": "Submit",
-            "cancel": "Cancel"
+        "generic": {
+            "error": "Error",
+            "save": "Save",
+            "team": "Team",
+            "create": "Create",
+            "delete": "Delete",
+            "edit": "Edit"
         },
         "auth": {
             "title": "Welcome to Termy",
@@ -17,15 +20,23 @@
             "last_name": "Last Name",
             "email": "E-mail"
         },
+        "dashboard": {
+            "title": "Dashboard",
+            "hello": "Hello",
+            "addServer": "Add a server",
+            "serverName": "Server name",
+            "serverAddress": "Server address",
+            "serverPort": "Server port",
+            "serverUsername": "Server username",
+            "serverPassword": "Server password",
+            "editing": "Editing"
+        },
         "messages": {
             "success": "Operation completed successfully!",
             "error": "An error occurred. Please try again.",
-            "failedLogin": "Login failed. Please check your credentials."
-        },
-        "navigation": {
-            "home": "Home",
-            "about": "About Us",
-            "contact": "Contact"
+            "failedLogin": "Login failed. Please check your credentials.",
+            "failedCreateServer": "Failed to create server. Please check your inputs.",
+            "failedEditServer": "Failed to edit server. Please check your inputs."
         }
     }
 }

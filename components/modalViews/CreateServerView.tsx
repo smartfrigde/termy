@@ -1,6 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 
 import { showAlert } from "@/core/alert";
+import { i18n } from "@/core/i18n";
 import { selectedTeams } from "@/core/slices/teamSlice";
 import { createServer } from "@/core/sshManager";
 import { useState } from "react";
@@ -48,7 +49,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 }
             })
             .catch((err) => {
-                showAlert("Failed to create server. Please check your inputs.", "Error");
+                showAlert(i18n.t("messages.failedCreateServer"), i18n.t("generic.error"));
                 console.log("Error creating server");
                 console.error(err);
             });
@@ -58,31 +59,31 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
     return (
         <>
             <ThemedText style={styles.modalText} type="subtitle">
-                Add a server
+                {i18n.t("dashboard.addServer")}
             </ThemedText>
             <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Server name
+                {i18n.t("dashboard.serverName")}
             </ThemedText>
             <ThemedTextInput
-                placeholder="Server name"
+                placeholder={i18n.t("dashboard.serverName")}
                 placeholderTextColor="gray"
                 value={serverName}
                 onChangeText={setServerName}
             />
             <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Server address
+                {i18n.t("dashboard.serverAddress")}
             </ThemedText>
             <ThemedTextInput
-                placeholder="Server address"
+                placeholder={i18n.t("dashboard.serverAddress")}
                 placeholderTextColor="gray"
                 value={serverAddress}
                 onChangeText={setServerAdress}
             />
             <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Server port
+                {i18n.t("dashboard.serverPort")}
             </ThemedText>
             <ThemedTextInput
-                placeholder="Server port"
+                placeholder={i18n.t("dashboard.serverPort")}
                 placeholderTextColor="gray"
                 value={serverPort.toString()}
                 onChangeText={(text: string) => {
@@ -93,31 +94,31 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 }}
             />
             <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Server username
+                {i18n.t("dashboard.serverUsername")}
             </ThemedText>
             <ThemedTextInput
-                placeholder="Server username"
+                placeholder={i18n.t("dashboard.serverUsername")}
                 placeholderTextColor="gray"
                 value={serverUsername}
                 onChangeText={setServerUsername}
             />
             <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Server password
+                {i18n.t("dashboard.serverPassword")}
             </ThemedText>
             <ThemedTextInput
-                placeholder="Server password"
+                placeholder={i18n.t("dashboard.serverPassword")}
                 placeholderTextColor="gray"
                 secureTextEntry={true}
                 value={serverPassword}
                 onChangeText={setServerPassword}
             />
             <ThemedText style={styles.modalText} type="defaultSemiBold">
-                Team
+                {i18n.t("generic.team")}
             </ThemedText>
             <NiceDropdown setValue={setSelectedTeam} value={selectedTeam} data={teamsData} />
 
             <Pressable style={[styles.button, styles.buttonClose]} onPress={() => save()}>
-                <ThemedText style={styles.textStyle}>Create</ThemedText>
+                <ThemedText style={styles.textStyle}>{i18n.t("generic.create")}</ThemedText>
             </Pressable>
         </>
     );

@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { i18n } from "@/core/i18n";
 import { removeServer } from "@/core/slices/sshSlice";
 import { deleteServer } from "@/core/sshManager";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -64,13 +65,13 @@ export const ServerItem = ({ item }: { item: ServerType }) => {
                     }}
                 >
                     <ContextMenuItem key="edit" onSelect={handleEdit}>
-                        <ContextMenuItemTitle>Edit</ContextMenuItemTitle>
+                        <ContextMenuItemTitle>{i18n.t("generic.edit")}</ContextMenuItemTitle>
                         <ContextMenuItemIcon>
                             <Octicons name="pencil" size={16} color="white" />
                         </ContextMenuItemIcon>
                     </ContextMenuItem>
                     <ContextMenuItem key="delete" onSelect={handleDelete}>
-                        <ContextMenuItemTitle>Delete</ContextMenuItemTitle>
+                        <ContextMenuItemTitle>{i18n.t("generic.delete")}</ContextMenuItemTitle>
                         <ContextMenuItemIcon>
                             <Octicons name="trash" size={16} color="white" />
                         </ContextMenuItemIcon>
