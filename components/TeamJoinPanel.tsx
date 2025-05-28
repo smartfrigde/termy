@@ -5,8 +5,9 @@ import { addTeam as addTeamToSlice } from "@/core/slices/teamSlice";
 import { addMember } from "@/core/teamManager";
 import type { TeamType } from "@/types/Team";
 import { useState } from "react";
-import { Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
+import { ThemedTextInput } from "./ThemedTextInput";
 
 interface ServerModalProps {
     setModalVisible: (e: boolean) => void;
@@ -52,7 +53,7 @@ export function TeamJoinPanel({
                         <ThemedText style={styles.modalText} type="subtitle">
                             Join to a team
                         </ThemedText>
-                        <TextInput
+                        <ThemedTextInput
                             style={styles.textInput}
                             placeholder="Join code"
                             placeholderTextColor="gray"
@@ -79,10 +80,7 @@ export function TeamJoinPanel({
 
 const styles = StyleSheet.create({
     textInput: {
-        color: "white",
         height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
         width: "100%",
         marginBottom: 20,
         paddingLeft: 10,

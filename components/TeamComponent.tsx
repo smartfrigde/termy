@@ -138,7 +138,7 @@ const TeamItem: React.FC<TeamItemProps> = ({ item, visibleTeamId, setVisibility 
                             <Text style={styles.buttonText}>Exit</Text>
                         </TouchableOpacity>
 
-                        <ThemedText>{`Team: ${item.name}`}</ThemedText>
+                        <ThemedText style={{ color: "white" }}>{`Team: ${item.name}`}</ThemedText>
 
                         {(item.permission_in_team === Role.ADMINISTRATOR || item.permission_in_team === Role.OWNER) && (
                             <Pressable onPress={closeMembers}>
