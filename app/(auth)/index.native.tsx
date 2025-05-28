@@ -1,5 +1,6 @@
 import ThemedButton from "@/components/ThemedButton";
 import { ThemedView } from "@/components/ThemedView";
+import { i18n } from "@/core/i18n";
 import { Stack, router } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -20,11 +21,11 @@ const AuthScreen = () => {
                 },
             ]}
         >
-            <Stack.Screen options={{ title: "Welcome to Termy" }} />
+            <Stack.Screen options={{ title: i18n.t("auth.welcome") }} />
             <ThemedView style={styles.authContainer}>
                 {/* <Image style={styles.logo} source={require("../../assets/images/logo.png")} /> */}
-                <ThemedButton onPress={login} style={styles.button} title="Login" />
-                <ThemedButton onPress={register} style={styles.button} title="Register" />
+                <ThemedButton onPress={login} style={styles.button} title={i18n.t("auth.login")} />
+                <ThemedButton onPress={register} style={styles.button} title={i18n.t("auth.register")} />
             </ThemedView>
         </ThemedView>
     );

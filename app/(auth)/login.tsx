@@ -2,6 +2,7 @@ import ThemedButton from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedView } from "@/components/ThemedView";
+import { i18n } from "@/core/i18n";
 import { login } from "@/core/loginManager";
 import { setApiToken, setIsLoggedIn, setRefreshToken, setUser } from "@/core/slices/authSlice";
 import { Stack, router } from "expo-router";
@@ -35,7 +36,7 @@ const LoginScreen = () => {
     return (
         <ThemedView style={styles.container}>
             <Stack.Screen options={{ title: "Login" }} />
-            <ThemedText type="defaultSemiBold">E-mail</ThemedText>
+            <ThemedText type="defaultSemiBold">{i18n.t("auth.email")}</ThemedText>
             <ThemedTextInput
                 placeholder="johndoe@example.com"
                 placeholderTextColor="gray"
@@ -44,7 +45,7 @@ const LoginScreen = () => {
                 onSubmitEditing={handleLogin}
                 value={email}
             />
-            <ThemedText type="defaultSemiBold">Password</ThemedText>
+            <ThemedText type="defaultSemiBold">{i18n.t("auth.password")}</ThemedText>
             <ThemedTextInput
                 secureTextEntry={true}
                 placeholder="********"
@@ -55,7 +56,7 @@ const LoginScreen = () => {
                 value={password}
             />
             <ThemedButton
-                title="Login"
+                title={i18n.t("auth.login")}
                 onPress={() => {
                     handleLogin();
                 }}

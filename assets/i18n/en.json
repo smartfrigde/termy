@@ -1,0 +1,31 @@
+{
+    "en": {
+        "title": "Welcome to the Application",
+        "description": "This is a sample application demonstrating internationalization.",
+        "button": {
+            "submit": "Submit",
+            "cancel": "Cancel"
+        },
+        "auth": {
+            "title": "Welcome to Termy",
+            "welcome_back": "Welcome back",
+            "login": "Login",
+            "logout": "Logout",
+            "register": "Register",
+            "password": "Password",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "E-mail"
+        },
+        "messages": {
+            "success": "Operation completed successfully!",
+            "error": "An error occurred. Please try again.",
+            "failedLogin": "Login failed. Please check your credentials."
+        },
+        "navigation": {
+            "home": "Home",
+            "about": "About Us",
+            "contact": "Contact"
+        }
+    }
+}

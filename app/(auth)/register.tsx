@@ -2,6 +2,7 @@ import ThemedButton from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedView } from "@/components/ThemedView";
+import { i18n } from "@/core/i18n";
 import { register } from "@/core/loginManager";
 import { Stack, router } from "expo-router";
 import React from "react";
@@ -29,7 +30,7 @@ const RegisterScreen = () => {
     return (
         <ThemedView style={styles.container}>
             <Stack.Screen options={{ title: "Register" }} />
-            <ThemedText type="defaultSemiBold">First name</ThemedText>
+            <ThemedText type="defaultSemiBold">{i18n.t("auth.first_name")}</ThemedText>
             <ThemedTextInput
                 placeholder="John"
                 onSubmitEditing={handleRegister}
@@ -38,7 +39,7 @@ const RegisterScreen = () => {
                 onChangeText={(text) => setFName(text)}
                 value={fName}
             />
-            <ThemedText type="defaultSemiBold">Last name</ThemedText>
+            <ThemedText type="defaultSemiBold">{i18n.t("auth.last_name")}</ThemedText>
             <ThemedTextInput
                 placeholder="Doe"
                 placeholderTextColor="gray"
@@ -46,7 +47,7 @@ const RegisterScreen = () => {
                 onChangeText={(text) => setLName(text)}
                 value={lName}
             />
-            <ThemedText type="defaultSemiBold">E-mail</ThemedText>
+            <ThemedText type="defaultSemiBold">{i18n.t("auth.email")}</ThemedText>
             <ThemedTextInput
                 placeholder="johndoe@example.com"
                 autoComplete="email"
@@ -55,7 +56,7 @@ const RegisterScreen = () => {
                 onChangeText={(text) => setEmail(text)}
                 value={email}
             />
-            <ThemedText type="defaultSemiBold">Password</ThemedText>
+            <ThemedText type="defaultSemiBold">{i18n.t("auth.password")}</ThemedText>
             <ThemedTextInput
                 secureTextEntry={true}
                 onSubmitEditing={handleRegister}
@@ -66,7 +67,7 @@ const RegisterScreen = () => {
                 value={password}
             />
             <ThemedButton
-                title="Register"
+                title={i18n.t("auth.register")}
                 onPress={() => {
                     handleRegister();
                 }}
