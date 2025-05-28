@@ -3,8 +3,9 @@ import isMobile from "@/constants/isMobile";
 import { addTeam as createTeam } from "@/core/slices/teamSlice";
 import addTeam from "@/core/teamManager";
 import { useState } from "react";
-import { Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
+import { ThemedTextInput } from "./ThemedTextInput";
 import { ThemedView } from "./ThemedView";
 
 interface ServerModalProps {
@@ -41,7 +42,7 @@ export function TeamAddModal({ modalVisible, setModalVisible }: ServerModalProps
                         <ThemedText style={styles.modalText} type="defaultSemiBold">
                             Team name
                         </ThemedText>
-                        <TextInput
+                        <ThemedTextInput
                             style={styles.textInput}
                             placeholder="Team name"
                             placeholderTextColor="gray"
@@ -68,10 +69,7 @@ export function TeamAddModal({ modalVisible, setModalVisible }: ServerModalProps
 
 const styles = StyleSheet.create({
     textInput: {
-        color: "white",
         height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
         width: "100%",
         marginBottom: 20,
         paddingLeft: 10,

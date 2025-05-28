@@ -24,7 +24,7 @@ export const JoinCodeDisplay: React.FC<JoinCodeProps> = ({ joinCode }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Twój kod:</Text>
+            <Text style={styles.label}>Invite code:</Text>
             <View style={styles.codeContainer}>
                 <Text style={styles.codeText}>{joinCode}</Text>
                 <TouchableOpacity onPress={copyToClipboard} style={styles.copyButton}>

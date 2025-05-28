@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 
+import { showAlert } from "@/core/alert";
 import { selectedTeams } from "@/core/slices/teamSlice";
 import { createServer } from "@/core/sshManager";
 import { useState } from "react";
@@ -47,6 +48,7 @@ export function CreateServerView({ setModalVisible, refresh }: ServerViewProps) 
                 }
             })
             .catch((err) => {
+                showAlert("Failed to create server. Please check your inputs.", "Error");
                 console.log("Error creating server");
                 console.error(err);
             });

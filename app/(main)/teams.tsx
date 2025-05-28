@@ -14,7 +14,7 @@ import { getTeams } from "@/core/teamManager";
 import type { TeamType } from "@/types/Team";
 import { Octicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 

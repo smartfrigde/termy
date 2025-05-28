@@ -6,7 +6,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import type { KeyType } from "@/types/Key";
 import { Octicons } from "@expo/vector-icons";
 import { ContextMenuContent } from "@radix-ui/react-context-menu";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Clipboard, StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import {
     ContextMenuItem,
@@ -30,7 +30,12 @@ export const KeyItem = ({ item }: { item: KeyType }) => {
             }
         });
     };
-
+    const handleCopyPublicKey = () => {
+        Clipboard.setString(item.public_key);
+    };
+    const handleCopyPrivateKey = () => {
+        Clipboard.setString(item.private_key);
+    };
     return (
         <>
             <ContextMenuRoot>
@@ -59,6 +64,18 @@ export const KeyItem = ({ item }: { item: KeyType }) => {
                         <ContextMenuItemTitle>Change name</ContextMenuItemTitle>
                         <ContextMenuItemIcon>
                             <Octicons name="pencil" size={16} color="white" />
+                        </ContextMenuItemIcon>
+                    </ContextMenuItem>
+                    <ContextMenuItem key="publicKey" onSelect={handleCopyPublicKey}>
+                        <ContextMenuItemTitle>Copy public key</ContextMenuItemTitle>
+                        <ContextMenuItemIcon>
+                            <Octicons name="key" size={16} color="white" />
+                        </ContextMenuItemIcon>
+                    </ContextMenuItem>
+                    <ContextMenuItem key="privateKey" onSelect={handleCopyPrivateKey}>
+                        <ContextMenuItemTitle>Copy private key</ContextMenuItemTitle>
+                        <ContextMenuItemIcon>
+                            <Octicons name="key" size={16} color="white" />
                         </ContextMenuItemIcon>
                     </ContextMenuItem>
                     <ContextMenuItem key="delete" onSelect={handleDelete}>

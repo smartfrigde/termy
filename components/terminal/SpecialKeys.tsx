@@ -1,7 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-export default function SpecialKeys() {
+import { ScrollView } from "react-native-gesture-handler";
+interface SpecialKeysProps {
+    sendKey: (key: string) => void;
+}
+export default function SpecialKeys({ sendKey }: SpecialKeysProps) {
     const keys = [
         "Esc",
         "Ctrl",
@@ -19,11 +22,13 @@ export default function SpecialKeys() {
 
     return (
         <View style={styles.container}>
-            {keys.map((key) => (
-                <TouchableOpacity key={key} style={styles.button}>
-                    <Text style={styles.buttonText}>{key}</Text>
-                </TouchableOpacity>
-            ))}
+            <ScrollView horizontal>
+                {keys.map((key) => (
+                    <TouchableOpacity key={key} style={styles.button} onPress={() => sendKey(key)}>
+                        <Text style={styles.buttonText}>{key}</Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
         </View>
     );
 }
